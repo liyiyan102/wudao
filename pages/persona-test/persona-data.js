@@ -45,7 +45,7 @@ const PERSONAS = {
     need: '赛事、对抗训练、一轮一轮的复盘，比漫无目的的派对更喂得饱你。'
   },
   resonance: {
-    name: '接火人',
+    name: '递火者',
     enName: 'RESONANCE IGNITER',
     no: 'NO. 04',
     mark: 'CYPHER',
@@ -58,7 +58,7 @@ const PERSONAS = {
     need: '熟人练舞局、小型 Cypher、找搭子，会比一个人死磕更让你亮起来。'
   },
   nomad: {
-    name: '夜场游牧',
+    name: '游牧者',
     enName: 'NIGHT PARTY NOMAD',
     no: 'NO. 05',
     mark: 'NIGHT',
@@ -71,7 +71,7 @@ const PERSONAS = {
     need: '派对、夜场、House / Waacking / Afro 这类把房间推起来的局。'
   },
   lone: {
-    name: '月光独练',
+    name: '独行者',
     enName: 'SOLO ORBIT DANCER',
     no: 'NO. 06',
     mark: 'SOLO',
@@ -175,7 +175,7 @@ const PERSONAS = {
     need: '成片复盘、动作拆解课、有录像反馈的训练；偶尔也需要有人替你按下暂停键。'
   },
   edgewalker: {
-    name: '圈外守望',
+    name: '圈外人',
     enName: 'EDGE WALKER',
     no: 'NO. 14',
     mark: 'EDGE',
