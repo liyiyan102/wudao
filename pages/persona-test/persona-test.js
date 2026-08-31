@@ -610,18 +610,18 @@ Page({
 
   sharePayload() {
     var result = this.data.result
-    var imageUrl = this.data.posterImgPath || '/images/covers/home-share.jpg'
+    var imageUrl = this.data.posterImgPath || '/images/covers/persona-test-share.jpg'
     if (this.data.phase === 'result' && result && result.persona) {
       return {
-        title: '我测出是「' + result.persona.name + '」｜街舞人格测试',
+        title: '我测出是「' + result.persona.name + '」｜你是圈里哪一种？',
         path: '/pages/persona-test/persona-test',
         imageUrl: imageUrl
       }
     }
     return {
-      title: '你为什么被街舞吸引？测测你的街舞人格',
+      title: '9 题测出你的街舞人格 | 野火玩家、独行者，还是圈外人？',
       path: '/pages/persona-test/persona-test',
-      imageUrl: '/images/covers/home-share.jpg'
+      imageUrl: '/images/covers/persona-test-share.jpg'
     }
   },
 

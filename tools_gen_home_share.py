@@ -1,267 +1,159 @@
 #!/usr/bin/env python3
 """
-生成高质量、潮流动感、饱满有层次的 5:4 微信小程序首页分享封面 (1000x800)
-输出：images/covers/home-share.jpg
+Generate the 5:4 homepage share card used by WeChat.
+
+The design intentionally stays sparse: one strong dance visual, clear brand, and
+one product promise. This keeps the thumbnail readable inside WeChat's share UI.
 """
-import os
-import math
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageEnhance, ImageOps
+
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
+
 
 ROOT = Path(__file__).resolve().parent
-OUT_PATH = ROOT / "images" / "covers" / "home-share.jpg"
+SOURCE = ROOT / "images" / "covers" / "contest.jpg"
+OUT = ROOT / "images" / "covers" / "home-share.jpg"
 W, H = 1000, 800
 
-def get_font(size, bold=True):
-    cands = [
+
+def font(size, bold=True):
+    candidates = [
         "/System/Library/Fonts/PingFang.ttc",
         "/System/Library/Fonts/Hiragino Sans GB.ttc",
         "/System/Library/Fonts/STHeiti Medium.ttc",
         "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
     ]
-    for p in cands:
-        if Path(p).exists():
-            try:
-                idx = 1 if "PingFang" in p and bold else 0
-                return ImageFont.truetype(p, size, index=idx)
-            except Exception:
-                try:
-                    return ImageFont.truetype(p, size, index=0)
-                except Exception:
-                    continue
+    for path in candidates:
+        p = Path(path)
+        if not p.exists():
+            continue
+        try:
+            return ImageFont.truetype(str(p), size, index=1 if bold and "PingFang" in path else 0)
+        except OSError:
+            continue
     return ImageFont.load_default()
 
-def get_en_font(size, bold=True):
-    cands = [
-        "/System/Library/Fonts/Supplemental/Impact.ttf",
+
+def en_font(size):
+    candidates = [
         "/System/Library/Fonts/Supplemental/DIN Alternate Bold.ttf",
         "/System/Library/Fonts/Supplemental/Futura.ttc",
         "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
     ]
-    for p in cands:
-        if Path(p).exists():
-            try:
-                return ImageFont.truetype(p, size, index=0)
-            except Exception:
-                continue
-    return get_font(size, bold)
+    for path in candidates:
+        p = Path(path)
+        if not p.exists():
+            continue
+        try:
+            return ImageFont.truetype(str(p), size)
+        except OSError:
+            continue
+    return font(size)
+
+
+def vertical_gradient(size, top, bottom):
+    w, h = size
+    img = Image.new("RGBA", size)
+    draw = ImageDraw.Draw(img)
+    for y in range(h):
+        t = y / max(h - 1, 1)
+        color = tuple(int(top[i] * (1 - t) + bottom[i] * t) for i in range(4))
+        draw.line((0, y, w, y), fill=color)
+    return img
+
+
+def glow(size, center, radius, color, peak_alpha):
+    layer = Image.new("RGBA", size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(layer)
+    cx, cy = center
+    for r in range(radius, 0, -6):
+        t = 1 - r / radius
+        alpha = int(peak_alpha * t * t)
+        draw.ellipse((cx - r, cy - r, cx + r, cy + r), fill=(*color, alpha))
+    return layer.filter(ImageFilter.GaussianBlur(6))
+
+
+def add_spaced_text(draw, xy, text, font_obj, fill, spacing):
+    x, y = xy
+    for ch in text:
+        draw.text((x, y), ch, font=font_obj, fill=fill)
+        box = draw.textbbox((x, y), ch, font=font_obj)
+        x += box[2] - box[0] + spacing
+
 
 def main():
-    # 1. 创建高质感深邃夜场潮流底色
-    bg = Image.new("RGBA", (W, H), (12, 10, 24, 255))
-    draw = ImageDraw.Draw(bg)
+    src = Image.open(SOURCE).convert("RGB")
 
-    for y in range(H):
-        t = y / H
-        r = int(10 + 16 * math.sin(t * math.pi * 0.7))
-        g = int(8 + 10 * math.sin(t * math.pi * 0.7))
-        b = int(22 + 30 * math.sin(t * math.pi * 0.7))
-        draw.line([(0, y), (W, y)], fill=(r, g, b, 255))
+    # Soft full-bleed stage image: visually rich, but calm enough for large text.
+    base = ImageOps.fit(src, (W, H), method=Image.Resampling.LANCZOS, centering=(0.55, 0.55))
+    base = ImageEnhance.Color(base).enhance(1.08)
+    base = ImageEnhance.Contrast(base).enhance(1.14)
+    base = base.convert("RGBA")
 
-    # 2. 丰富的光效层
-    glow_layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    glow_draw = ImageDraw.Draw(glow_layer)
+    bg = Image.new("RGBA", (W, H), (10, 8, 22, 255))
+    bg = Image.alpha_composite(bg, base)
 
-    # 舞者背后的超级能量光球 (电光紫 + 荧光蓝)
-    cx, cy = 690, 400
-    for radius in range(480, 0, -5):
-        pct = radius / 480
-        alpha = int(60 * (1 - pct ** 1.4))
-        pr = int(130 - 60 * (1 - pct))
-        pg = int(35 + 130 * (1 - pct))
-        pb = int(255)
-        glow_draw.ellipse([cx - radius, cy - radius, cx + radius, cy + radius], fill=(pr, pg, pb, alpha))
+    # Calm premium treatment: dark vignette, purple stage light, and left-side readability.
+    bg = Image.alpha_composite(bg, glow((W, H), (690, 385), 420, (121, 76, 255), 120))
+    bg = Image.alpha_composite(bg, glow((W, H), (835, 565), 260, (0, 220, 255), 70))
+    bg = Image.alpha_composite(bg, vertical_gradient((W, H), (4, 4, 12, 20), (4, 4, 12, 125)))
 
-    # 左侧氛围冷青色补光
-    for radius in range(260, 0, -8):
-        pct = radius / 260
-        alpha = int(22 * (1 - pct))
-        glow_draw.ellipse([160 - radius, 140 - radius, 160 + radius, 140 + radius], fill=(0, 229, 255, alpha))
+    shade = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    shade_draw = ImageDraw.Draw(shade)
+    for x in range(W):
+        if x < 530:
+            alpha = 175
+        elif x < 780:
+            alpha = int(175 * (1 - (x - 530) / 250))
+        else:
+            alpha = 0
+        shade_draw.line((x, 0, x, H), fill=(5, 5, 14, alpha))
+    bg = Image.alpha_composite(bg, shade)
 
-    bg = Image.alpha_composite(bg, glow_layer)
+    # Minimal tech texture, kept subtle to avoid another busy poster look.
+    texture = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    tex_draw = ImageDraw.Draw(texture)
+    for x in range(70, 500, 64):
+        tex_draw.line((x, 92, x, 700), fill=(255, 255, 255, 10))
+    for y in range(100, 700, 64):
+        tex_draw.line((60, y, 515, y), fill=(255, 255, 255, 9))
+    tex_draw.line((60, 630, 940, 630), fill=(167, 139, 250, 95), width=2)
+    tex_draw.text((614, 72), "STREET DANCE", font=en_font(68), fill=(255, 255, 255, 18))
+    tex_draw.text((614, 132), "CITY GUIDE", font=en_font(68), fill=(255, 255, 255, 12))
+    bg = Image.alpha_composite(bg, texture)
 
-    # 3. 街头潮流装饰线条与背景水印
-    deco_layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    deco_draw = ImageDraw.Draw(deco_layer)
+    ui = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(ui)
 
-    # 右上方斜切大水印
-    font_wm = get_en_font(90, bold=True)
-    deco_draw.text((360, 25), "STREET DANCE", font=font_wm, fill=(255, 255, 255, 10))
-    deco_draw.text((450, 110), "ARCHIVE // 2026", font=get_en_font(40, bold=True), fill=(0, 229, 255, 25))
+    # Brand block.
+    draw.rounded_rectangle((62, 76, 300, 122), radius=23, fill=(255, 255, 255, 24), outline=(255, 255, 255, 82))
+    draw.text((86, 88), "WUDAO", font=en_font(26), fill=(225, 221, 255, 235))
 
-    # 精致网格 (左侧 480px 范围)
-    for x in range(45, 500, 45):
-        deco_draw.line([(x, 50), (x, 740)], fill=(255, 255, 255, 8), width=1)
-    for y in range(60, 740, 45):
-        deco_draw.line([(45, y), (480, y)], fill=(255, 255, 255, 8), width=1)
+    draw.text((60, 166), "舞岛", font=font(126, True), fill=(5, 5, 14, 210))
+    draw.text((56, 162), "舞岛", font=font(126, True), fill=(255, 255, 255, 255))
+    add_spaced_text(draw, (64, 300), "W U D A O", en_font(34), (0, 229, 255, 245), 7)
 
-    # 潮流准星与十字标记
-    for px, py in [(45, 60), (450, 60), (45, 690), (450, 690), (225, 375)]:
-        deco_draw.line([(px - 7, py), (px + 7, py)], fill=(0, 240, 255, 140), width=1)
-        deco_draw.line([(px, py - 7), (px, py + 7)], fill=(0, 240, 255, 140), width=1)
+    # One-line positioning, no promotional clutter.
+    draw.text((62, 382), "街舞人的内容与活动入口", font=font(42, True), fill=(255, 255, 255, 245))
+    draw.text((64, 446), "看深度内容  找同城活动  约练舞搭子", font=font(27, True), fill=(255, 214, 94, 245))
 
-    # 舞台地面 (带双色霓虹反光线)
-    ground_y = 650
-    for y in range(ground_y, H):
-        pct = (y - ground_y) / (H - ground_y)
-        alpha = int(140 * pct)
-        deco_draw.line([(0, y), (W, y)], fill=(28, 18, 55, alpha))
-    deco_draw.line([(0, ground_y), (W, ground_y)], fill=(138, 92, 246, 180), width=2)
-    deco_draw.line([(0, ground_y + 1), (W, ground_y + 1)], fill=(0, 240, 255, 120), width=1)
+    # Three quiet pills for discoverability.
+    pills = ["PGC 资讯", "赛事大师课", "练舞搭子"]
+    x = 62
+    for pill in pills:
+        box = draw.textbbox((0, 0), pill, font=font(22, True))
+        w = box[2] - box[0] + 36
+        draw.rounded_rectangle((x, 520, x + w, 568), radius=24, fill=(12, 10, 28, 185), outline=(255, 255, 255, 68))
+        draw.text((x + 18, 533), pill, font=font(22, True), fill=(236, 234, 255, 235))
+        x += w + 14
 
-    bg = Image.alpha_composite(bg, deco_layer)
+    draw.text((64, 696), "POPPING / LOCKING / BREAKING / HIPHOP", font=en_font(20), fill=(190, 181, 230, 160))
+    draw.rounded_rectangle((0, 0, W - 1, H - 1), radius=0, outline=(255, 255, 255, 28), width=2)
 
-    # 4. 舞者主体提取与强化
-    raw_share = Image.open(OUT_PATH).convert('RGBA')
-    raw_dancer = raw_share.crop((410, 100, 990, 780))
+    out = Image.alpha_composite(bg, ui).convert("RGB")
+    out.save(OUT, quality=94, optimize=True)
+    print(f"Generated {OUT}")
 
-    target_w = 670
-    target_h = int(raw_dancer.height * (target_w / raw_dancer.width))
-    dancer_scaled = raw_dancer.resize((target_w, target_h), Image.Resampling.LANCZOS)
-
-    # 色彩与对比度强化
-    dancer_scaled = ImageEnhance.Contrast(dancer_scaled).enhance(1.22)
-    dancer_scaled = ImageEnhance.Color(dancer_scaled).enhance(1.25)
-
-    # 平滑边缘遮罩
-    d_gray = dancer_scaled.convert('L')
-    mask = d_gray.point(lambda p: min(255, int((p ** 1.12) * 1.9)))
-
-    # 贴上舞者
-    dx = W - target_w + 35
-    dy = 35
-    bg.paste(dancer_scaled, (dx, dy), mask)
-
-    # 舞者支撑点手部星芒
-    flare_layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    flare_draw = ImageDraw.Draw(flare_layer)
-    fx, fy = dx + 138, dy + 620
-    for radius in range(75, 0, -3):
-        alpha = int(190 * (1 - (radius / 75) ** 0.8))
-        flare_draw.ellipse([fx - radius, fy - radius, fx + radius, fy + radius], fill=(255, 255, 255, alpha))
-
-    flare_draw.line([(fx - 70, fy), (fx + 70, fy)], fill=(255, 255, 255, 240), width=2)
-    flare_draw.line([(fx, fy - 70), (fx, fy + 70)], fill=(255, 255, 255, 240), width=2)
-    flare_draw.line([(fx - 40, fy - 40), (fx + 40, fy + 40)], fill=(0, 240, 255, 180), width=1)
-    flare_draw.line([(fx - 40, fy + 40), (fx + 40, fy - 40)], fill=(0, 240, 255, 180), width=1)
-
-    bg = Image.alpha_composite(bg, flare_layer)
-
-    # 5. UI 与排版设计
-    ui_layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    ui_draw = ImageDraw.Draw(ui_layer)
-
-    # (A) 顶部 Badge 胶囊
-    bx, by = 55, 65
-    bw, bh = 375, 42
-    ui_draw.rounded_rectangle(
-        [bx, by, bx + bw, by + bh],
-        radius=21,
-        fill=(123, 97, 255, 60),
-        outline=(168, 85, 247, 220),
-        width=1
-    )
-    font_badge = get_font(19, bold=True)
-    ui_draw.text((bx + 18, by + 11), "⚡ 街舞人的内容资讯 · 官方活动平台", font=font_badge, fill=(245, 240, 255, 255))
-
-    # (B) 超级大字标: 舞 岛
-    font_title = get_font(98, bold=True)
-    font_en = get_en_font(38, bold=True)
-
-    # 立体投影
-    ui_draw.text((58, 137), "舞岛", font=font_title, fill=(5, 3, 15, 230))
-    ui_draw.text((56, 135), "舞岛", font=font_title, fill=(123, 97, 255, 170))
-    ui_draw.text((54, 133), "舞岛", font=font_title, fill=(255, 255, 255, 255))
-
-    # 英文 WUDAO 潮流字标 + 活力橙撞色
-    ui_draw.text((56, 248), "W U D A O", font=font_en, fill=(0, 240, 255, 255))
-    ui_draw.text((250, 254), "STREET DANCE HUB", font=get_en_font(20, bold=True), fill=(255, 180, 0, 220))
-
-    # 装饰分割线
-    ui_draw.line([(56, 296), (460, 296)], fill=(138, 92, 246, 160), width=2)
-    ui_draw.line([(420, 296), (460, 296)], fill=(0, 240, 255, 255), width=3)
-
-    # (C) Slogan 主张
-    font_slogan = get_font(31, bold=True)
-    ui_draw.text((55, 318), "看懂行的内容", font=font_slogan, fill=(255, 255, 255, 255))
-    ui_draw.text((245, 318), " · ", font=font_slogan, fill=(160, 150, 190, 220))
-    ui_draw.text((275, 318), "找同城活动与搭子", font=font_slogan, fill=(255, 220, 40, 255))
-
-    # (D) 三大亮点毛玻璃胶囊卡片
-    chips = [
-        ("🏆 官方赛事 / 顶级大师课预告", (255, 107, 53), "HOT"),
-        ("⚡ 练舞搭子 / 拼课找队友 / 地图", (138, 92, 246), "NEW"),
-        ("📖 独家文化 / 舞者康复 / 舞室测评", (16, 185, 129), "PRO")
-    ]
-
-    cy = 385
-    for text, col, tag in chips:
-        cw, ch = 420, 56
-        ui_draw.rounded_rectangle(
-            [55, cy, 55 + cw, cy + ch],
-            radius=14,
-            fill=(22, 17, 38, 225),
-            outline=(col[0], col[1], col[2], 150),
-            width=1
-        )
-        ui_draw.rounded_rectangle(
-            [60, cy + 8, 65, cy + ch - 8],
-            radius=2,
-            fill=(col[0], col[1], col[2], 255)
-        )
-        font_chip = get_font(21, bold=True)
-        ui_draw.text((78, cy + 15), text, font=font_chip, fill=(245, 245, 255, 255))
-        
-        tag_w = 44
-        tag_x = 55 + cw - tag_w - 12
-        tag_y = cy + 15
-        ui_draw.rounded_rectangle(
-            [tag_x, tag_y, tag_x + tag_w, tag_y + 24],
-            radius=6,
-            fill=(col[0], col[1], col[2], 45),
-            outline=(col[0], col[1], col[2], 180),
-            width=1
-        )
-        font_tag = get_en_font(13, bold=True)
-        ui_draw.text((tag_x + 8, tag_y + 4), tag, font=font_tag, fill=(col[0], col[1], col[2], 255))
-        
-        cy += 72
-
-    # (E) 底部 CTA 发光胶囊按钮
-    cta_x, cta_y = 55, 620
-    cta_w, cta_h = 245, 52
-    for r in range(14, 0, -2):
-        ui_draw.rounded_rectangle(
-            [cta_x - r, cta_y - r, cta_x + cta_w + r, cta_y + cta_h + r],
-            radius=26 + r,
-            fill=(123, 97, 255, int(18 * (1 - r / 14)))
-        )
-
-    ui_draw.rounded_rectangle(
-        [cta_x, cta_y, cta_x + cta_w, cta_y + cta_h],
-        radius=26,
-        fill=(123, 97, 255, 255),
-        outline=(220, 200, 255, 255),
-        width=1
-    )
-    font_cta = get_font(22, bold=True)
-    ui_draw.text((cta_x + 38, cta_y + 14), "即刻进入探索 ➔", font=font_cta, fill=(255, 255, 255, 255))
-
-    # 底部舞种流派微标
-    font_sub = get_en_font(16, bold=True)
-    ui_draw.text((55, 715), "POPPING · LOCKING · BREAKING · HIPHOP · WAACKING", font=font_sub, fill=(140, 130, 175, 200))
-
-    # (F) 全图 2px 微发光内边框
-    ui_draw.rounded_rectangle(
-        [1, 1, W - 2, H - 2],
-        radius=0,
-        outline=(123, 97, 255, 120),
-        width=2
-    )
-
-    final_img = Image.alpha_composite(bg, ui_layer).convert('RGB')
-    final_img.save(OUT_PATH, quality=95)
-    print(f"Successfully generated new home share card at: {OUT_PATH}")
 
 if __name__ == "__main__":
     main()
