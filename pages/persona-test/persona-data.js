@@ -360,7 +360,7 @@ const QUESTIONS = [
     title: '最后，只能留下一样东西。',
     options: [
       opt('a', '一首能循环到天亮的歌', { lone: 2, groove: 2 }, [], ['Groove'], ['独练'], ['Student'], '到最后你愿意留下的，是一首能循环到天亮的歌。'),
-      opt('b', '一个有人接你的练舞圈', { resonance: 3 }, [], ['Freestyle'], ['朋友练舞'], ['Connector'], '到最后你愿意留下的，是一个有人接你的练舞圈。'),
+      opt('b', '一群能接住你的人（你也接得住他们）', { resonance: 3 }, [], ['Freestyle'], ['朋友练舞'], ['Connector'], '到最后你愿意留下的，是一群能接住你的人——你也接得住他们。'),
       opt('c', '一个让你上场的机会', { wildfire: 2, tactician: 2 }, [], ['Power'], ['Battle'], ['Player'], '到最后你愿意留下的，是一个能让你上场的机会。'),
       opt('d', '一段终于被拍出来的作品', { storyteller: 2, stylekeeper: 2 }, [], ['Line'], ['成片'], ['Creator'], '到最后你愿意留下的，是一段终于被拍出来的作品。'),
       opt('e', '一支永远不散的队', { crewsoul: 3 }, [], ['Sync'], ['齐舞'], ['Crew'], '到最后你愿意留下的，是一支永远不散的队。'),
