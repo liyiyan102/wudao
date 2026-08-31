@@ -279,7 +279,7 @@ const QUESTIONS = [
       opt('c', '想表达点东西，说不出口的那种', { storyteller: 2, stylekeeper: 1 }, [], ['Line'], ['成片'], ['Creator'], '你最开始跳舞，是因为有些话说不出口，但可以放进一个停顿里。'),
       opt('d', '对抗的快感，赢一轮的感觉很爽', { wildfire: 2, tactician: 1 }, [], ['Power'], ['Battle'], ['Player'], '你最开始跳舞，就是冲着那种一轮下来、目光都在你身上的感觉去的。'),
       opt('e', '想变强/变好看，身体是自己的', { lone: 2, patcher: 1 }, [], ['Control'], ['独练'], ['Student'], '你最开始跳舞，是想让身体变成你想要的样子——这是你能掌控的事。'),
-      opt('f', '看到别人跳得帅，也想试试', { watcher: 2, wanderer: 1, hoarder: 1 }, [], ['Observe'], ['课堂'], ['Student'], '你最开始跳舞，是因为看到别人跳得很帅，然后想知道自己能不能也做到。'),
+      opt('f', '看到别人跳得帅，也想试试', { watcher: 2, wanderer: 1, hoarder: 2 }, [], ['Observe'], ['课堂'], ['Student'], '你最开始跳舞，是因为看到别人跳得很帅，然后想知道自己能不能也做到。'),
       opt('g', '朋友/队友拉我来的，然后留下了', { resonance: 2, crewsoul: 1 }, [], ['Freestyle'], ['朋友练舞'], ['Connector'], '你最开始跳舞，是因为有人拉你。然后你发现，有人一起的时候，这件事才真正有意思。')
     ]
   },
@@ -290,7 +290,7 @@ const QUESTIONS = [
       opt('b', '成片里一个眼神，刚好压在拍上', { storyteller: 2, stylekeeper: 1 }, [], ['Texture'], ['成片'], ['Creator'], '你要的高光很安静：成片里一个眼神，刚好压在拍上。'),
       opt('c', '派对上所有人掉进同一个 groove', { nomad: 2, resonance: 1, socialweaver: 1 }, [], ['Groove'], ['Party'], ['Connector'], '你觉得最动人的，是派对上所有人一起掉进同一个 groove。'),
       opt('d', '一个人练到某个东西突然通了', { lone: 2, groove: 1 }, [], ['Control'], ['独练'], ['Student'], '你真正会记得的，是一个人练到某个东西突然通了的那个夜里。'),
-      opt('e', '一队人整齐到像一个人', { crewsoul: 3 }, [], ['Sync'], ['齐舞'], ['Crew'], '你幻想的高光里有很多人：一队人整齐到像一个人。'),
+      opt('e', '一队人整齐到像一个人', { crewsoul: 2 }, [], ['Sync'], ['齐舞'], ['Crew'], '你幻想的高光里有很多人：一队人整齐到像一个人。'),
       opt('f', '终于敢站进圈里，跳完一整轮', { edgewalker: 3 }, [], ['Freestyle'], ['即兴局'], ['Student'], '你想要的高光，别人可能觉得很小：终于敢站进圈里，跳完一整轮。'),
       opt('g', '在台下把一场好比赛看透，比自己跳还满足', { watcher: 3 }, [], ['Observe'], ['观赛'], ['Observer'], '你的高光时刻在台下：把一场好比赛看透，比自己跳完还满足。')
     ]
@@ -298,11 +298,11 @@ const QUESTIONS = [
   {
     title: '歌一响、圈一围——你在里面通常怎么进？',
     options: [
-      opt('a', '场子一起来，我第一个进圈', { wildfire: 2, tactician: 1 }, [], ['Power'], ['Battle'], ['Player'], '在练舞局和 Cypher 里，你是那种场子一起来就第一个进圈的人。'),
-      opt('b', '我会盯着前一个人的点，进圈就接上', { resonance: 3 }, [], ['Freestyle'], ['Cypher'], ['Connector'], '你进圈很少是单独开一段：你会盯着前一个人的点，进去就接上，再把火递回去。'),
+      opt('a', '场子一起来，我第一个进圈', { wildfire: 2, tactician: 2 }, [], ['Power'], ['Battle'], ['Player'], '在练舞局和 Cypher 里，你是那种场子一起来就第一个进圈的人。'),
+      opt('b', '我会盯着前一个人的点，进圈就接上', { resonance: 2 }, [], ['Freestyle'], ['Cypher'], ['Connector'], '你进圈很少是单独开一段：你会盯着前一个人的点，进去就接上，再把火递回去。'),
       opt('c', '我先在旁边消化一会儿，等身体热起来', { lone: 2, groove: 1 }, [], ['Control'], ['独练'], ['Student'], '圈围起来时，你会先在旁边消化一会儿，等身体热起来再进入自己的节奏。'),
       opt('d', '我会站在圈边，把高手的东西拆开看', { watcher: 3, wanderer: 1 }, [], ['Observe'], ['观赛'], ['Observer'], '你站在圈边也能很兴奋：看到高手炸场，你想的是把它拆开看。'),
-      opt('e', '我会先找镜头/找光位，进圈也要好看', { storyteller: 2, stylekeeper: 1 }, [], ['Line'], ['成片'], ['Creator'], '你会先找镜头和光位：进圈不只是跳完，还要跳得好看、能留下。'),
+      opt('e', '我会先找镜头/找光位，进圈也要好看', { storyteller: 2, stylekeeper: 2 }, [], ['Line'], ['成片'], ['Creator'], '你会先找镜头和光位：进圈不只是跳完，还要跳得好看、能留下。'),
       opt('f', '我更像“拆解员”，先看大家在练什么套路', { wanderer: 2, tactician: 1 }, [], ['Foundation'], ['课堂'], ['Student'], '你更像拆解员：先看大家在练什么套路、哪段卡住，再决定从哪里切进去。'),
       opt('g', '心跳很快，脚在动，人还在圈外', { edgewalker: 3 }, [], ['Freestyle'], ['即兴局'], ['Student'], '圈围起来那一刻，你的心跳先上场了，人还站在圈外。'),
       opt('h', '我会先跟人打个招呼，顺手把人拽进圈', { socialweaver: 3 }, [], ['Flow'], ['Party'], ['Connector'], '你在圈里很少只跳自己的：你会先跟人打招呼，再顺手把人拽进圈，场子热起来你最爽。'),
@@ -314,7 +314,7 @@ const QUESTIONS = [
     options: [
       opt('a', '站前排抠细节，越拆越兴奋', { wanderer: 2, groove: 1 }, [], ['Foundation'], ['课堂'], ['Student'], '上课你站前排，拆得越细越兴奋。'),
       opt('b', '站后排也行，先在脑子里过一遍', { lone: 2, tactician: 1 }, [], ['Control'], ['独练'], ['Student'], '你宁可先站后排，让动作在脑子里过一遍，再交给身体。'),
-      opt('c', '下课追着老师问：这个到底怎么练', { wanderer: 3, stylekeeper: 1 }, [], ['Texture'], ['课堂'], ['Student'], '一下课你就会追问：这个到底怎么练？你要的是能带走的方法。'),
+      opt('c', '下课追着老师问：这个到底怎么练', { wanderer: 2, stylekeeper: 1 }, [], ['Texture'], ['课堂'], ['Student'], '一下课你就会追问：这个到底怎么练？你要的是能带走的方法。'),
       opt('d', '看别人卡住，会顺手补两句', { groove: 1, stylekeeper: 1, wanderer: 1 }, [], ['Foundation'], ['课堂'], ['Teacher'], '你会看见别人卡住，顺手补两句。教和学，在你这儿经常叠在一起。'),
       opt('e', '一边跳一边盯镜子里的自己', { rewinder: 3 }, [], ['Control'], ['回放'], ['Creator'], '你一边跳一边盯着镜子里的自己，找那个只有你看得见的地方。'),
       opt('f', '这是这个月第四节课，但好像没什么长进', { hoarder: 4 }, [], ['Foundation'], ['课堂'], ['Student'], '这已经是这个月第四节课了——报名的手，一直比练舞的腿快。')
@@ -327,7 +327,7 @@ const QUESTIONS = [
       opt('b', '线条、质感、表情刚刚好', { stylekeeper: 2, storyteller: 1 }, [], ['Line'], ['舞台'], ['Creator'], '线条、质感、表情刚刚好，比难度更能打中你。'),
       opt('c', '动作没几个，但人整个在歌里', { groove: 2, nomad: 1 }, [], ['Groove'], ['即兴局'], ['Player'], '动作没几个也没关系，你看的是人有没有在歌里。'),
       opt('d', '大家一起跳，场子突然就活了', { resonance: 2, socialweaver: 1 }, [], ['Flow'], ['朋友练舞'], ['Connector'], '大家一起跳、场子突然活了，比个人高光更让你动容。'),
-      opt('e', '十个人齐到像一个人', { crewsoul: 3 }, [], ['Sync'], ['齐舞'], ['Crew'], '十个人齐到像一个人——那种整齐，对你来说是浪漫。'),
+      opt('e', '十个人齐到像一个人', { crewsoul: 2 }, [], ['Sync'], ['齐舞'], ['Crew'], '十个人齐到像一个人——那种整齐，对你来说是浪漫。'),
       opt('f', '他放的这首歌，我找了半年', { digger: 3 }, [], ['Groove'], ['挖歌'], ['Digger'], '让你「卧槽」的常常不是动作，是他放的那首你找了半年的歌。'),
       opt('g', '有人在等车的时候突然自己动起来', { midnight: 3 }, [], ['Freestyle'], ['随时随地'], ['Player'], '你会被那种忍不住的瞬间击中——等车的人突然自己动起来。')
     ]
@@ -337,7 +337,7 @@ const QUESTIONS = [
     options: [
       opt('a', '我想赢过它，把这轮拿下来', { tactician: 2, wildfire: 1 }, [], ['Power'], ['Battle'], ['Player'], '你和音乐的关系像一场对局：你想赢过这一轮。'),
       opt('b', '我想替它把话讲出来', { storyteller: 2, stylekeeper: 1 }, [], ['Line'], ['成片'], ['Creator'], '你想替音乐把话讲出来，它是你的台词。'),
-      opt('c', '我想住进去，让它带着我走', { groove: 2, lone: 1 }, [], ['Groove'], ['独练'], ['Student'], '你更想住进音乐里，让它带着你走。'),
+      opt('c', '我想住进去，让它带着我走', { groove: 1, lone: 1 }, [], ['Groove'], ['独练'], ['Student'], '你更想住进音乐里，让它带着你走。'),
       opt('d', '我想把旁边的人也拽进来', { nomad: 2, resonance: 1 }, [], ['Flow'], ['Party'], ['Crew'], '你想把旁边的人也拽进歌里，让整间房一起动。'),
       opt('e', '我想先拆开，看它是怎么长的', { digger: 2, watcher: 1 }, [], ['Observe'], ['挖歌'], ['Digger'], '你会先把音乐拆开，看它到底是怎么长成这样的。'),
       opt('f', '我压根没想，人已经在动了', { midnight: 4 }, [], ['Freestyle'], ['随时随地'], ['Player'], '你根本没在想——副歌一来，人已经在动了。')
@@ -351,7 +351,7 @@ const QUESTIONS = [
       opt('b', '「你跳得没味儿」', { stylekeeper: 2, storyteller: 1 }, [], ['Texture'], ['舞台'], ['Creator'], '你最怕被说跳得没味儿。'),
       opt('c', '「你就是不敢上」', { edgewalker: 2, wildfire: 1 }, [], ['Power'], ['Battle'], ['Player'], '你最怕被说就是不敢上。'),
       opt('d', '「你接不住别人，也带不起气氛」', { resonance: 2, nomad: 1 }, [], ['Freestyle'], ['Cypher'], ['Connector'], '你最怕自己接不住别人，也带不起气氛。'),
-      opt('e', '「你老拖队伍后腿」', { crewsoul: 3 }, [], ['Sync'], ['齐舞'], ['Crew'], '你最怕拖队伍的后腿。'),
+      opt('e', '「你老拖队伍后腿」', { crewsoul: 2 }, [], ['Sync'], ['齐舞'], ['Crew'], '你最怕拖队伍的后腿。'),
       opt('f', '「你是不是跳不动了」', { patcher: 3 }, [], ['Recovery'], ['独练'], ['Observer'], '你最怕听到那句「你是不是跳不动了」。')
     ]
   },
@@ -363,7 +363,7 @@ const QUESTIONS = [
       opt('b', '一群能接住你的人（你也接得住他们）', { resonance: 3 }, [], ['Freestyle'], ['朋友练舞'], ['Connector'], '到最后你愿意留下的，是一群能接住你的人——你也接得住他们。'),
       opt('c', '一个让你上场的机会', { wildfire: 2, tactician: 2 }, [], ['Power'], ['Battle'], ['Player'], '到最后你愿意留下的，是一个能让你上场的机会。'),
       opt('d', '一段终于被拍出来的作品', { storyteller: 2, stylekeeper: 2 }, [], ['Line'], ['成片'], ['Creator'], '到最后你愿意留下的，是一段终于被拍出来的作品。'),
-      opt('e', '一支永远不散的队', { crewsoul: 3 }, [], ['Sync'], ['齐舞'], ['Crew'], '到最后你愿意留下的，是一支永远不散的队。'),
+      opt('e', '一支永远不散的队', { crewsoul: 2 }, [], ['Sync'], ['齐舞'], ['Crew'], '到最后你愿意留下的，是一支永远不散的队。'),
       opt('f', '一副不会再疼的膝盖', { patcher: 4 }, [], ['Recovery'], ['独练'], ['Observer'], '到最后你愿意留下的，是一副不会再疼的膝盖。'),
       opt('g', '一面永远不骗你的镜子', { rewinder: 4 }, [], ['Control'], ['回放'], ['Creator'], '到最后你愿意留下的，是一面永远不骗你的镜子。'),
       opt('h', '一张能上遍所有老师课的通票', { wanderer: 5 }, [], ['Foundation'], ['课堂'], ['Student'], '到最后你愿意留下的，是一张能上遍所有老师课的通票。')
