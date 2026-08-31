@@ -6,7 +6,7 @@
  */
 const PERSONAS = {
   storyteller: {
-    name: '光影叙事者',
+    name: '舞台编剧',
     enName: 'CHOREO STORYTELLER',
     no: 'NO. 01',
     mark: 'STAGE',
@@ -19,7 +19,7 @@ const PERSONAS = {
     need: '成片课、作品打磨、舞台向课程，会比纯炸场更对你的胃口。'
   },
   wildfire: {
-    name: '野火上场者',
+    name: '野火玩家',
     enName: 'WILDFIRE FREESTYLER',
     no: 'NO. 02',
     mark: 'FIRE',
@@ -32,7 +32,7 @@ const PERSONAS = {
     need: '即兴局、Battle 体验、Freestyle 练习，适合找敢一起进圈的人。'
   },
   tactician: {
-    name: '锋芒执局者',
+    name: 'Battle 棋手',
     enName: 'BATTLE TACTICIAN',
     no: 'NO. 03',
     mark: 'BATTLE',
@@ -45,7 +45,7 @@ const PERSONAS = {
     need: '赛事、对抗训练、一轮一轮的复盘，比漫无目的的派对更喂得饱你。'
   },
   resonance: {
-    name: '共振递火者',
+    name: '递火连接',
     enName: 'RESONANCE IGNITER',
     no: 'NO. 04',
     mark: 'CYPHER',
@@ -58,7 +58,7 @@ const PERSONAS = {
     need: '熟人练舞局、小型 Cypher、找搭子，会比一个人死磕更让你亮起来。'
   },
   nomad: {
-    name: '夜色游牧者',
+    name: '夜场游牧',
     enName: 'NIGHT PARTY NOMAD',
     no: 'NO. 05',
     mark: 'NIGHT',
@@ -71,7 +71,7 @@ const PERSONAS = {
     need: '派对、夜场、House / Waacking / Afro 这类把房间推起来的局。'
   },
   lone: {
-    name: '月下独行者',
+    name: '月光独练',
     enName: 'SOLO ORBIT DANCER',
     no: 'NO. 06',
     mark: 'SOLO',
@@ -123,7 +123,7 @@ const PERSONAS = {
     need: '舞室测评、大师课、体验课、拼团——你需要不断换教室，带走新的一块。'
   },
   watcher: {
-    name: '静默观舞者',
+    name: '场边观察',
     enName: 'SILENT OBSERVER',
     no: 'NO. 10',
     mark: 'WATCH',
@@ -136,7 +136,7 @@ const PERSONAS = {
     need: '赛事解说、文化长文、观赛活动。你可以先看懂一场，再决定什么时候上场。'
   },
   crewsoul: {
-    name: '齐舞团魂者',
+    name: '齐舞团魂',
     enName: 'CREW SOUL',
     no: 'NO. 11',
     mark: 'CREW',
@@ -162,7 +162,7 @@ const PERSONAS = {
     need: '音乐文化内容、Old School 专题、选曲向活动；也适合找愿意跟你换歌单的人。'
   },
   rewinder: {
-    name: '逐帧自审者',
+    name: '回放解剖师',
     enName: 'FRAME BY FRAME',
     no: 'NO. 13',
     mark: 'REPLAY',
@@ -175,7 +175,7 @@ const PERSONAS = {
     need: '成片复盘、动作拆解课、有录像反馈的训练；偶尔也需要有人替你按下暂停键。'
   },
   edgewalker: {
-    name: '圈外颤抖者',
+    name: '圈边踟蹰',
     enName: 'EDGE WALKER',
     no: 'NO. 14',
     mark: 'EDGE',
@@ -188,7 +188,7 @@ const PERSONAS = {
     need: '低压力的新人局、小圈子练舞、体验课。你缺的从来不是能力，是第一次。'
   },
   patcher: {
-    name: '护膝修行者',
+    name: '护膝战士',
     enName: 'TAPED WARRIOR',
     no: 'NO. 15',
     mark: 'TAPE',
