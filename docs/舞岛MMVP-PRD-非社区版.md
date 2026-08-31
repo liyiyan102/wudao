@@ -588,8 +588,8 @@ Then：
 | 齐舞团魂 | 11 |
 | 护膝战士 | 11 |
 | 舞房游学生 | 10 |
-| 观舞学者 | 9 |
-| 游牧者 | 8 |
+| 观舞学者 | 10 |
+| 游牧者 | 9 |
 | 挖歌人 | 8 |
 | 圈外人 | 8 |
 | 厨房即兴犯 | 8 |
@@ -608,14 +608,14 @@ Then：
 | C | House / Afro，bass 一上来房间就被推开 | nomad +2，resonance +1 | House、Afro | Flow | Party | Connector | 音乐上你认 House、Afro——你先感觉房间被 bass 推开了没有。 |
 | D | Breaks / Battle Beat，专挑能点着场子的那截 | wildfire +1，tactician +2 | Breaks、Battle Beat | Power | Battle | Player | 音乐上你认 Breaks、Battle Beat——你要的是能把场子点燃的那一截。 |
 | E | K-pop / 编舞向流行，一听就想到走位 | crewsoul +2，storyteller +1 | K-pop、Pop | Line | 齐舞 | Creator | 音乐上你认编舞向的流行——一听前奏，你脑子里已经在排队形了。 |
-| F | 没人用过的老歌，从各种角落翻出来的 | digger +3 | Rare Groove、Old School | Groove | 挖歌 | Digger | 音乐上你走的是冷门路线——别人挑歌，你是在挖歌。 |
+| F | 没人用过的老歌，从各种角落翻出来的 | digger +3，groove +1 | Rare Groove、Old School | Groove | 挖歌 | Digger | 音乐上你走的是冷门路线——别人挑歌，你是在挖歌。 |
 
 #### Q2 说实话，你最开始为什么想跳舞？
 
 
 | 选项 | 题面 | 人格分 | 身体 | 战场 | 角色 | 结果 echo |
 |---|---|---|---|---|---|---|
-| A | 认识有意思的人，扩圈子 | socialweaver +3 | Flow | Party | Connector | 你最开始跳舞，就是冲着能认识人去的。换个新场子，就是换一批还没加上的微信。 |
+| A | 认识有意思的人，扩圈子 | socialweaver +3，nomad +1 | Flow | Party | Connector | 你最开始跳舞，就是冲着能认识人去的。换个新场子，就是换一批还没加上的微信。 |
 | B | 音乐让我上瘾，身体忍不住 | groove +2，midnight +1 | Groove | 独练 | Player | 你最开始跳舞，是因为音乐响起来的时候身体会先于脑子做决定。 |
 | C | 想表达点东西，说不出口的那种 | storyteller +2，stylekeeper +1 | Line | 成片 | Creator | 你最开始跳舞，是因为有些话说不出口，但可以放进一个停顿里。 |
 | D | 对抗的快感，赢一轮的感觉很爽 | wildfire +2，tactician +1 | Power | Battle | Player | 你最开始跳舞，就是冲着那种一轮下来、目光都在你身上的感觉去的。 |
@@ -632,8 +632,8 @@ Then：
 | C | 派对上所有人掉进同一个 groove | nomad +2，resonance +1，socialweaver +1 | Groove | Party | Connector | 你觉得最动人的，是派对上所有人一起掉进同一个 groove。 |
 | D | 一个人练到某个东西突然通了 | lone +2，groove +1 | Control | 独练 | Student | 你真正会记得的，是一个人练到某个东西突然通了的那个夜里。 |
 | E | 一队人整齐到像一个人 | crewsoul +2 | Sync | 齐舞 | Crew | 你幻想的高光里有很多人：一队人整齐到像一个人。 |
-| F | 终于敢站进圈里，跳完一整轮 | edgewalker +3 | Freestyle | 即兴局 | Student | 你想要的高光，别人可能觉得很小：终于敢站进圈里，跳完一整轮。 |
-| G | 在台下把一场好比赛看透，比自己跳还满足 | watcher +3 | Observe | 观赛 | Observer | 你的高光时刻在台下：把一场好比赛看透，比自己跳完还满足。 |
+| F | 终于敢站进圈里，跳完一整轮 | edgewalker +3，wildfire +1 | Freestyle | 即兴局 | Student | 你想要的高光，别人可能觉得很小：终于敢站进圈里，跳完一整轮。 |
+| G | 在台下把一场好比赛看透，比自己跳还满足 | watcher +3，tactician +1 | Observe | 观赛 | Observer | 你的高光时刻在台下：把一场好比赛看透，比自己跳完还满足。 |
 
 #### Q4 歌一响、圈一围——你在里面通常怎么进？
 
@@ -645,9 +645,9 @@ Then：
 | D | 我会站在圈边，把高手的东西拆开看 | watcher +3，wanderer +1 | Observe | 观赛 | Observer | 你站在圈边也能很兴奋：看到高手炸场，你想的是把它拆开看。 |
 | E | 我会先找镜头/找光位，进圈也要好看 | storyteller +2，stylekeeper +2 | Line | 成片 | Creator | 你会先找镜头和光位：进圈不只是跳完，还要跳得好看、能留下。 |
 | F | 我更像“拆解员”，先看大家在练什么套路 | wanderer +2，tactician +1 | Foundation | 课堂 | Student | 你更像拆解员：先看大家在练什么套路、哪段卡住，再决定从哪里切进去。 |
-| G | 心跳很快，脚在动，人还在圈外 | edgewalker +3 | Freestyle | 即兴局 | Student | 圈围起来那一刻，你的心跳先上场了，人还站在圈外。 |
-| H | 我会先跟人打个招呼，顺手把人拽进圈 | socialweaver +3 | Flow | Party | Connector | 你在圈里很少只跳自己的：你会先跟人打招呼，再顺手把人拽进圈，场子热起来你最爽。 |
-| undefined | 我会先热身两轮，能跳再进，不能就当观众 | patcher +3 | Recovery | 观赛 | Observer | 你不会硬冲：先热身两轮，能跳再进；不行就当观众，留着身体明天继续。 |
+| G | 心跳很快，脚在动，人还在圈外 | edgewalker +3，lone +1 | Freestyle | 即兴局 | Student | 圈围起来那一刻，你的心跳先上场了，人还站在圈外。 |
+| H | 我会先跟人打个招呼，顺手把人拽进圈 | socialweaver +3，resonance +1 | Flow | Party | Connector | 你在圈里很少只跳自己的：你会先跟人打招呼，再顺手把人拽进圈，场子热起来你最爽。 |
+| undefined | 我会先热身两轮，能跳再进，不能就当观众 | patcher +3，watcher +1 | Recovery | 观赛 | Observer | 你不会硬冲：先热身两轮，能跳再进；不行就当观众，留着身体明天继续。 |
 
 #### Q5 上课的时候，你大概是这幅样子
 
@@ -657,7 +657,7 @@ Then：
 | B | 站后排也行，先在脑子里过一遍 | lone +2，tactician +1 | Control | 独练 | Student | 你宁可先站后排，让动作在脑子里过一遍，再交给身体。 |
 | C | 下课追着老师问：这个到底怎么练 | wanderer +2，stylekeeper +1 | Texture | 课堂 | Student | 一下课你就会追问：这个到底怎么练？你要的是能带走的方法。 |
 | D | 看别人卡住，会顺手补两句 | groove +1，stylekeeper +1，wanderer +1 | Foundation | 课堂 | Teacher | 你会看见别人卡住，顺手补两句。教和学，在你这儿经常叠在一起。 |
-| E | 一边跳一边盯镜子里的自己 | rewinder +3 | Control | 回放 | Creator | 你一边跳一边盯着镜子里的自己，找那个只有你看得见的地方。 |
+| E | 一边跳一边盯镜子里的自己 | rewinder +3，stylekeeper +1 | Control | 回放 | Creator | 你一边跳一边盯着镜子里的自己，找那个只有你看得见的地方。 |
 | F | 这是这个月第四节课，但好像没什么长进 | hoarder +4 | Foundation | 课堂 | Student | 这已经是这个月第四节课了——报名的手，一直比练舞的腿快。 |
 
 #### Q6 看别人跳，哪一下会让你「卧槽」？
@@ -669,8 +669,8 @@ Then：
 | C | 动作没几个，但人整个在歌里 | groove +2，nomad +1 | Groove | 即兴局 | Player | 动作没几个也没关系，你看的是人有没有在歌里。 |
 | D | 大家一起跳，场子突然就活了 | resonance +2，socialweaver +1 | Flow | 朋友练舞 | Connector | 大家一起跳、场子突然活了，比个人高光更让你动容。 |
 | E | 十个人齐到像一个人 | crewsoul +2 | Sync | 齐舞 | Crew | 十个人齐到像一个人——那种整齐，对你来说是浪漫。 |
-| F | 他放的这首歌，我找了半年 | digger +3 | Groove | 挖歌 | Digger | 让你「卧槽」的常常不是动作，是他放的那首你找了半年的歌。 |
-| G | 有人在等车的时候突然自己动起来 | midnight +3 | Freestyle | 随时随地 | Player | 你会被那种忍不住的瞬间击中——等车的人突然自己动起来。 |
+| F | 他放的这首歌，我找了半年 | digger +3，watcher +1 | Groove | 挖歌 | Digger | 让你「卧槽」的常常不是动作，是他放的那首你找了半年的歌。 |
+| G | 有人在等车的时候突然自己动起来 | midnight +3，groove +1 | Freestyle | 随时随地 | Player | 你会被那种忍不住的瞬间击中——等车的人突然自己动起来。 |
 
 #### Q7 说白了，你跳舞的时候在跟音乐干嘛？
 
