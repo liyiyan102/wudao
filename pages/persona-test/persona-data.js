@@ -45,7 +45,7 @@ const PERSONAS = {
     need: '赛事、对抗训练、一轮一轮的复盘，比漫无目的的派对更喂得饱你。'
   },
   resonance: {
-    name: '递火连接',
+    name: '接火人',
     enName: 'RESONANCE IGNITER',
     no: 'NO. 04',
     mark: 'CYPHER',
@@ -123,7 +123,7 @@ const PERSONAS = {
     need: '舞室测评、大师课、体验课、拼团——你需要不断换教室，带走新的一块。'
   },
   watcher: {
-    name: '场边观察',
+    name: '观舞学者',
     enName: 'SILENT OBSERVER',
     no: 'NO. 10',
     mark: 'WATCH',
@@ -175,7 +175,7 @@ const PERSONAS = {
     need: '成片复盘、动作拆解课、有录像反馈的训练；偶尔也需要有人替你按下暂停键。'
   },
   edgewalker: {
-    name: '圈边踟蹰',
+    name: '圈外守望',
     enName: 'EDGE WALKER',
     no: 'NO. 14',
     mark: 'EDGE',

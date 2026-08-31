@@ -344,17 +344,17 @@ Then：
 | NO. 01 | storyteller | 舞台编剧 | CHOREO STORYTELLER | 表达 | 有些话说不出口，就让一个停顿替你说。 |
 | NO. 02 | wildfire | 野火玩家 | WILDFIRE FREESTYLER | 爆发 | 圈刚空出来，你的身体已经先点了头。 |
 | NO. 03 | tactician | Battle 棋手 | BATTLE TACTICIAN | 对抗 | 你上场，从来不是去碰运气。 |
-| NO. 04 | resonance | 递火连接 | RESONANCE IGNITER | 连接 | 一个人练得再顺，也换不来被接住的那一下。 |
+| NO. 04 | resonance | 接火人 | RESONANCE IGNITER | 连接 | 一个人练得再顺，也换不来被接住的那一下。 |
 | NO. 05 | nomad | 夜场游牧 | NIGHT PARTY NOMAD | 自由 | 灯一暗，陌生的房间也会变成你的。 |
 | NO. 06 | lone | 月光独练 | SOLO ORBIT DANCER | 独处 | 耳机一戴，世界就刚好够用了。 |
 | NO. 07 | groove | 律动信徒 | GROOVE BELIEVER | 音乐 | 难不难先放一边，groove 对了才算数。 |
 | NO. 08 | stylekeeper | 风格藏家 | TEXTURE COLLECTOR | 风格 | 别人一眼滑过去的东西，你会留下来。 |
 | NO. 09 | wanderer | 舞房游学生 | CLASSROOM WANDERER | 探索 | 你去上课，是去偷一点还没长在自己身上的东西。 |
-| NO. 10 | watcher | 场边观察 | SILENT OBSERVER | 观察 | 你不一定站在圈中间，但你看得比谁都认真。 |
+| NO. 10 | watcher | 观舞学者 | SILENT OBSERVER | 观察 | 你不一定站在圈中间，但你看得比谁都认真。 |
 | NO. 11 | crewsoul | 齐舞团魂 | CREW SOUL | 同频 | 十个人跳成一个人，那一下比什么都上头。 |
 | NO. 12 | digger | 挖歌人 | CRATE DIGGER | 挖掘 | 舞还没跳，歌单已经比别人厚了。 |
 | NO. 13 | rewinder | 回放解剖师 | FRAME BY FRAME | 苛求 | 那条视频你看了三十遍，全是在看自己哪里不对。 |
-| NO. 14 | edgewalker | 圈边踟蹰 | EDGE WALKER | 蓄势 | 你的脚已经在动了，只是人还没迈进去。 |
+| NO. 14 | edgewalker | 圈外守望 | EDGE WALKER | 蓄势 | 你的脚已经在动了，只是人还没迈进去。 |
 | NO. 15 | patcher | 护膝战士 | TAPED WARRIOR | 韧性 | 你包里的护具，比换洗的衣服还多。 |
 | NO. 16 | midnight | 厨房即兴犯 | KITCHEN IMPROVISER | 失控 | 等水开的那三分钟，你已经跳完一段了。 |
 | NO. 17 | hoarder | 囤课仓鼠 | CLASS HOARDER | 收藏 | 课报了六节，练了两节，但快乐是真的。 |
@@ -393,7 +393,7 @@ Then：
 | 默认 traits | Battle / 策略 / 复盘 / 胜负脑 |
 | need 兜底 | 赛事、对抗训练、一轮一轮的复盘，比漫无目的的派对更喂得饱你。 |
 
-#### NO.04 递火连接
+#### NO.04 接火人
 
 | 字段 | 文案 |
 |---|---|
@@ -459,7 +459,7 @@ Then：
 | 默认 traits | 上课 / Workshop / 跨舞种 / 探索 |
 | need 兜底 | 舞室测评、大师课、体验课、拼团——你需要不断换教室，带走新的一块。 |
 
-#### NO.10 场边观察
+#### NO.10 观舞学者
 
 | 字段 | 文案 |
 |---|---|
@@ -503,7 +503,7 @@ Then：
 | 默认 traits | 回放 / 镜子 / 细节 / 自我修正 |
 | need 兜底 | 成片复盘、动作拆解课、有录像反馈的训练；偶尔也需要有人替你按下暂停键。 |
 
-#### NO.14 圈边踟蹰
+#### NO.14 圈外守望
 
 | 字段 | 文案 |
 |---|---|
@@ -578,7 +578,7 @@ Then：
 
 | 人格 | 理论最高分 |
 |---|---|
-| 递火连接 | 15 |
+| 接火人 | 15 |
 | 律动信徒 | 15 |
 | 齐舞团魂 | 15 |
 | 舞台编剧 | 14 |
@@ -588,10 +588,10 @@ Then：
 | Battle 棋手 | 11 |
 | 舞房游学生 | 11 |
 | 护膝战士 | 11 |
-| 场边观察 | 9 |
+| 观舞学者 | 9 |
 | 夜场游牧 | 8 |
 | 挖歌人 | 8 |
-| 圈边踟蹰 | 8 |
+| 圈外守望 | 8 |
 | 厨房即兴犯 | 8 |
 | 舞圈社交家 | 8 |
 | 回放解剖师 | 7 |
