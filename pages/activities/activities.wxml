@@ -1,0 +1,98 @@
+<!-- 活动列表：顶栏城市 + 搜索同行 -->
+<view class="nav" style="padding-top:{{statusBarHeight}}px">
+  <view class="navbar" style="height:{{navBarHeight}}px;padding-right:{{capsuleRight}}px">
+    <view class="nav-city" bindtap="goCityPick" hover-class="city-press">
+      <text class="nav-city-name">{{city}}</text>
+      <view class="city-caret"></view>
+    </view>
+    <view class="nav-search-bar" bindtap="goSearch">
+      <view class="ic ic-search-muted"></view>
+      <text class="nav-search-ph">搜索活动、找搭子</text>
+    </view>
+  </view>
+</view>
+
+<view class="act-header">
+  <scroll-view scroll-x class="filter-scroll" enable-flex>
+    <view class="filter-row">
+      <view
+        wx:for="{{filters}}"
+        wx:key="key"
+        class="act-filter {{typeFilter === item.key ? 'on' : ''}}"
+        bindtap="onFilter"
+        data-type="{{item.key}}"
+      >{{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="buddy-banner" bindtap="goBuddyRequest">
+    <view class="buddy-banner-ic-wrap">
+      <view class="ic ic-profile-white buddy-banner-ic"></view>
+    </view>
+    <view class="buddy-banner-txt">
+      <view class="buddy-banner-t">找搭子</view>
+      <view class="buddy-banner-s">审核后由官方发布</view>
+    </view>
+    <text class="buddy-banner-arrow">›</text>
+  </view>
+</view>
+
+<view class="act-list">
+  <view class="act-card {{item.expired ? 'expired' : ''}}" wx:for="{{activities}}" wx:key="id" bindtap="openActivity" data-id="{{item.id}}">
+    <view class="act-media">
+      <image class="act-media-img" src="{{item.coverUrl}}" mode="aspectFill" />
+      <view class="act-ended" wx:if="{{item.expired}}">已结束</view>
+    </view>
+
+    <view class="act-body">
+      <view class="act-top">
+        <view class="act-badge" style="color:{{item.typeColor}}">{{item.typeName}}</view>
+      </view>
+      <view class="act-title">{{item.title}}</view>
+      <view class="act-desc ellipsis-2" wx:if="{{item.desc}}">{{item.desc}}</view>
+      <view class="act-meta">
+        <view class="act-meta-item" wx:if="{{item.location}}">
+          <view class="ic ic-location-brand"></view>
+          <text>{{item.location}}</text>
+        </view>
+        <view class="act-meta-item" wx:if="{{item.timeLine}}">
+          <view class="ic ic-clock-brand"></view>
+          <text>{{item.timeLine}}</text>
+        </view>
+      </view>
+      <view class="act-status">
+        <block wx:if="{{item.expired}}">
+          <view class="act-people">活动已结束</view>
+          <view class="act-btn-mini ghost">已结束</view>
+        </block>
+        <block wx:elif="{{item.type === 'buddy'}}">
+          <view class="act-people {{item.peopleTone}}">
+            <block wx:if="{{item.peopleNum != null}}">
+              {{item.peoplePrefix}}<text class="act-people-num">{{item.peopleNum}}</text>{{item.peopleSuffix}}
+            </block>
+            <block wx:elif="{{item.peoplePrefix}}">{{item.peoplePrefix}}</block>
+            <block wx:elif="{{item.applicationCount > 0}}">已加入 <text class="act-people-num">{{item.applicationCount}}</text> 人 · 代发</block>
+            <block wx:else>官方代发</block>
+          </view>
+          <view class="act-btn-mini" catchtap="openActivity" data-id="{{item.id}}">报名</view>
+        </block>
+        <block wx:else>
+          <view class="act-people"></view>
+          <view class="act-btn-mini" catchtap="openActivity" data-id="{{item.id}}">报名</view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!activities.length}}">
+    <block wx:if="{{typeFilter === 'buddy'}}">
+      <view class="empty-icon">🤝</view>
+      <view>暂无找搭子</view>
+      <view class="empty-link" bindtap="goBuddyRequest">提交你的需求 →</view>
+    </block>
+    <block wx:else>
+      <view class="empty-icon">📅</view>
+      {{city}}暂无该分类活动
+    </block>
+  </view>
+</view>

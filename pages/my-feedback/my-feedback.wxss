@@ -1,0 +1,111 @@
+page { background: var(--bg); }
+.page {
+  padding: 24rpx 24rpx calc(48rpx + env(safe-area-inset-bottom));
+}
+.top-action {
+  height: 88rpx;
+  margin-bottom: 20rpx;
+  border-radius: 44rpx;
+  background: linear-gradient(135deg, #5B52C4 0%, var(--brand-dark) 100%);
+  box-shadow: 0 10rpx 24rpx rgba(83, 74, 183, 0.3);
+  color: #fff;
+  font-size: 29rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.press { opacity: 0.82; }
+.card {
+  background: var(--card);
+  border-radius: 22rpx;
+  padding: 28rpx;
+  margin-bottom: 18rpx;
+  box-shadow: var(--shadow-2);
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14rpx;
+}
+.source {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: var(--brand);
+  background: var(--brand-bg);
+  padding: 5rpx 16rpx;
+  border-radius: 999rpx;
+}
+.status {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+.title {
+  font-size: 27rpx;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.5;
+  margin-bottom: 10rpx;
+}
+.content {
+  font-size: 26rpx;
+  color: var(--ink2);
+  line-height: 1.65;
+}
+.meta {
+  margin-top: 18rpx;
+  font-size: 22rpx;
+  color: var(--muted2);
+}
+.empty {
+  text-align: center;
+  padding: 140rpx 0;
+  font-size: 26rpx;
+  color: var(--muted);
+}
+.empty-icon {
+  width: 88rpx;
+  height: 88rpx;
+  margin: 0 auto 18rpx;
+  border-radius: 50%;
+  background: var(--brand-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty-bubble {
+  position: relative;
+  width: 44rpx;
+  height: 34rpx;
+  border: 4rpx solid var(--brand);
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rpx;
+  box-sizing: border-box;
+}
+.empty-bubble::after {
+  content: '';
+  position: absolute;
+  left: 8rpx;
+  bottom: -10rpx;
+  width: 12rpx;
+  height: 12rpx;
+  border-left: 4rpx solid var(--brand);
+  border-bottom: 4rpx solid var(--brand);
+  transform: rotate(-26deg);
+}
+.empty-bubble view {
+  width: 5rpx;
+  height: 5rpx;
+  border-radius: 50%;
+  background: var(--brand);
+}
+.empty-sub {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: var(--muted2);
+}

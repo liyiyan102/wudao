@@ -1,0 +1,92 @@
+<view class="page">
+  <view class="search-wrap">
+    <view class="search-bar">
+      <view class="ic ic-search search-ic"></view>
+      <input
+        class="search-input"
+        placeholder="搜索城市"
+        placeholder-class="ph"
+        value="{{keyword}}"
+        confirm-type="search"
+        bindinput="onInput"
+      />
+      <view class="ic ic-close clear" wx:if="{{keyword}}" bindtap="clearKeyword"></view>
+    </view>
+  </view>
+
+  <!-- 搜索结果 -->
+  <scroll-view wx:if="{{searching}}" class="body" scroll-y>
+    <view
+      class="city-row"
+      wx:for="{{searchResults}}"
+      wx:key="name"
+      bindtap="onPick"
+      data-city="{{item.name}}"
+    >
+      <text class="city-name">{{item.name}}</text>
+      <text class="city-prov">{{item.province}}</text>
+    </view>
+    <view class="empty" wx:if="{{!searchResults.length}}">没有找到相关城市</view>
+  </scroll-view>
+
+  <!-- 主列表 -->
+  <view wx:else class="main">
+    <scroll-view class="body" scroll-y scroll-into-view="{{scrollInto}}" scroll-with-animation>
+      <view class="sec" id="sec-current">
+        <view class="sec-h">
+          <text>当前 / 历史</text>
+          <view class="sec-clear" wx:if="{{history.length}}" bindtap="clearHistory">
+            <view class="ic ic-trash"></view>
+            <text>清除历史</text>
+          </view>
+        </view>
+        <view class="chip-row">
+          <view class="chip chip-on" bindtap="onPick" data-city="{{current}}">
+            <view class="ic ic-my-location chip-ic"></view>
+            <text>{{current}}</text>
+          </view>
+          <view class="chip" wx:for="{{history}}" wx:key="*this" bindtap="onPick" data-city="{{item}}">{{item}}</view>
+        </view>
+      </view>
+
+      <view class="sec" id="sec-hot">
+        <view class="sec-h"><text>热门城市</text></view>
+        <view class="chip-row">
+          <view
+            class="chip {{item === current ? 'chip-on' : ''}}"
+            wx:for="{{hot}}"
+            wx:key="*this"
+            bindtap="onPick"
+            data-city="{{item}}"
+          >{{item}}</view>
+        </view>
+      </view>
+
+      <view class="letter-block" wx:for="{{groups}}" wx:key="letter" id="{{item.id}}">
+        <view class="letter-h">{{item.letter}}</view>
+        <view
+          class="city-row"
+          wx:for="{{item.cities}}"
+          wx:for-item="c"
+          wx:key="name"
+          bindtap="onPick"
+          data-city="{{c.name}}"
+        >
+          <text class="city-name">{{c.name}}</text>
+          <text class="city-prov">{{c.province}}</text>
+        </view>
+      </view>
+      <view class="safe-bottom"></view>
+    </scroll-view>
+
+    <view class="index">
+      <view
+        class="index-item"
+        wx:for="{{letters}}"
+        wx:key="*this"
+        bindtap="jumpLetter"
+        data-letter="{{item}}"
+      >{{item}}</view>
+    </view>
+  </view>
+</view>

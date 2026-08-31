@@ -1,0 +1,205 @@
+<view class="persona-page">
+  <!-- 艺术背景网格与光效 -->
+  <view class="matrix-bg">
+    <view class="grid-lines"></view>
+    <view class="glow-light light-a"></view>
+    <view class="glow-light light-b"></view>
+  </view>
+
+  <!-- 阶段 1：介绍页 -->
+  <view wx:if="{{phase === 'intro'}}" class="intro-wrap">
+    <view class="hero-poster">
+      <view class="poster-head-bar">
+        <text class="head-code">DANCE ISLAND // STREET MATRIX</text>
+        <text class="head-no">2026 EDITION</text>
+      </view>
+
+      <view class="hero-main">
+        <view class="hero-badge">街舞人格自测</view>
+        <view class="hero-title">
+          你为什么<br/>
+          <text class="title-highlight">被街舞吸引？</text>
+        </view>
+        <view class="hero-quote">
+          “不是测你跳什么舞种，是测你为什么留下来。”
+        </view>
+      </view>
+
+      <view class="vinyl-deck">
+        <view class="vinyl-disc">
+          <view class="vinyl-grooves"></view>
+          <view class="vinyl-center"></view>
+        </view>
+        <view class="deck-info">
+          <text class="deck-label">TRACK: 10 QUESTIONS</text>
+          <text class="deck-sub">适合学生、老师与所有街舞爱好者</text>
+        </view>
+      </view>
+
+      <view class="hero-tags-row">
+        <text class="hero-tag">编舞</text>
+        <text class="hero-tag">Battle</text>
+        <text class="hero-tag">Cypher</text>
+        <text class="hero-tag">Party</text>
+        <text class="hero-tag">独练</text>
+      </view>
+
+      <view class="action-btn start-btn" bindtap="startTest">
+        <text>进入测试 [ START ]</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 阶段 2：答题页 -->
+  <view wx:elif="{{phase === 'quiz'}}" class="quiz-wrap">
+    <view class="quiz-status-bar">
+      <view class="track-no">TRACK {{currentIndex < 9 ? '0' + (currentIndex + 1) : currentIndex + 1}} / 10</view>
+      <view class="matrix-logo">DANCE ISLAND</view>
+    </view>
+
+    <view class="progress-bar-wrap">
+      <view class="progress-bar-fill" style="width: {{progress}}%;"></view>
+    </view>
+
+    <view class="question-box">
+      <view class="question-title">{{currentQuestion.title}}</view>
+    </view>
+
+    <view class="pad-option-list">
+      <view
+        wx:for="{{currentQuestion.options}}"
+        wx:key="id"
+        class="pad-option {{currentAnswer === item.id ? 'pad-selected' : ''}}"
+        bindtap="chooseOption"
+        data-id="{{item.id}}"
+      >
+        <view class="pad-key">{{item.id}}</view>
+        <view class="pad-label">{{item.text}}</view>
+      </view>
+    </view>
+
+    <view class="quiz-controls">
+      <view class="ctrl-btn prev-btn {{currentIndex === 0 ? 'ctrl-disabled' : ''}}" bindtap="prevQuestion">
+        ◄ 上一题
+      </view>
+      <view class="ctrl-btn next-btn" bindtap="nextQuestion">
+        {{currentIndex === questions.length - 1 ? '完成生成人格 ➔' : '下一题 ➔'}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 阶段 3：结果海报页 -->
+  <view wx:elif="{{phase === 'result' && result}}" class="result-wrap">
+    <!-- 地刊/黑胶海报风格卡片 -->
+    <view class="poster-card">
+      <!-- 海报顶部票根条 -->
+      <view class="poster-ticket-bar">
+        <view class="ticket-left">
+          <text class="ticket-brand">DANCE ISLAND</text>
+          <text class="ticket-dot">●</text>
+          <text class="ticket-sub">PERSONA REPORT</text>
+        </view>
+        <view class="ticket-right">
+          <view class="barcode"></view>
+          <text class="ticket-no">{{result.persona.no}}</text>
+        </view>
+      </view>
+
+      <!-- 人格主标题区 -->
+      <view class="poster-hero-block">
+        <view class="core-badge">[ 核心特质：{{result.persona.core}} ]</view>
+        <view class="persona-main-title">{{result.persona.name}}</view>
+        <view class="persona-en-title">{{result.persona.enName}}</view>
+        <view class="persona-headline">{{result.persona.headline}}</view>
+      </view>
+
+      <!-- 诗意诠释心声 -->
+      <view class="manifesto-box">
+        <view class="manifesto-line" wx:for="{{result.reading}}" wx:key="*this">
+          {{item}}
+        </view>
+      </view>
+
+      <!-- 特质芯片 -->
+      <view class="traits-container">
+        <text wx:for="{{result.persona.traits}}" wx:key="*this" class="trait-pill"># {{item}}</text>
+      </view>
+
+      <!-- 音频采样器式 4 格 Spec 网格 -->
+      <view class="spec-matrix">
+        <view class="spec-card">
+          <view class="spec-title">🎧 音乐 DNA</view>
+          <view class="spec-value">{{result.musicText}}</view>
+        </view>
+        <view class="spec-card">
+          <view class="spec-title">🕺 身体语言</view>
+          <view class="spec-value">{{result.bodyText}}</view>
+        </view>
+        <view class="spec-card">
+          <view class="spec-title">📍 常在战场</view>
+          <view class="spec-value">{{result.sceneText}}</view>
+        </view>
+        <view class="spec-card">
+          <view class="spec-title">🎭 深度副人格</view>
+          <view class="spec-value">{{result.subPersonaName}}</view>
+        </view>
+      </view>
+
+      <!-- 岛上连接 -->
+      <view class="recommend-box">
+        <view class="recommend-head">[ 岛上推荐入口 ]</view>
+        <view class="recommend-body">{{result.needText}}</view>
+      </view>
+
+      <!-- 海报底部印章 -->
+      <view class="poster-stamp-row">
+        <view class="stamp-left">
+          <text class="stamp-title">舞岛 DANCE ISLAND</text>
+          <text class="stamp-sub">STREET CULTURE & BUDDY PLATFORM</text>
+        </view>
+        <view class="stamp-code">
+          <view class="code-box">PASS</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 底部操作按钮 -->
+    <view class="result-btn-group">
+      <view class="action-btn share-btn" bindtap="openPosterModal">
+        ★ 分享我的街舞人格
+      </view>
+      <view class="action-btn buddy-btn" bindtap="goBuddy">
+        ⚡ 寻找同类练舞搭子
+      </view>
+      <view class="action-btn retake-btn" bindtap="retake">
+        ↺ 重新测试
+      </view>
+    </view>
+  </view>
+
+  <!-- 后台绘制高清海报 Canvas -->
+  <canvas canvas-id="posterCanvas" class="poster-canvas"></canvas>
+
+  <!-- 海报预览与保存 -->
+  <view class="poster-modal" wx:if="{{showPosterModal}}" bindtap="closePosterModal">
+    <view class="modal-card" catchtap="stopBubble">
+      <view class="modal-header">
+        <text class="modal-title">街舞人格专属海报</text>
+        <text class="modal-close" bindtap="closePosterModal">✕</text>
+      </view>
+      <view class="poster-preview-box">
+        <image class="poster-img" src="{{posterImgPath}}" mode="widthFix" wx:if="{{posterImgPath}}" bindtap="previewBigPoster"></image>
+        <view class="poster-loading" wx:else>
+          <view class="loading-spinner"></view>
+          <text class="loading-text">正在生成专属海报...</text>
+        </view>
+      </view>
+      <view class="modal-actions" wx:if="{{posterImgPath}}">
+        <button class="modal-act-btn save-btn" bindtap="savePosterToPhotos">
+          保存海报到相册
+        </button>
+      </view>
+      <view class="modal-tip">保存后即可发到微信 / 朋友圈</view>
+    </view>
+  </view>
+</view>

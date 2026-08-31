@@ -1,0 +1,20 @@
+<view class="tip">请通过线下/微信自行联系，舞岛不参与交易与担保。</view>
+
+<view class="card" wx:for="{{items}}" wx:key="id">
+  <view class="time">{{item.timeText}}</view>
+  <view class="msg" wx:if="{{item.message}}">{{item.message}}</view>
+  <view class="row">
+    <text class="lab">微信</text>
+    <text class="val">{{item.contactWechat}}</text>
+    <view class="copy" catchtap="copy" data-text="{{item.contactWechat}}">复制</view>
+  </view>
+  <view class="row" wx:if="{{item.contactPhone}}">
+    <text class="lab">手机</text>
+    <text class="val">{{item.contactPhone}}</text>
+    <view class="copy" catchtap="copy" data-text="{{item.contactPhone}}">复制</view>
+  </view>
+</view>
+
+<view class="empty" wx:if="{{!items.length}}">
+  <view>还没有人加入</view>
+</view>

@@ -1,0 +1,20 @@
+<view class="hist-head">
+  <text class="hist-count">最近浏览 {{list.length}} 条</text>
+  <text class="hist-clear" wx:if="{{list.length}}" bindtap="onClear">清空</text>
+</view>
+
+<view class="hist-card" wx:for="{{list}}" wx:key="index" bindtap="openItem" data-item="{{item}}">
+  <view class="hist-cover">
+    <image wx:if="{{item.coverUrl}}" class="hist-cover-img" src="{{item.coverUrl}}" mode="aspectFill" />
+    <view wx:else class="ic ic-image-pale"></view>
+  </view>
+  <view class="hist-info">
+    <view class="hist-title ellipsis-2">{{item.title}}</view>
+    <view class="hist-tm">{{item.timeText}} · {{item.catName}}</view>
+  </view>
+</view>
+
+<view class="empty" wx:if="{{!list.length}}">
+  <view class="empty-icon">🕐</view>
+  还没有浏览记录，去首页逛逛吧
+</view>

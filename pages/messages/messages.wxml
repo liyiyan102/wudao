@@ -1,0 +1,23 @@
+<view class="list">
+  <view
+    class="card {{item.read ? '' : 'unread'}}"
+    wx:for="{{list}}"
+    wx:key="id"
+    bindtap="onOpen"
+    data-item="{{item}}"
+  >
+    <view class="row">
+      <view class="st st-{{item.kind}}">{{item.kindName}}</view>
+      <view class="time">{{item.timeText}}</view>
+    </view>
+    <view class="title">{{item.title}}</view>
+    <view class="body" wx:if="{{item.body}}">{{item.body}}</view>
+    <view class="hint">{{item.hint}}</view>
+  </view>
+
+  <view class="empty" wx:if="{{!list.length}}">
+    <view class="empty-icon">🔔</view>
+    <view>还没有消息</view>
+    <view class="empty-sub">搭子需求的审核结果会发到这里</view>
+  </view>
+</view>

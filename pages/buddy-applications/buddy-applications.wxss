@@ -1,0 +1,23 @@
+page { background: var(--bg); padding: 24rpx; }
+.tip {
+  background: var(--brand-bg);
+  color: #3C3489;
+  font-size: 24rpx;
+  line-height: 1.6;
+  padding: 20rpx 24rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+}
+.card {
+  background: var(--card);
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 16rpx;
+}
+.time { font-size: 22rpx; color: var(--muted2); margin-bottom: 12rpx; }
+.msg { font-size: 28rpx; margin-bottom: 16rpx; line-height: 1.5; }
+.row { display: flex; align-items: center; gap: 16rpx; padding: 8rpx 0; font-size: 26rpx; }
+.lab { color: var(--muted); width: 72rpx; }
+.val { flex: 1; font-weight: 600; }
+.copy { color: var(--brand); font-weight: 600; font-size: 24rpx; }
+.empty { text-align: center; padding: 120rpx 0; color: var(--muted); font-size: 26rpx; }

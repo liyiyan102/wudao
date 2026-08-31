@@ -1,0 +1,1972 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>舞岛 PGC 后台</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --ink2:#3d3d3d; --muted:#8a8a8e; --muted2:#b0b0b4;
+    --line:#e5e7eb; --line2:#f3f4f6; --bg:#f9fafb; --card:#ffffff;
+    --purple:#534ab7; --purple-d:#3c3489; --purple-bg:#eeedfe; --purple-bg2:#f5f4fd;
+    --red:#fa5151; --green:#07c160; --amber:#f5a623; --orange:#ff6b35;
+    --sidebar-w:220px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","SF Pro Text",sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:14px;}
+  button{font-family:inherit;}
+
+  /* 登录层 */
+  #login-mask{position:fixed;inset:0;background:rgba(26,26,26,.45);z-index:999;display:flex;align-items:center;justify-content:center;}
+  .login-card{width:360px;background:var(--card);border-radius:12px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .login-card h2{font-size:18px;margin-bottom:4px;}
+  .login-card .sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+  .login-card input{width:100%;height:40px;border:1px solid var(--line);border-radius:8px;padding:0 12px;font-size:14px;margin-bottom:12px;}
+  .login-card input:focus{outline:none;border-color:var(--purple);}
+  .login-card .err{color:var(--red);font-size:12px;margin-bottom:10px;min-height:16px;}
+  .login-btn{width:100%;height:40px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;}
+  .login-btn:hover{background:var(--purple-d);}
+
+  .topbar{height:56px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;position:sticky;top:0;z-index:100;}
+  .topbar .logo{font-size:16px;font-weight:700;color:var(--purple-d);display:flex;align-items:center;gap:8px;}
+  .topbar .logo .dot{width:24px;height:24px;border-radius:6px;background:var(--purple);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;}
+  .topbar .crumb{margin-left:32px;font-size:13px;color:var(--muted);}
+  .topbar .crumb b{color:var(--ink);}
+  .topbar .right{margin-left:auto;display:flex;align-items:center;gap:16px;font-size:13px;color:var(--muted);}
+  .topbar .ava{width:28px;height:28px;border-radius:50%;background:var(--purple);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .topbar .logout{cursor:pointer;color:var(--muted);font-size:12px;border:none;background:none;}
+  .topbar .logout:hover{color:var(--red);}
+
+  .layout{display:flex;min-height:calc(100vh - 56px);}
+  .sidebar{width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--line);padding:16px 0;flex-shrink:0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
+  .sidebar .group{margin-bottom:20px;}
+  .sidebar .group-h{font-size:11px;font-weight:600;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;padding:0 20px 8px;}
+  .sidebar .item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;color:var(--ink2);cursor:pointer;border-left:3px solid transparent;}
+  .sidebar .item:hover{background:var(--bg);}
+  .sidebar .item.on{background:var(--purple-bg);color:var(--purple-d);font-weight:600;border-left-color:var(--purple);}
+  .sidebar .item .ic{width:18px;height:18px;fill:currentColor;flex-shrink:0;}
+
+  .main{flex:1;padding:24px 32px;max-width:calc(100vw - var(--sidebar-w));overflow-x:hidden;}
+  .page-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .page-h h1{font-size:20px;font-weight:700;}
+  .page-h .actions{display:flex;gap:8px;}
+  .btn{height:36px;padding:0 16px;border-radius:6px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:none;}
+  .btn-pri{background:var(--purple);color:#fff;}
+  .btn-pri:hover{background:var(--purple-d);}
+  .btn-ghost{background:var(--card);color:var(--ink2);border:1px solid var(--line);}
+  .btn-ghost:hover{background:var(--bg);}
+  .btn-danger{background:#fff;color:var(--red);border:1px solid var(--red);}
+  .btn .ic{width:16px;height:16px;fill:currentColor;}
+
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+  .stat-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;}
+  .stat-card .label{font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .stat-card .val{font-size:28px;font-weight:700;letter-spacing:-0.5px;}
+  .stat-card .delta{font-size:12px;margin-top:6px;color:var(--muted);}
+
+  .table-card{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:24px;}
+  .table-card .tc-h{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .table-card .tc-h h2{font-size:15px;font-weight:600;}
+  .tc-filters{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-input{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;width:180px;}
+  .filter-select{height:32px;padding:0 28px 0 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;background:var(--card);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:var(--bg);text-align:left;padding:10px 16px;font-weight:600;color:var(--muted);font-size:12px;border-bottom:1px solid var(--line);}
+  td{padding:12px 16px;border-bottom:1px solid var(--line2);vertical-align:middle;}
+  tr:hover td{background:#fafbfc;}
+  tr.drag-row{cursor:grab}
+  tr.drag-row.dragging{opacity:.45}
+  tr.drag-row.drag-over td{box-shadow:inset 0 2px 0 var(--purple)}
+  .drag-handle{color:var(--muted2);font-size:14px;letter-spacing:-1px;user-select:none;padding-right:6px;cursor:grab}
+  .sort-tip{font-size:12px;color:var(--muted);padding:0 20px 12px}
+  .chip{display:inline-block;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:600;white-space:nowrap;}
+  .chip-purple{background:var(--purple-bg);color:var(--purple-d);}
+  .chip-green{background:#E8F5E9;color:#2E7D32;}
+  .chip-amber{background:#FFF3E0;color:#E65100;}
+  .chip-blue{background:#E3F2FD;color:#1565C0;}
+  .chip-red{background:#FFE7E0;color:#C62828;}
+  .chip-gray{background:var(--line2);color:var(--muted);}
+  .chip-cyan{background:#E0F7FA;color:#00838F;}
+  .row-actions{display:flex;gap:10px;}
+  .row-actions a{font-size:12px;color:var(--purple);cursor:pointer;}
+  .row-actions a:hover{text-decoration:underline;}
+  .row-actions a.del{color:var(--red);}
+  .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;}
+  .status-dot.published{background:var(--green);}
+  .status-dot.draft{background:var(--muted2);}
+  .status-dot.offline{background:var(--red);}
+  /* 多选复选框 */
+  .cb{width:20px;height:20px;border:2px solid var(--line);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--card);transition:all .15s;}
+  .cb:hover{border-color:var(--purple);}
+  .cb.checked{background:var(--purple);border-color:var(--purple);}
+
+  /* 编辑器 */
+  .editor-layout{display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;}
+  .editor-main{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:24px;min-width:0;}
+  .editor-side{position:sticky;top:80px;display:grid;gap:16px;}
+  .editor-toolbar{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line);margin:-24px -24px 20px;background:var(--bg);border-radius:8px 8px 0 0;flex-wrap:wrap;}
+  .tb-btn{height:32px;min-width:32px;padding:0 8px;border:none;background:transparent;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink2);font-size:12px;font-weight:600;gap:4px;white-space:nowrap;}
+  .tb-btn:hover{background:var(--card);color:var(--purple);}
+  .tb-btn.callout{color:var(--purple);}
+  .tb-btn.blockquote{color:var(--muted);}
+  .tb-btn.tb-list{height:32px;padding:0 10px;border:1px solid var(--line);background:#fff;color:var(--ink);}
+  .tb-btn.tb-list:hover{border-color:var(--purple);background:var(--purple-bg);color:var(--purple-d);}
+  .tb-btn .ic-sm{width:14px;height:14px;fill:currentColor;flex-shrink:0;}
+  .tb-sep{width:1px;background:var(--line);margin:4px 4px;}
+
+  .field{margin-bottom:18px;}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;}
+  .field input[type=text],.field input[type=url],.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;color:var(--ink);background:var(--card);}
+  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(83,74,183,.1);}
+  .field-title input{font-size:20px;font-weight:700;border:none;padding:0 0 8px;border-bottom:1px solid var(--line);border-radius:0;}
+  .field-title input:focus{border-bottom-color:var(--purple);box-shadow:none;}
+  .field-subtitle input{font-size:13px;color:var(--muted);border:none;padding:0;}
+  .field-subtitle input:focus{box-shadow:none;}
+
+  /* 双栏：编辑 + 实时预览 */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .split textarea{min-height:420px;line-height:1.8;font-size:13.5px;font-family:"SF Mono",Menlo,Consolas,monospace;resize:vertical;}
+  .preview-pane{border:1px solid var(--line);border-radius:6px;padding:16px 20px;min-height:420px;overflow-y:auto;background:var(--card);font-size:15px;line-height:1.85;color:var(--ink2);max-height:640px;}
+  .pv-h3{font-size:19px;font-weight:700;color:var(--ink);margin:32px 0 14px;}
+  .pv-h4{font-size:16px;font-weight:700;color:var(--ink);margin:24px 0 10px;}
+  .pv-p{margin-bottom:16px;white-space:pre-wrap;}
+  .pv-list{margin:4px 0 16px;padding-left:0;list-style:none;}
+  .pv-list li{display:flex;gap:8px;margin:0 0 6px;line-height:1.7;}
+  .pv-list .mk{flex-shrink:0;min-width:18px;font-weight:600;color:var(--ink);}
+  .pv-list .tx{flex:1;min-width:0;}
+  .pv-callout{background:var(--purple-bg);border-left:4px solid var(--purple);padding:16px 18px;margin:0 0 24px;border-radius:0 8px 8px 0;position:relative;}
+  .pv-callout .co-title{font-size:12px;font-weight:700;color:var(--purple-d);letter-spacing:.5px;margin-bottom:6px;text-transform:uppercase;}
+  .pv-callout .co-body{font-size:14px;line-height:1.75;color:var(--ink2);white-space:pre-wrap;}
+  .pv-quote{border-left:3px solid #D1D5DB;padding:4px 0 4px 16px;margin:18px 0;font-size:14.5px;color:#4a4a5a;line-height:1.8;font-style:italic;}
+  .pv-quote .cite{display:block;font-size:12px;color:var(--muted2);font-style:normal;margin-top:10px;padding-top:8px;border-top:.5px solid #E5E7EB;}
+  .pv-quote .cite::before{content:"— ";color:var(--muted2);}
+  .pv-img{height:180px;border-radius:8px;background:var(--purple-bg2);display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:12px;margin:16px 0;border:1px dashed var(--line);}
+  .pv-img-real{width:100%;border-radius:8px;margin:16px 0;display:block;cursor:pointer;}
+  .pv-video{width:100%;border-radius:8px;margin:16px 0;display:block;background:#000;}
+  .preview-pane [data-start]{cursor:pointer;position:relative;}
+  .preview-pane [data-start]:hover{background:rgba(83,74,183,.04);}
+
+  .side-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;}
+  .side-card h3{font-size:13px;font-weight:700;margin-bottom:12px;}
+  .side-card .field{margin-bottom:14px;}
+  .side-card .field:last-child{margin-bottom:0;}
+
+  .tag-box{display:flex;flex-wrap:wrap;gap:6px;border:1px solid var(--line);border-radius:6px;padding:6px;min-height:38px;}
+  .tag-box .tag{display:inline-flex;align-items:center;gap:4px;background:var(--purple-bg);color:var(--purple-d);font-size:12px;padding:3px 8px;border-radius:3px;font-weight:600;}
+  .tag-box .tag .x{cursor:pointer;font-size:14px;}
+  .tag-box input{border:none;outline:none;flex:1;font-size:13px;min-width:60px;}
+  .ms-box{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0;}
+  .ms-chip{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:15px;border:1px solid var(--line);background:var(--card);color:var(--ink2);font-size:12px;font-weight:500;cursor:pointer;user-select:none;}
+  .ms-chip:hover{border-color:var(--purple);}
+  .ms-chip.on{background:var(--purple-bg);border-color:var(--purple);color:var(--purple-d);font-weight:600;}
+  .field select.filter-select,.field select{width:100%;height:40px;border:1px solid var(--line);border-radius:6px;padding:0 12px;font-size:14px;background:var(--card);color:var(--ink);font-family:inherit;}
+  .field select:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(83,74,183,.1);}
+
+  .switch-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;}
+  .switch-row .lbl{font-size:13px;color:var(--ink2);}
+  .switch{position:relative;width:40px;height:22px;background:var(--line);border-radius:11px;cursor:pointer;transition:background .2s;flex-shrink:0;}
+  .switch.on{background:var(--purple);}
+  .switch .knob{position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .switch.on .knob{left:20px;}
+
+  .tip{background:var(--purple-bg);border:1px solid var(--purple);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--purple-d);line-height:1.6;margin-bottom:16px;}
+
+  /* 活动编辑 */
+  .activity-hero-preview{height:140px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;text-align:center;padding:0 24px;margin-bottom:16px;position:relative;background:linear-gradient(135deg,#534ab7 0%,#3c3489 100%);}
+  .activity-hero-preview .badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:3px;background:rgba(255,255,255,.95);color:var(--purple);}
+  .schedule-editor{border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .se-row{display:grid;grid-template-columns:120px 1fr 32px;border-bottom:1px solid var(--line2);}
+  .se-row:last-child{border-bottom:none;}
+  .se-row input{border:none;padding:8px 10px;font-size:13px;font-family:inherit;width:100%;box-sizing:border-box;}
+  .se-row input[type="time"]{min-width:0;}
+  .dt-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .dt-pair .field{margin-bottom:0;}
+  input[type="date"],input[type="time"]{font-family:inherit;font-size:13px;}
+  .se-row .se-del{border:none;background:transparent;color:var(--muted);cursor:pointer;}
+  .se-row .se-del:hover{color:var(--red);}
+  .se-add{padding:8px 10px;font-size:13px;color:var(--purple);cursor:pointer;background:var(--bg);font-weight:600;border:none;width:100%;text-align:left;}
+
+  .modal-mask{position:fixed;inset:0;background:rgba(26,26,26,.45);z-index:200;display:flex;align-items:center;justify-content:center;}
+  .modal{width:420px;background:var(--card);border-radius:12px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+  .modal h3{font-size:15px;margin-bottom:16px;}
+  .modal .m-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;}
+
+  .toast{position:fixed;top:70px;right:24px;z-index:300;background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.25);display:none;}
+
+  @media (max-width:1100px){
+    .editor-layout{grid-template-columns:1fr;}
+    .split{grid-template-columns:1fr;}
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<!-- 登录层 -->
+<div id="login-mask" style="display:none">
+  <div class="login-card">
+    <h2>舞岛 PGC 后台</h2>
+    <div class="sub">运营内容与活动管理</div>
+    <input type="password" id="login-pass" placeholder="管理口令" autofocus>
+    <div class="err" id="login-err"></div>
+    <button class="login-btn" onclick="doLogin()">登 录</button>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="topbar">
+    <div class="logo"><div class="dot">舞</div>舞岛后台</div>
+    <div class="crumb" id="crumb">内容管理 / <b>内容列表</b></div>
+    <div class="right">
+      <span>管理员</span>
+      <div class="ava">舞</div>
+      <button class="logout" onclick="doLogout()">退出</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="main" id="main"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ md.js 浏览器垫片（与小程序渲染引擎同源 v0.3：图片/视频/位置区间） ============ */
+const PARSE_MD = (function(){
+  const IMG_RE = /^!\[([^\]]*)\]\(([^)]+)\)$/
+  const VIDEO_RE = /^@\[([^\]]*)\]\(([^)]+)\)$/
+  const UL_RE = /^[-*•]\s+(.+)$/
+  const OL_RE = /^(\d+)[.)、]\s*(.+)$/
+  function matchList(line){
+    let m = line.match(UL_RE)
+    if (m) return { kind:'ul', text:m[1], n:0 }
+    m = line.match(OL_RE)
+    if (m) return { kind:'ol', text:m[2], n:Number(m[1]) }
+    return null
+  }
+function parseTableLine(line) {
+  let s = line.trim()
+  if (s.startsWith('|')) s = s.slice(1)
+  if (s.endsWith('|')) s = s.slice(0, -1)
+  return s.split('|').map(c => c.trim())
+}
+function isDelimiterRow(cells) {
+  return cells.length > 0 && cells.every(c => /^:?-+:?$/.test(c))
+}
+function parseAligns(cells) {
+  return cells.map(c => {
+    const left = c.startsWith(':')
+    const right = c.endsWith(':')
+    if (left && right) return 'center'
+    if (right) return 'right'
+    if (left) return 'left'
+    return 'left'
+  })
+}
+function isTableLine(line) {
+  const t = line.trim()
+  return t.length >= 3 && t.startsWith('|') && t.endsWith('|')
+}
+function parseMarkdown(body){
+  const src = String(body||'')
+  const lines = src.split('\n'); const blocks = [];
+  let callout = null, quote = null, list = null, table = null, pos = 0;
+  const flushCallout = () => { if (callout){ blocks.push({type:'callout',title:callout.title||'',text:callout.text.join('\n'),_start:callout._start,_end:pos}); callout=null; } };
+  const flushQuote = () => { if (quote){ blocks.push({type:'quote',text:quote.text.join('\n'),cite:quote.cite||'',_start:quote._start,_end:pos}); quote=null; } };
+  const flushList = () => { if (list){ blocks.push({type:list.kind,items:list.items,_start:list._start,_end:pos}); list=null; } };
+  const flushTable = () => { if (table){ blocks.push({type:'table',headers:table.headers,aligns:table.aligns,rows:table.rows,_start:table._start,_end:pos}); table=null; } };
+  const flushAll = () => { flushCallout(); flushQuote(); flushList(); flushTable(); };
+  for (const raw of lines){
+    const line = raw.trim(); const lineLen = raw.length;
+    if (!line){ flushAll(); pos += lineLen+1; continue; }
+    const li = matchList(line)
+    if (isTableLine(line)){
+      flushCallout(); flushQuote(); flushList();
+      const cells = parseTableLine(line)
+      if (!table){
+        table = { headers: cells.map(c => ({ text: c })), aligns: cells.map(() => 'left'), rows: [], _start: pos }
+      } else if (isDelimiterRow(cells)){
+        table.aligns = parseAligns(cells)
+      } else {
+        table.rows.push(cells.map(c => ({ text: c })))
+      }
+    }
+    else if (li){
+      flushAll();
+      if (!list) list = { kind: li.kind, items: [], _start: pos };
+      list.items.push({ text: li.text, n: li.n });
+    }
+      else if (line.indexOf('### ')===0){ flushAll(); blocks.push({type:'h4',text:line.slice(4),_start:pos,_end:pos+lineLen}); }
+      else if (line.indexOf('## ')===0){ flushAll(); blocks.push({type:'h3',text:line.slice(3),_start:pos,_end:pos+lineLen}); }
+      else if (line.indexOf('>>t ')===0){ flushList(); if(!callout) callout={title:'',text:[],_start:pos}; callout.title=line.slice(4); }
+      else if (line.indexOf('>> ')===0){ flushList(); if(!callout) callout={title:'',text:[],_start:pos}; callout.text.push(line.slice(3)); }
+      else if (line.indexOf('> ')===0){
+        flushList();
+        const t = line.slice(2);
+        if (t.indexOf('——')===0 || t.indexOf('--')===0){
+          const cite = t.replace(/^——\s*/,'');
+          if (quote) quote.cite = cite;
+          else blocks.push({type:'quote',text:'',cite,_start:pos,_end:pos+lineLen});
+        } else { flushCallout(); if(!quote) quote={text:[],cite:'',_start:pos}; quote.text.push(t); }
+      }
+      else if (IMG_RE.test(line)){ flushAll(); const m=line.match(IMG_RE); blocks.push({type:'img',text:m[1]||'图片',url:m[2],_start:pos,_end:pos+lineLen}); }
+      else if (VIDEO_RE.test(line)){ flushAll(); const m=line.match(VIDEO_RE); blocks.push({type:'video',text:m[1]||'视频',url:m[2],_start:pos,_end:pos+lineLen}); }
+      else { flushAll(); blocks.push({type:'p',text:line,_start:pos,_end:pos+lineLen}); }
+      pos += lineLen+1;
+    }
+    flushAll(); return blocks;
+  }
+  function readMinutes(body){
+    const n = String(body||'').replace(/\s/g,'').length;
+    return Math.max(1, Math.round(n/500));
+  }
+  return { parseMarkdown, readMinutes };
+})();
+
+/* ============ 基础设施 ============ */
+/** 子路径部署：页面在 /wudao/admin/ 时 API 前缀为 /wudao */
+const API = (function () {
+  const p = location.pathname || ''
+  if (p === '/wudao' || p.indexOf('/wudao/') === 0) return '/wudao'
+  return ''
+})()
+let TOKEN = localStorage.getItem('wudao_admin_token') || ''
+
+function toast(msg){
+  const t = document.getElementById('toast')
+  t.textContent = msg; t.style.display = 'block'
+  setTimeout(() => t.style.display = 'none', 2200)
+}
+async function api(path, opts = {}){
+  const res = await fetch(API + path, Object.assign({}, opts, {
+    headers: Object.assign({'Content-Type':'application/json'}, TOKEN ? {Authorization: 'Bearer ' + TOKEN} : {})
+  }))
+  if (res.status === 401){ showLogin(); throw new Error('未登录') }
+  const d = await res.json()
+  if (d.code !== 0) throw new Error(d.msg || '请求失败')
+  return d.data
+}
+
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+/** 相对 /uploads 在子路径部署下需加 API 前缀才能在后台预览 */
+function mediaUrl(u){
+  if (!u) return ''
+  const s = String(u).trim()
+  if (s.indexOf('http') === 0) return s
+  if (s.indexOf('/uploads/') === 0 || s.indexOf('/images/') === 0) return API + s
+  const name = s.replace(/\\/g, '/').split('/').pop()
+  if (name && /\.(jpe?g|png|gif|webp|mp4|mov)$/i.test(name)) return API + '/uploads/' + name
+  return s
+}
+
+/* ============ 登录 ============ */
+function showLogin(){ document.getElementById('login-mask').style.display='flex'; document.getElementById('app').style.display='none'; }
+function hideLogin(){ document.getElementById('login-mask').style.display='none'; document.getElementById('app').style.display='block'; }
+async function doLogin(){
+  const pass = document.getElementById('login-pass').value
+  try{
+    const d = await fetch(API + '/api/admin/login', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass})}).then(r=>r.json())
+    if (d.code !== 0) throw new Error(d.msg)
+    TOKEN = d.data.token
+    localStorage.setItem('wudao_admin_token', TOKEN)
+    hideLogin(); render()
+  }catch(e){ document.getElementById('login-err').textContent = e.message || '口令错误' }
+}
+function doLogout(){ TOKEN=''; localStorage.removeItem('wudao_admin_token'); showLogin() }
+
+/* ============ 路由 ============ */
+const CATS = [
+  {key:'outfit',  name:'穿搭', chip:'chip-purple'},
+  {key:'recovery',name:'康复', chip:'chip-green'},
+  {key:'culture', name:'文化', chip:'chip-blue'},
+  {key:'studio',  name:'舞室', chip:'chip-gray'},
+  {key:'fresh',   name:'新鲜事', chip:'chip-cyan'}
+]
+const CAT_MAP = {}; CATS.forEach(c => CAT_MAP[c.key] = c)
+const ACT_TYPES = [
+  {key:'official',name:'官方活动'},{key:'buddy',name:'找搭子'},{key:'contest',name:'赛事'},
+  {key:'master',name:'大师课'},{key:'other',name:'其他'}
+]
+const DANCE_OPTIONS = [
+  'Breaking','Hip-hop','Locking','Popping','Waacking','House','Krump',
+  'Jazz','Urban','齐舞','全舞种','其他'
+]
+const CITY_LETTER = {
+  '北京':'B',
+  '成都':'C','长春':'C','长沙':'C','重庆':'C',
+  '大连':'D','东莞':'D',
+  '佛山':'F','福州':'F',
+  '广州':'G','贵阳':'G',
+  '哈尔滨':'H','海口':'H','杭州':'H','合肥':'H',
+  '济南':'J',
+  '昆明':'K',
+  '兰州':'L','拉萨':'L',
+  '南昌':'N','南京':'N','南宁':'N','宁波':'N',
+  '青岛':'Q',
+  '三亚':'S','上海':'S','深圳':'S','沈阳':'S','石家庄':'S','苏州':'S',
+  '太原':'T','天津':'T',
+  '乌鲁木齐':'W','武汉':'W','无锡':'W',
+  '西安':'X','西宁':'X','厦门':'X',
+  '银川':'Y',
+  '郑州':'Z','珠海':'Z'
+}
+const ADMIN_CITIES = Object.keys(CITY_LETTER).sort((a, b) => {
+  const la = CITY_LETTER[a], lb = CITY_LETTER[b]
+  if (la !== lb) return la.localeCompare(lb)
+  return a.localeCompare(b, 'zh-CN')
+})
+function parseDanceList(text){
+  return String(text || '')
+    .split(/[·•、,，/\s|]+/)
+    .map(s => s.trim())
+    .filter(Boolean)
+}
+function danceSelectedSet(text){
+  const set = {}
+  parseDanceList(text).forEach(n => { set[n] = true })
+  return set
+}
+function citySelectHtml(id, selected, opts){
+  opts = opts || {}
+  const cur = selected || '北京'
+  const optsList = ADMIN_CITIES.slice()
+  if (cur && cur !== '不限' && optsList.indexOf(cur) < 0) optsList.unshift(cur)
+  let html = `<select id="${id}" class="filter-select" style="width:100%;height:40px">`
+  if (opts.allowNationwide) {
+    html += `<optgroup label="范围"><option value="不限" ${cur==='不限'?'selected':''}>不限</option></optgroup>`
+  }
+  let last = ''
+  optsList.forEach(c => {
+    const L = CITY_LETTER[c] || '#'
+    if (L !== last) {
+      if (last) html += '</optgroup>'
+      html += `<optgroup label="${esc(L)}">`
+      last = L
+    }
+    html += `<option value="${esc(c)}" ${c===cur?'selected':''}>${esc(c)}</option>`
+  })
+  if (last) html += '</optgroup>'
+  return html + '</select>'
+}
+function danceMultiHtml(id, selectedText){
+  const on = danceSelectedSet(selectedText)
+  const chips = DANCE_OPTIONS.map(d =>
+    `<span class="ms-chip ${on[d]?'on':''}" data-dance="${esc(d)}" onclick="toggleDanceChip(this,'${id}')">${esc(d)}</span>`
+  ).join('')
+  // 已有但不在预设里的值，保留为已选 chip
+  const extras = parseDanceList(selectedText).filter(d => DANCE_OPTIONS.indexOf(d) < 0)
+    .map(d => `<span class="ms-chip on" data-dance="${esc(d)}" onclick="toggleDanceChip(this,'${id}')">${esc(d)}</span>`).join('')
+  return `<div class="ms-box" id="${id}-box">${chips}${extras}</div>` +
+    `<input type="hidden" id="${id}" value="${esc(parseDanceList(selectedText).join(' · '))}">` +
+    `<div style="font-size:12px;color:var(--muted);margin-top:6px">可多选；保存为「A · B · C」</div>`
+}
+const WEEKDAY_OPTS = [[1,'一'],[2,'二'],[3,'三'],[4,'四'],[5,'五'],[6,'六'],[7,'日']]
+function parseWeekdaysAdmin(raw){
+  if (Array.isArray(raw)) return [...new Set(raw.map(Number).filter(n => n>=1 && n<=7))].sort((a,b)=>a-b)
+  const s = String(raw||'')
+  if (/工作日/.test(s)) return [1,2,3,4,5]
+  if (/周末/.test(s)) return [6,7]
+  const found = []
+  const re = /[周星]期?([一二三四五六日天])/g
+  let m
+  const map = {一:1,二:2,三:3,四:4,五:5,六:6,日:7,天:7}
+  while ((m = re.exec(s))) if (map[m[1]]) found.push(map[m[1]])
+  return [...new Set(found)].sort((a,b)=>a-b)
+}
+function formatWeekdaysAdmin(days){
+  const list = parseWeekdaysAdmin(days)
+  if (!list.length) return ''
+  if (list.length === 7) return '每天'
+  if (list.join(',') === '1,2,3,4,5') return '每周工作日'
+  if (list.join(',') === '6,7') return '每周末'
+  const names = {1:'一',2:'二',3:'三',4:'四',5:'五',6:'六',7:'日'}
+  if (list.length === 1) return '每周' + names[list[0]]
+  return '每周' + list.map(n => names[n]).join('、')
+}
+function inferDateModeAdmin(a){
+  const mode = String((a&&a.dateMode)||'')
+  if (mode === 'none' || mode === 'weekly' || mode === 'once') return mode
+  const days = parseWeekdaysAdmin((a&&a.weekdays)||[])
+  if (days.length) return 'weekly'
+  if (parseWeekdaysAdmin((a&&a.dateText)||'').length) return 'weekly'
+  if ((a&&a.startDate) || (a&&a.endDate)) return 'once'
+  if (/月\s*\d{1,2}\s*日/.test(String((a&&a.dateText)||''))) return 'once'
+  return 'none'
+}
+function weekdayBoxHtml(id, selected){
+  const on = {}
+  parseWeekdaysAdmin(selected).forEach(n => { on[n] = true })
+  return `<div class="ms-box" id="${id}">` +
+    WEEKDAY_OPTS.map(([n,name]) =>
+      `<span class="ms-chip ${on[n]?'on':''}" data-wd="${n}" onclick="this.classList.toggle('on');updateActPreview()">${'周'+name}</span>`
+    ).join('') + `</div>`
+}
+function readWeekdays(id){
+  const box = document.getElementById(id)
+  if (!box) return []
+  return [...box.querySelectorAll('.ms-chip.on')].map(el => Number(el.dataset.wd)).filter(n => n>=1 && n<=7)
+}
+function readDateMode(prefix){
+  const box = document.getElementById((prefix||'a') + '-date-mode')
+  if (!box) return 'once'
+  const on = box.querySelector('.ms-chip.on')
+  return (on && on.dataset.mode) || 'none'
+}
+function setDateMode(mode, prefix){
+  prefix = prefix || 'a'
+  const box = document.getElementById(prefix + '-date-mode')
+  if (box) [...box.querySelectorAll('.ms-chip')].forEach(el => el.classList.toggle('on', el.dataset.mode === mode))
+  const once = document.getElementById(prefix + '-once-wrap')
+  const weekly = document.getElementById(prefix + '-weekly-wrap')
+  if (once) once.style.display = mode === 'once' ? '' : 'none'
+  if (weekly) weekly.style.display = mode === 'weekly' ? '' : 'none'
+  updateActPreview()
+}
+function dateModeHtml(prefix, mode){
+  const m = mode || 'none'
+  const item = (key, label) => `<span class="ms-chip ${m===key?'on':''}" data-mode="${key}" onclick="setDateMode('${key}','${prefix}')">${label}</span>`
+  return `<div class="ms-box" id="${prefix}-date-mode">${item('once','指定日期')}${item('weekly','每周循环')}${item('none','不设置')}</div>`
+}
+function joinDanceFromBox(id, fallbackText){
+  const box = document.getElementById(id + '-box')
+  if (!box) return String(fallbackText || '').trim()
+  return [...box.querySelectorAll('.ms-chip.on')].map(el => el.dataset.dance).filter(Boolean).join(' · ')
+}
+function toggleDanceChip(el, id){
+  el.classList.toggle('on')
+  const hidden = document.getElementById(id)
+  if (hidden) hidden.value = joinDanceFromBox(id, '')
+}
+function readDanceValue(id){
+  const el = document.getElementById(id)
+  if (!el) return ''
+  if (el.type === 'hidden') return joinDanceFromBox(id, el.value)
+  return el.value.trim()
+}
+const GRAD = {
+  buddy:'linear-gradient(135deg,#534ab7 0%,#3c3489 100%)',
+  official:'linear-gradient(135deg,#534ab7 0%,#3c3489 100%)',
+  contest:'linear-gradient(135deg,#1565c0 0%,#0d47a1 100%)',
+  master:'linear-gradient(135deg,#ff6b35 0%,#c62828 100%)',
+  other:'linear-gradient(135deg,#607d8b 0%,#455a64 100%)'
+}
+const BUDDY_SUBS = [
+  {key:'practice',name:'练舞'},{key:'group',name:'团购'},
+  {key:'teammate',name:'找队友'},{key:'other',name:'其他'}
+]
+
+const NAV = [
+  {group:'概览', items:[{key:'dashboard',name:'数据看板',ic:'M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z'}]},
+  {group:'内容', items:[
+    {key:'posts',name:'内容列表',ic:'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'},
+    {key:'post-new',name:'新建内容',ic:'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'}
+  ]},
+  {group:'活动', items:[
+    {key:'activities',name:'活动列表',ic:'M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z'},
+    {key:'activity-new',name:'新建活动',ic:'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'},
+    {key:'buddy-requests',name:'搭子需求审核',ic:'M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z'}
+  ]}
+]
+
+function route(){
+  const h = location.hash.replace(/^#\/?/, '') || 'posts'
+  return h.split('?')[0]
+}
+window.addEventListener('hashchange', render)
+
+function render(){
+  const r = route()
+  document.getElementById('sidebar').innerHTML = NAV.map(g =>
+    `<div class="group"><div class="group-h">${g.group}</div>` +
+    g.items.map(it =>
+      `<div class="item ${r===it.key||(r==='post-edit'&&it.key==='posts')||(r==='activity-edit'&&it.key==='activities')||(r==='buddy-review'&&it.key==='buddy-requests')?'on':''}" onclick="location.hash='#/${it.key}'">
+        <svg class="ic" viewBox="0 0 24 24"><path d="${it.ic}"/></svg>${it.name}</div>`
+    ).join('') + '</div>'
+  ).join('')
+
+  if (r === 'dashboard') return renderDashboard()
+  if (r === 'posts') return renderPosts()
+  if (r === 'post-new' || r === 'post-edit') return renderPostEditor()
+  if (r === 'activities') return renderActivities()
+  if (r === 'activity-new' || r === 'activity-edit') return renderActivityEditor()
+  if (r === 'buddy-requests') return renderBuddyRequests()
+  if (r === 'buddy-review') return renderBuddyReview()
+  renderPosts()
+}
+
+/* ============ 数据看板 ============ */
+async function renderDashboard(){
+  document.getElementById('crumb').innerHTML = '概览 / <b>数据看板</b>'
+  const s = await api('/api/admin/stats')
+  document.getElementById('main').innerHTML = `
+    <div class="page-h"><h1>数据看板</h1></div>
+    <div class="stats-grid">
+      ${[
+        ['已发布内容', s.publishedCount, '草稿 ' + s.draftCount + ' 篇'],
+        ['累计总阅读量', s.views.toLocaleString(), '全部已发布内容'],
+        ['平均阅读完成率', s.completionRate, '滚动到底部比例'],
+        ['累计分享次数', s.shares.toLocaleString(), '全部已发布内容']
+      ].map(x => `<div class="stat-card"><div class="label">${x[0]}</div><div class="val">${x[1]}</div><div class="delta">${x[2]}</div></div>`).join('')}
+    </div>
+    <div class="table-card"><div class="tc-h"><h2>快捷入口</h2></div>
+      <table><tr><th>操作</th><th>说明</th></tr>
+        <tr><td><a style="color:var(--purple);cursor:pointer" onclick="location.hash='#/post-new'">＋ 新建内容</a></td><td>编辑后即可发布，小程序端即时可见</td></tr>
+        <tr><td><a style="color:var(--purple);cursor:pointer" onclick="location.hash='#/activity-new'">＋ 新建活动</a></td><td>发布后出现在小程序活动 tab（列表 + 地图）</td></tr>
+        <tr><td><a style="color:var(--purple);cursor:pointer" onclick="location.hash='#/posts'">内容管理</a></td><td>编辑 / 置顶 / 删除已发布内容</td></tr>
+        <tr><td><a style="color:var(--purple);cursor:pointer" onclick="location.hash='#/buddy-requests'">搭子需求审核</a></td><td>用户私密提交 → 审核润色 → 代发为官方练舞局</td></tr>
+      </table>
+    </div>`
+}
+
+/* ============ 内容列表 ============ */
+const postsFilter = { cat:'', status:'', q:'' }
+let selectedPosts = new Set()
+let selectMode = false
+
+function toggleSelectMode(){
+  selectMode = !selectMode
+  selectedPosts.clear()
+  renderPosts()
+}
+function togglePostSel(id, ev){
+  if (ev) ev.stopPropagation()
+  if (selectedPosts.has(id)) selectedPosts.delete(id)
+  else selectedPosts.add(id)
+  updateSelBar()
+  // 局部更新复选框样式
+  document.querySelectorAll('tr[data-id]').forEach(tr => {
+    const cb = tr.querySelector('.cb')
+    if (cb) cb.classList.toggle('checked', selectedPosts.has(tr.dataset.id))
+  })
+}
+function toggleSelectAll(){
+  const ids = [...document.querySelectorAll('tr[data-id]')].map(tr => tr.dataset.id)
+  if (selectedPosts.size === ids.length) selectedPosts.clear()
+  else ids.forEach(i => selectedPosts.add(i))
+  document.querySelectorAll('tr[data-id]').forEach(tr => {
+    tr.querySelector('.cb').classList.toggle('checked', selectedPosts.has(tr.dataset.id))
+  })
+  updateSelBar()
+}
+function updateSelBar(){
+  const bar = document.getElementById('sel-bar')
+  const n = selectedPosts.size
+  bar.style.display = n ? 'flex' : 'none'
+  document.getElementById('sel-count').textContent = '已选 ' + n + ' 篇'
+}
+async function batchDeletePosts(){
+  const n = selectedPosts.size
+  if (!n) return
+  if (!confirm('确定删除选中的 ' + n + ' 篇内容？不可恢复。')) return
+  const d = await api('/api/admin/posts/batch-delete', {
+    method:'POST', body:JSON.stringify({ ids:[...selectedPosts] })
+  })
+  toast('已删除 ' + d.deleted + ' 篇')
+  selectedPosts.clear(); selectMode = false
+  renderPosts()
+}
+
+async function renderPosts(){
+  document.getElementById('crumb').innerHTML = '内容管理 / <b>内容列表</b>'
+  document.getElementById('main').innerHTML = '<div class="page-h"><h1>内容列表</h1></div><div id="posts-body">加载中…</div>'
+  const qs = new URLSearchParams()
+  if (postsFilter.cat) qs.set('cat', postsFilter.cat)
+  if (postsFilter.status) qs.set('status', postsFilter.status)
+  if (postsFilter.q) qs.set('q', postsFilter.q)
+  const list = await api('/api/admin/posts?' + qs.toString())
+  const noFilter = !postsFilter.cat && !postsFilter.status && !postsFilter.q && !selectMode
+  const pinnedCount = list.filter(p => p.pinned).length
+  const canDrag = noFilter && pinnedCount > 0
+
+  const fmtTime = ts => { const d = new Date(ts); return String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0') + ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0') }
+
+  document.getElementById('posts-body').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card"><div class="label">全部内容</div><div class="val">${list.length}</div></div>
+      <div class="stat-card"><div class="label">已发布</div><div class="val">${list.filter(p=>p.status==='published').length}</div></div>
+      <div class="stat-card"><div class="label">草稿</div><div class="val">${list.filter(p=>p.status==='draft').length}</div></div>
+      <div class="stat-card"><div class="label">置顶中</div><div class="val">${pinnedCount}</div></div>
+      <div class="stat-card"><div class="label">已下线</div><div class="val">${list.filter(p=>p.status==='offline').length}</div></div>
+    </div>
+    <div class="table-card">
+      <div class="tc-h"><h2>全部内容（${list.length} 篇）</h2>
+        <div class="tc-filters">
+          <select class="filter-select" onchange="postsFilter.cat=this.value;renderPosts()">
+            <option value="">全部分类</option>
+            ${CATS.map(c=>`<option value="${c.key}" ${postsFilter.cat===c.key?'selected':''}>${c.name}</option>`).join('')}
+          </select>
+          <select class="filter-select" onchange="postsFilter.status=this.value;renderPosts()">
+            <option value="">全部状态</option>
+            <option value="published" ${postsFilter.status==='published'?'selected':''}>已发布</option>
+            <option value="draft" ${postsFilter.status==='draft'?'selected':''}>草稿</option>
+            <option value="offline" ${postsFilter.status==='offline'?'selected':''}>已下线</option>
+          </select>
+          <input class="filter-input" placeholder="搜索标题…" value="${esc(postsFilter.q)}"
+            onkeydown="if(event.key==='Enter'){postsFilter.q=this.value;renderPosts()}">
+          <button class="btn btn-ghost" onclick="downloadTemplate()">📥 下载模板</button>
+          <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()">📥 批量导入</button>
+          <input type="file" id="import-file" accept=".xlsx,.csv" style="display:none" onchange="doImport(event)">
+          <button class="btn ${selectMode?'btn-pri':'btn-ghost'}" onclick="toggleSelectMode()">${selectMode?'✓ 完成多选':'☐ 多选'}</button>
+        </div>
+      </div>
+      <div class="sort-tip">${canDrag
+        ? '↕ 仅置顶帖可拖动排序（同步到小程序顶部）。非置顶按推荐：同城优先 · 越新越好 · 阅读/分享越高越靠前。'
+        : (noFilter
+          ? '置顶后可拖动调整置顶顺序。非置顶帖由推荐策略自动排序（定位 / 时效 / 热度）。'
+          : '清空筛选并退出多选后，可拖动置顶帖排序。')}</div>
+      <div id="sel-bar" style="display:none;align-items:center;gap:12px;padding:12px 20px;background:var(--purple-bg);border-bottom:1px solid var(--line)">
+        <a style="font-size:13px;color:var(--purple-d);cursor:pointer;font-weight:600" onclick="toggleSelectAll()">全选/反选</a>
+        <span id="sel-count" style="font-size:13px;color:var(--purple-d)"></span>
+        <button class="btn btn-danger" style="margin-left:auto;height:30px" onclick="batchDeletePosts()">删除所选</button>
+      </div>
+      <table id="posts-table">
+        <tr><th style="width:${selectMode?'36':(canDrag?'28':'0')}px">${selectMode?'<input type="checkbox" onchange="toggleSelectAll()" style="cursor:pointer">':''}</th><th>标题</th><th style="width:90px">分类</th><th style="width:76px">状态</th><th style="width:70px">阅读量</th><th style="width:56px">分享</th><th style="width:96px">发布时间</th><th style="width:150px">操作</th></tr>
+        ${list.map(p => {
+          const rowDrag = canDrag && !!p.pinned
+          return `
+        <tr data-id="${p.id}" class="${rowDrag?'drag-row':''}" ${rowDrag?'draggable="true"':''} ${selectMode?`style="cursor:pointer" onclick="togglePostSel('${p.id}',event)"`:''}>
+          <td style="width:${selectMode?'36':(canDrag?'28':'0')}px">${selectMode?`<div class="cb ${selectedPosts.has(p.id)?'checked':''}" onclick="togglePostSel('${p.id}',event)"><svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>`:(rowDrag?'<span class="drag-handle">⋮⋮</span>':'')}</td>
+          <td><b>${p.pinned?'📌 ':''}${esc(p.title)}</b>${p.status==='draft'?' <span class="chip chip-gray">草稿</span>':''}</td>
+          <td><span class="chip ${(CAT_MAP[p.cat]||{}).chip||'chip-gray'}">${esc(p.catName)}</span></td>
+          <td><span class="status-dot ${p.status}"></span>${p.status==='published'?'已发布':(p.status==='draft'?'草稿':'已下线')}</td>
+          <td>${p.status==='published'?((p.stats&&p.stats.views)||0).toLocaleString():'—'}</td>
+          <td>${p.status==='published'?((p.stats&&p.stats.shares)||0):'—'}</td>
+          <td>${p.status==='published'?fmtTime(p.createdAt):'—'}</td>
+          <td class="row-actions">
+            <a onclick="location.hash='#/post-edit?id=${p.id}'">编辑</a>
+            <a onclick="togglePin('${p.id}',${p.pinned})">${p.pinned?'取消置顶':'置顶'}</a>
+            <a onclick="toggleOffline('${p.id}','${p.status}')">${p.status==='offline'?'上线':'下线'}</a>
+            <a class="del" onclick="delPost('${p.id}','${esc(p.title).replace(/'/g,'')}')">删除</a>
+          </td>
+        </tr>`}).join('')}
+      </table>
+    </div>`
+  if (canDrag) bindTableDrag('posts-table', '/api/admin/posts/reorder', renderPosts)
+}
+
+async function togglePin(id, pinned){
+  await api('/api/admin/posts/' + id + '/pin', {method:'POST', body:JSON.stringify({pinned:!pinned})})
+  toast(pinned ? '已取消置顶' : '已置顶'); renderPosts()
+}
+async function toggleOffline(id, status){
+  const to = status === 'offline' ? 'published' : 'offline'
+  await api('/api/admin/posts/' + id + '/offline', {method:'POST'})
+  toast(to === 'offline' ? '已下线（小程序不可见，列表保留）' : '已上线'); renderPosts()
+}
+async function toggleActOffline(id, status){
+  const to = status === 'offline' ? 'published' : 'offline'
+  await api('/api/admin/activities/' + id + '/offline', {method:'POST'})
+  toast(to === 'offline' ? '已下线（小程序不可见，列表保留）' : '已上线'); renderActivities()
+}
+async function toggleActPin(id, pinned){
+  await api('/api/admin/activities/' + id + '/pin', {method:'POST', body:JSON.stringify({pinned:!pinned})})
+  toast(pinned ? '已取消置顶' : '已置顶'); renderActivities()
+}
+async function delPost(id, title){
+  if (!confirm('确定删除《' + title + '》？不可恢复。')) return
+  await api('/api/admin/posts/' + id, {method:'DELETE'})
+  toast('已删除'); renderPosts()
+}
+
+/* ============ 批量导入（内容 + 活动） ============ */
+function downloadTemplate(){
+  location.href = API + '/api/admin/import/template.xlsx?token=' + encodeURIComponent(TOKEN)
+}
+function downloadActTemplate(){
+  location.href = API + '/api/admin/import/activity-template.xlsx?token=' + encodeURIComponent(TOKEN)
+}
+async function doActImport(ev){
+  const file = ev.target.files[0]
+  ev.target.value = ''
+  if (!file) return
+  toast('导入中…')
+  try{
+    const fd = new FormData()
+    fd.append('file', file)
+    const res = await fetch(API + '/api/admin/import/activity', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + TOKEN },
+      body: fd
+    })
+    const d = await res.json()
+    if (d.code !== 0) throw new Error(d.msg || '导入失败')
+    showImportResult(d.data)
+    renderActivities()
+  }catch(e){
+    toast(e.message || '导入失败')
+  }
+}
+async function doImport(ev){
+  const file = ev.target.files[0]
+  ev.target.value = ''
+  if (!file) return
+  toast('导入中…')
+  try{
+    const fd = new FormData()
+    fd.append('file', file)
+    const res = await fetch(API + '/api/admin/import', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + TOKEN },
+      body: fd
+    })
+    const d = await res.json()
+    if (d.code !== 0) throw new Error(d.msg || '导入失败')
+    showImportResult(d.data)
+    renderPosts()
+  }catch(e){
+    toast(e.message || '导入失败')
+  }
+}
+function showImportResult(r){
+  const div = document.createElement('div')
+  div.className = 'modal-mask'
+  div.onclick = e => { if (e.target === div) div.remove() }
+  div.innerHTML = `
+    <div class="modal" style="width:460px">
+      <h3>导入完成</h3>
+      <div style="display:flex;gap:12px;margin-bottom:14px">
+        <div class="stat-card" style="flex:1;padding:12px"><div class="label">总计</div><div class="val" style="font-size:22px">${r.total}</div></div>
+        <div class="stat-card" style="flex:1;padding:12px;border-color:var(--green)"><div class="label" style="color:var(--green)">成功</div><div class="val" style="font-size:22px;color:var(--green)">${r.success}</div></div>
+        <div class="stat-card" style="flex:1;padding:12px;${r.failed?'border-color:var(--red)':''}"><div class="label" style="${r.failed?'color:var(--red)':''}">失败</div><div class="val" style="font-size:22px;${r.failed?'color:var(--red)':''}">${r.failed}</div></div>
+      </div>
+      ${r.errors && r.errors.length ? `
+        <div style="max-height:180px;overflow-y:auto;background:var(--bg);border-radius:8px;padding:12px;font-size:12px;color:var(--red);line-height:1.8">
+          ${r.errors.map(e => '<div>' + esc(e) + '</div>').join('')}
+        </div>` : ''}
+      <div class="m-actions">
+        <button class="btn btn-pri" onclick="this.closest('.modal-mask').remove()">完成</button>
+      </div>
+    </div>`
+  document.body.appendChild(div)
+}
+
+/* ============ 内容编辑器 ============ */
+let editTags = []
+let coverUrl = ''
+
+async function renderPostEditor(){
+  const isNew = route() === 'post-new'
+  const id = isNew ? '' : (location.hash.split('id=')[1] || '')
+  document.getElementById('crumb').innerHTML = `内容管理 / <b>${isNew?'新建内容':'编辑内容'}</b>`
+  document.getElementById('main').innerHTML = '<div class="page-h"><h1>' + (isNew?'新建内容':'编辑内容') + '</h1></div><div id="ed">加载中…</div>'
+
+  const users = await api('/api/admin/users')
+  let p = { cat:'culture', title:'', subtitle:'', body:'', images:[], publisherId:(users[0]||{}).id||'u_official', city:'北京', pinned:false, noCover:false, tags:[], status:'draft' }
+  if (!isNew){
+    p = await api('/api/admin/posts/' + id)
+  }
+  editTags = (p.tags||[]).slice()
+  coverUrl = (p.images && p.images[0]) || ''
+
+  document.getElementById('ed').innerHTML = `
+  <div class="tip"><b>编辑器说明</b>：列表用 <code>- 条目</code>（无编号）或 <code>1. 条目</code>（数字编号，也可用 <code>1、</code>）；表格用 <code>| 列1 | 列2 |</code> 格式；Call-out / Blockquote 点击工具栏即插入<b>可编辑骨架</b>；<b>图片 / 视频按钮直接上传</b>。点击右侧预览可定位回正文。编辑完点「发布」即生效。</div>
+  <div class="page-h" style="margin-top:0">
+    <div class="actions" style="margin-left:auto">
+      <button class="btn btn-ghost" onclick="location.hash='#/posts'">返回列表</button>
+      <button class="btn btn-ghost" onclick="savePost('draft')">存草稿</button>
+      <button class="btn btn-pri" onclick="savePost('publish')">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>发布
+      </button>
+    </div>
+  </div>
+  <div class="editor-layout">
+    <div class="editor-main">
+      <div class="editor-toolbar">
+        <button class="tb-btn" title="章节标题 H3" onclick="insAround('## ','标题')">H3</button>
+        <button class="tb-btn" title="小节标题 H4" onclick="insAround('### ','标题')">H4</button>
+        <div class="tb-sep"></div>
+        <button type="button" class="tb-btn tb-list" title="插入无序列表（- 条目）" onclick="insertList('ul')">
+          <svg class="ic-sm" viewBox="0 0 24 24"><path d="M4 6.5A1.5 1.5 0 1 1 4 3.5a1.5 1.5 0 0 1 0 3zm0 7A1.5 1.5 0 1 1 4 10.5a1.5 1.5 0 0 1 0 3zm0 7A1.5 1.5 0 1 1 4 17.5a1.5 1.5 0 0 1 0 3zM9 5h12v2H9V5zm0 7h12v2H9v-2zm0 7h12v2H9v-2z"/></svg>
+          无序列表
+        </button>
+        <button type="button" class="tb-btn tb-list" title="插入有序列表（1. 条目）" onclick="insertList('ol')">
+          <svg class="ic-sm" viewBox="0 0 24 24"><path d="M3 4h2v5H3.5V7.5H3V6h1.5V4H3zm.5 8.5H5V14H2.5v-1.2L4 11H2.5V9.8H5V11l-1.5 1.5zM3 17h2v.8H3.6V19H5v.8H3.6V21H2.5v-4H3zm6-12h12v2H9V5zm0 7h12v2H9v-2zm0 7h12v2H9v-2z"/></svg>
+          有序列表
+        </button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" title="加粗" onclick="insAround('**','加粗')"><b>B</b></button>
+        <button class="tb-btn" title="斜体" onclick="insAround('*','斜体')"><i>I</i></button>
+        <button class="tb-btn" title="插入链接" onclick="insLink()">🔗</button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn" title="上传图片到正文" onclick="pickFile('image')">🖼 图片</button>
+        <button class="tb-btn" title="上传视频到正文" onclick="pickFile('video')">🎬 视频</button>
+        <div class="tb-sep"></div>
+        <button class="tb-btn callout" title="插入 Call-out 引言（作者导读，插入后直接在正文框编辑）" onclick="insertCallout()">＋ Call-out</button>
+        <button class="tb-btn blockquote" title="插入 Blockquote 块引用（引用他人，插入后直接在正文框编辑）" onclick="insertQuote()">＂ Blockquote</button>
+        <button class="tb-btn" title="插入 Markdown 表格" onclick="insertTable()">📊 表格</button>
+      </div>
+      <!-- 隐藏文件选择器（媒体上传） -->
+      <input type="file" id="file-image" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="onFilePicked(event,'image')">
+      <input type="file" id="file-video" accept="video/mp4,video/quicktime" style="display:none" onchange="onFilePicked(event,'video')">
+      <input type="file" id="file-cover" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="onCoverPicked(event)">
+
+      <div class="field"><label>分类</label>
+        <select id="ed-cat">${CATS.map(c=>`<option value="${c.key}" ${p.cat===c.key?'selected':''}>${c.name}</option>`).join('')}</select>
+      </div>
+      <div class="field field-title"><label>标题</label><input type="text" id="ed-title" value="${esc(p.title)}" maxlength="40" placeholder="内容标题（必填）"></div>
+      <div class="field field-subtitle"><label>副标题（选填，详情页标题下方展示）</label><input type="text" id="ed-subtitle" value="${esc(p.subtitle||'')}" maxlength="60"></div>
+      <div class="field"><label>正文（支持 ## H3 / ### H4 / - 列表 / 1. 编号 / >> Call-out / > Blockquote / ![图]）</label>
+        <div class="split">
+          <textarea id="ed-body" oninput="renderPreview()" placeholder="在此输入正文…">${esc(p.body)}</textarea>
+          <div class="preview-pane" id="ed-preview"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="editor-side">
+      <div class="side-card">
+        <h3>发布设置</h3>
+        <div class="switch-row"><span class="lbl">置顶（首页信息流顶部）</span>
+          <div class="switch ${p.pinned?'on':''}" id="sw-pin" onclick="this.classList.toggle('on')"><div class="knob"></div></div>
+        </div>
+      </div>
+      <div class="side-card">
+        <h3>封面与标签</h3>
+        <div class="field"><label>封面图（上传或填 URL，留空用分类色占位）</label>
+          <div style="display:flex;gap:8px">
+            <input type="url" id="ed-cover" value="${esc(coverUrl)}" placeholder="/uploads/… 或 https://…" style="flex:1">
+            <button class="btn btn-ghost" style="height:38px;flex-shrink:0" onclick="document.getElementById('file-cover').click()">上传</button>
+          </div>
+          <div id="cover-preview" style="margin-top:8px"></div>
+        </div>
+        <div class="field"><label>标签（用于搜索匹配，回车添加）</label>
+          <div class="tag-box" id="tag-box">
+            ${editTags.map((t,i)=>`<span class="tag">${esc(t)}<span class="x" onclick="rmTag(${i})">×</span></span>`).join('')}
+            <input id="tag-input" placeholder="回车添加" onkeydown="addTag(event)">
+          </div>
+        </div>
+      </div>
+      <div class="side-card">
+        <h3>署名与城市</h3>
+        <div class="field"><label>作者署名</label>
+          <select id="ed-author">${users.map(u=>`<option value="${u.id}" ${p.publisherId===u.id?'selected':''}>${esc(u.columnName ? u.nickname + ' · ' + u.columnName : u.nickname)}</option>`).join('')}</select>
+        </div>
+        <div class="field"><label>城市</label>
+          ${citySelectHtml('ed-city', p.city || '北京', { allowNationwide: true })}
+          <div class="tip" style="margin:6px 0 0;font-size:12px">选「不限」：各城市 Tab 都能看到，排在该城本地帖后面。</div>
+        </div>
+      </div>
+    </div>
+  </div>`
+  renderPreview()
+}
+
+/** 加粗转 HTML：先转义，再把 **x** 变 <b>x</b> */
+function boldHtml(text){
+  return esc(text).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>')
+}
+
+function renderPreview(){
+  const body = document.getElementById('ed-body').value
+  const blocks = PARSE_MD.parseMarkdown(body)
+  const abs = u => mediaUrl(u)
+  document.getElementById('ed-preview').innerHTML = blocks.map(b => {
+    const pos = `data-start="${b._start}" data-end="${b._end}" onclick="locateInEditor(this)" title="点击定位到正文编辑处"`
+    if (b.type==='h3') return `<div class="pv-h3" ${pos}>${boldHtml(b.text)}</div>`
+    if (b.type==='h4') return `<div class="pv-h4" ${pos}>${boldHtml(b.text)}</div>`
+    if (b.type==='ul' || b.type==='ol') {
+      const items = (b.items||[]).map((it, i) => {
+        const mk = b.type==='ol' ? ((it.n || (i+1)) + '.') : '•'
+        return `<li><span class="mk">${mk}</span><span class="tx">${boldHtml(it.text)}</span></li>`
+      }).join('')
+      return `<ul class="pv-list" ${pos}>${items}</ul>`
+    }
+    if (b.type==='callout') return `<div class="pv-callout" ${pos}>${b.title?`<div class="co-title">${esc(b.title)}</div>`:''}<div class="co-body">${boldHtml(b.text)}</div></div>`
+    if (b.type==='quote') return `<div class="pv-quote" ${pos}>${b.text?boldHtml(b.text):''}${b.cite?`<span class="cite">${esc(b.cite)}</span>`:''}</div>`
+    if (b.type==='table') {
+      const aligns = b.aligns || []
+      let h = `<div ${pos} style="overflow-x:auto;margin:16px 0;border:1px solid var(--line);border-radius:8px"><table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff">`
+      h += '<thead><tr style="background:#eeedfe;color:#3c3489;font-weight:700">'
+      ;(b.headers || []).forEach((th, i) => {
+        const align = aligns[i] || 'left'
+        h += `<th style="padding:8px 10px;border-bottom:2px solid #dcd8fc;text-align:${align};white-space:nowrap">${boldHtml(th.text)}</th>`
+      })
+      h += '</tr></thead><tbody>'
+      ;(b.rows || []).forEach((row, rIdx) => {
+        const bg = rIdx % 2 === 1 ? '#f9fafb' : '#fff'
+        h += `<tr style="background:${bg}">`
+        row.forEach((cell, cIdx) => {
+          const align = aligns[cIdx] || 'left'
+          h += `<td style="padding:7px 10px;border-bottom:1px solid #e5e7eb;border-right:1px solid #f0f0f0;text-align:${align}">${boldHtml(cell.text)}</td>`
+        })
+        h += '</tr>'
+      })
+      h += '</tbody></table></div>'
+      return h
+    }
+    if (b.type==='img') return b.url
+      ? `<img class="pv-img-real" ${pos} src="${esc(abs(b.url))}" loading="lazy" alt="${esc(b.text)}">`
+      : `<div class="pv-img" ${pos}>🖼 ${esc(b.text)}</div>`
+    if (b.type==='video') return b.url
+      ? `<video class="pv-video" ${pos} src="${esc(abs(b.url))}" controls preload="metadata"></video>`
+      : `<div class="pv-img" ${pos}>🎬 ${esc(b.text)}</div>`
+    return `<div class="pv-p" ${pos}>${boldHtml(b.text)}</div>`
+  }).join('') || '<span style="color:var(--muted2)">左侧输入正文，此处实时预览…</span>'
+}
+
+/** 点击预览块 → 正文框定位选中对应源码（联动编辑） */
+function locateInEditor(el){
+  const ta = document.getElementById('ed-body')
+  const start = Number(el.dataset.start), end = Number(el.dataset.end)
+  ta.focus()
+  ta.setSelectionRange(start, end)
+  // 近似滚动到可见：按行号估算
+  const lineIdx = ta.value.slice(0, start).split('\n').length - 1
+  const lineHeight = 24 // 与 textarea 行高一致
+  ta.scrollTop = Math.max(0, lineIdx * lineHeight - ta.clientHeight / 2)
+  // 短暂高亮提示
+  el.style.outline = '2px solid var(--purple)'
+  setTimeout(() => { el.style.outline = '' }, 600)
+}
+
+/** 光标处插入文本（返回插入终点） */
+function insertAtCursor(text, selectStart, selectLen){
+  const ta = document.getElementById('ed-body')
+  const s = ta.selectionStart, e = ta.selectionEnd
+  ta.value = ta.value.slice(0, s) + text + ta.value.slice(e)
+  const selS = s + (selectStart == null ? 0 : selectStart)
+  ta.focus()
+  if (selectLen) ta.setSelectionRange(selS, selS + selectLen)
+  else ta.setSelectionRange(s + text.length, s + text.length)
+  renderPreview()
+  return s + text.length
+}
+
+function insAround(prefix, placeholder){
+  const ta = document.getElementById('ed-body')
+  const s = ta.selectionStart, e = ta.selectionEnd
+  const sel = ta.value.slice(s, e)
+  const inner = sel || placeholder
+  const suffix = (prefix === '**' || prefix === '*') ? prefix : ''
+  ta.value = ta.value.slice(0, s) + prefix + inner + suffix + ta.value.slice(e)
+  const selS = s + prefix.length
+  ta.focus()
+  ta.setSelectionRange(selS, selS + inner.length)
+  renderPreview()
+}
+
+function insLink(){
+  const url = prompt('链接地址：', 'https://')
+  if (!url) return
+  insertAtCursor(`[链接文字](${url})`, 1, 4)
+}
+
+/** Call-out：直接插入可编辑骨架（标题+正文高亮待改），无弹窗 */
+function insertCallout(){
+  insertAtCursor('>>t 导读\n>> 在此输入引言内容…\n\n', 10, 8) // 选中"导读"
+}
+
+function insertList(kind){
+  if (kind === 'ol') insertAtCursor('1. 条目一\n2. 条目二\n\n', 3, 3)
+  else insertAtCursor('- 条目一\n- 条目二\n\n', 2, 3)
+}
+
+/** Blockquote：直接插入可编辑骨架（引文+来源高亮待改），无弹窗 */
+function insertQuote(){
+  insertAtCursor('> 在此输入引用内容…\n> —— 来源（书名/作者）\n\n', 2, 9) // 选中引文占位
+}
+
+/** Table：插入 Markdown 表格骨架 */
+function insertTable(){
+  const sample = '| 鞋款 | 质量 | 价格 | 搭配度 | 舒适度 | 更适合谁 |\n| --- | ---: | ---: | ---: | ---: | --- |\n| Nike AF1 Dance | 8 | 6 | 8 | 9 | 想认真跳、又想兼顾日常 |\n| Nike Dunk | 8 | 5 | 9 | 8 | HipHop、转圈、日常穿 |\n\n'
+  insertAtCursor(sample, 2, 2)
+}
+
+/* ============ 媒体上传（图片/视频/封面） ============ */
+function pickFile(kind){
+  document.getElementById('file-' + kind).click()
+}
+async function uploadFile(file, kind){
+  const fd = new FormData()
+  fd.append('file', file)
+  const res = await fetch(API + '/api/admin/upload/' + kind, {
+    method: 'POST',
+    headers: { Authorization: 'Bearer ' + TOKEN },
+    body: fd
+  })
+  const d = await res.json()
+  if (d.code !== 0) throw new Error(d.msg || '上传失败')
+  return d.data.url
+}
+async function onFilePicked(ev, kind){
+  const file = ev.target.files[0]
+  ev.target.value = ''
+  if (!file) return
+  toast(kind === 'image' ? '图片上传中…' : '视频上传中（大文件稍等）…')
+  try{
+    const url = await uploadFile(file, kind)
+    // 插入语法：![描述](url) / @[描述](url)，选中描述便于改文字
+    const md = kind === 'image'
+      ? `![图片描述](${url})`
+      : `@[视频](${url})`
+    const nameLen = kind === 'image' ? 4 : 2
+    insertAtCursor(md + '\n\n', 2, nameLen)
+    toast(kind === 'image' ? '图片已插入正文' : '视频已插入正文')
+  }catch(e){
+    toast(e.message || '上传失败')
+  }
+}
+/** 封面上传：成功后填入 URL 输入框并显示预览 */
+async function onCoverPicked(ev){
+  const file = ev.target.files[0]
+  ev.target.value = ''
+  if (!file) return
+  toast('封面上传中…')
+  try{
+    const url = await uploadFile(file, 'image')
+    document.getElementById('ed-cover').value = url
+    showCoverPreview(url)
+    toast('封面已上传')
+  }catch(e){
+    toast(e.message || '上传失败')
+  }
+}
+function showCoverPreview(url){
+  const box = document.getElementById('cover-preview')
+  const abs = mediaUrl(url) || url
+  box.innerHTML = `<img src="${esc(abs)}" style="width:100%;border-radius:6px;border:1px solid var(--line);display:block">`
+}
+/* 编辑器打开时回显已有封面 */
+setTimeout(() => {
+  const el = document.getElementById('ed-cover')
+  if (el && el.value) showCoverPreview(el.value)
+  el && el.addEventListener('change', () => showCoverPreview(el.value))
+}, 50)
+
+function addTag(e){
+  if (e.key !== 'Enter') return
+  const v = e.target.value.trim()
+  if (!v) return
+  editTags.push(v); e.target.value = ''
+  document.getElementById('tag-box').querySelectorAll('.tag').forEach(el => el.remove())
+  const box = document.getElementById('tag-box')
+  editTags.forEach((t, i) => {
+    const sp = document.createElement('span')
+    sp.className = 'tag'; sp.innerHTML = esc(t) + `<span class="x" onclick="rmTag(${i})">×</span>`
+    box.insertBefore(sp, e.target)
+  })
+}
+function rmTag(i){
+  editTags.splice(i, 1)
+  renderPostEditorTags()
+}
+function renderPostEditorTags(){
+  const box = document.getElementById('tag-box')
+  const input = document.getElementById('tag-input')
+  box.querySelectorAll('.tag').forEach(el => el.remove())
+  editTags.forEach((t, i) => {
+    const sp = document.createElement('span')
+    sp.className = 'tag'; sp.innerHTML = esc(t) + `<span class="x" onclick="rmTag(${i})">×</span>`
+    box.insertBefore(sp, input)
+  })
+}
+
+async function savePost(action){
+  const title = document.getElementById('ed-title').value.trim()
+  if (!title){ toast('标题必填'); return }
+  const payload = {
+    action,
+    cat: document.getElementById('ed-cat').value,
+    title,
+    subtitle: document.getElementById('ed-subtitle').value.trim(),
+    body: document.getElementById('ed-body').value,
+    images: document.getElementById('ed-cover').value.trim() ? [document.getElementById('ed-cover').value.trim()] : [],
+    publisherId: document.getElementById('ed-author').value,
+    city: document.getElementById('ed-city').value.trim() || '北京',
+    pinned: document.getElementById('sw-pin').classList.contains('on'),
+    noCover: false,
+    tags: editTags
+  }
+  const isNew = route() === 'post-new'
+  if (isNew) await api('/api/admin/posts', {method:'POST', body:JSON.stringify(payload)})
+  else await api('/api/admin/posts/' + location.hash.split('id=')[1], {method:'PUT', body:JSON.stringify(payload)})
+  toast(action === 'publish' ? '已发布！小程序端刷新可见' : '已存草稿')
+  location.hash = '#/posts'
+}
+
+/* ============ 活动列表 ============ */
+let selectedActs = new Set()
+let actSelectMode = false
+
+function toggleActSelectMode(){
+  actSelectMode = !actSelectMode
+  selectedActs.clear()
+  renderActivities()
+}
+function toggleActSel(id, ev){
+  if (ev) ev.stopPropagation()
+  if (selectedActs.has(id)) selectedActs.delete(id)
+  else selectedActs.add(id)
+  document.querySelectorAll('tr[data-aid]').forEach(tr => {
+    const cb = tr.querySelector('.cb')
+    if (cb) cb.classList.toggle('checked', selectedActs.has(tr.dataset.aid))
+  })
+  updateActSelBar()
+}
+function toggleActSelectAll(){
+  const ids = [...document.querySelectorAll('tr[data-aid]')].map(tr => tr.dataset.aid)
+  if (selectedActs.size === ids.length) selectedActs.clear()
+  else ids.forEach(i => selectedActs.add(i))
+  document.querySelectorAll('tr[data-aid]').forEach(tr => {
+    tr.querySelector('.cb').classList.toggle('checked', selectedActs.has(tr.dataset.aid))
+  })
+  updateActSelBar()
+}
+function updateActSelBar(){
+  const bar = document.getElementById('act-sel-bar')
+  const n = selectedActs.size
+  bar.style.display = n ? 'flex' : 'none'
+  document.getElementById('act-sel-count').textContent = '已选 ' + n + ' 个'
+}
+async function batchDeleteActs(){
+  const n = selectedActs.size
+  if (!n) return
+  if (!confirm('确定删除选中的 ' + n + ' 个活动？不可恢复。')) return
+  const d = await api('/api/admin/activities/batch-delete', {
+    method:'POST', body:JSON.stringify({ ids:[...selectedActs] })
+  })
+  toast('已删除 ' + d.deleted + ' 个')
+  selectedActs.clear(); actSelectMode = false
+  renderActivities()
+}
+
+async function renderActivities(){
+  document.getElementById('crumb').innerHTML = '活动管理 / <b>活动列表</b>'
+  document.getElementById('main').innerHTML = '<div class="page-h"><h1>活动列表</h1></div><div id="act-body">加载中…</div>'
+  const list = await api('/api/admin/activities')
+  const canDrag = !actSelectMode
+  document.getElementById('act-body').innerHTML = `
+    <div class="page-h" style="margin:0 0 16px">
+      <div class="actions" style="margin-left:auto">
+        <button class="btn btn-ghost" onclick="location.hash='#/activity-new'">＋ 新建活动</button>
+        <button class="btn btn-ghost" onclick="downloadActTemplate()">📥 下载模板</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('act-import-file').click()">📥 批量导入</button>
+        <input type="file" id="act-import-file" accept=".xlsx,.csv" style="display:none" onchange="doActImport(event)">
+        <button class="btn ${actSelectMode?'btn-pri':'btn-ghost'}" onclick="toggleActSelectMode()">${actSelectMode?'✓ 完成多选':'☐ 多选'}</button>
+      </div>
+    </div>
+    <div class="table-card">
+      <div class="tc-h"><h2>全部活动（${list.length} 个）</h2>
+        <span style="font-size:12px;color:var(--muted)">字段与小程序活动列表/详情一致</span>
+      </div>
+      <div class="sort-tip">${canDrag
+        ? '↕ 拖动左侧把手可调整顺序（同步到小程序活动列表；置顶仍优先）'
+        : '退出多选后可拖动排序'}</div>
+      <div id="act-sel-bar" style="display:none;align-items:center;gap:12px;padding:12px 20px;background:var(--purple-bg);border-bottom:1px solid var(--line)">
+        <a style="font-size:13px;color:var(--purple-d);cursor:pointer;font-weight:600" onclick="toggleActSelectAll()">全选/反选</a>
+        <span id="act-sel-count" style="font-size:13px;color:var(--purple-d)"></span>
+        <button class="btn btn-danger" style="margin-left:auto;height:30px" onclick="batchDeleteActs()">删除所选</button>
+      </div>
+      <table id="acts-table">
+        <tr>
+          <th style="width:${actSelectMode?'36':(canDrag?'28':'0')}px">${actSelectMode?'<input type="checkbox" onchange="toggleActSelectAll()" style="cursor:pointer">':''}</th>
+          <th>标题（封面）</th>
+          <th style="width:110px">角标类型</th>
+          <th style="width:80px">封面日期</th>
+          <th style="width:90px">列表时间</th>
+          <th style="width:120px">地点</th>
+          <th style="width:100px">列表人气</th>
+          <th style="width:66px">状态</th>
+          <th style="width:180px">操作</th>
+        </tr>
+        ${list.map(a => `
+        <tr data-id="${a.id}" data-aid="${a.id}" class="${canDrag?'drag-row':''}" ${canDrag?'draggable="true"':''} ${actSelectMode?`style="cursor:pointer" onclick="toggleActSel('${a.id}',event)"`:''}>
+          <td>${actSelectMode?`<div class="cb ${selectedActs.has(a.id)?'checked':''}" onclick="toggleActSel('${a.id}',event)"><svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>`:(canDrag?'<span class="drag-handle">⋮⋮</span>':'')}</td>
+          <td><b>${a.pinned?'📌 ':''}${esc(a.title)}</b>${a.status==='draft'?' <span class="chip chip-gray">草稿</span>':''}</td>
+          <td><span class="chip chip-purple">${esc(a.typeName)}</span></td>
+          <td>${esc(a.dateText)||'—'}</td>
+          <td>${esc(a.timeText)||'—'}</td>
+          <td>${esc(a.location)||'—'}</td>
+          <td>${a.type==='buddy'
+            ? ('加入 ' + (a.applicationCount||0) + (a.headcount && a.headcount!=='不限' ? ' / 需'+esc(a.headcount) : ''))
+            : (a.type==='official'
+              ? ((a.joinCount||0) + ' 加入 / ' + (a.checkinCount||0) + ' 打卡')
+              : ('关注 ' + (a.followCount||0)))}</td>
+          <td><span class="status-dot ${a.status}"></span>${a.status==='published'?'已发布':(a.status==='draft'?'草稿':'已下线')}</td>
+          <td class="row-actions">
+            <a onclick="location.hash='#/activity-edit?id=${a.id}'">编辑</a>
+            <a onclick="toggleActPin('${a.id}',${!!a.pinned})">${a.pinned?'取消置顶':'置顶'}</a>
+            <a onclick="toggleActOffline('${a.id}','${a.status}')">${a.status==='offline'?'上线':'下线'}</a>
+            <a class="del" onclick="delActivity('${a.id}')">删除</a>
+          </td>
+        </tr>`).join('')}
+      </table>
+    </div>`
+  if (canDrag) bindTableDrag('acts-table', '/api/admin/activities/reorder', renderActivities)
+}
+
+/** HTML5 拖动排序：松开后按当前行顺序提交 ids */
+function bindTableDrag(tableId, apiPath, onDone){
+  const table = document.getElementById(tableId)
+  if (!table) return
+  let dragEl = null
+  table.querySelectorAll('tr.drag-row').forEach(tr => {
+    tr.addEventListener('dragstart', e => {
+      if (e.target.closest && e.target.closest('a,button,input,.cb')) {
+        e.preventDefault(); return
+      }
+      dragEl = tr
+      tr.classList.add('dragging')
+      e.dataTransfer.effectAllowed = 'move'
+      try { e.dataTransfer.setData('text/plain', tr.dataset.id) } catch (_) {}
+    })
+    tr.addEventListener('dragend', () => {
+      tr.classList.remove('dragging')
+      table.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'))
+      dragEl = null
+    })
+    tr.addEventListener('dragover', e => {
+      e.preventDefault()
+      e.dataTransfer.dropEffect = 'move'
+      if (!dragEl || dragEl === tr) return
+      // 仅允许在可拖动行之间重排（置顶区）
+      if (!tr.classList.contains('drag-row')) return
+      const rect = tr.getBoundingClientRect()
+      const before = e.clientY < rect.top + rect.height / 2
+      table.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'))
+      tr.classList.add('drag-over')
+      if (before) tr.parentNode.insertBefore(dragEl, tr)
+      else tr.parentNode.insertBefore(dragEl, tr.nextSibling)
+    })
+    tr.addEventListener('drop', async e => {
+      e.preventDefault()
+      table.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'))
+      const ids = [...table.querySelectorAll('tr.drag-row')].map(r => r.dataset.id).filter(Boolean)
+      try {
+        await api(apiPath, { method: 'POST', body: JSON.stringify({ ids }) })
+        toast('排序已保存')
+        if (onDone) onDone()
+      } catch (err) {
+        toast(err.message || '排序失败')
+        if (onDone) onDone()
+      }
+    })
+  })
+}
+async function delActivity(id){
+  if (!confirm('确定删除该活动？')) return
+  await api('/api/admin/activities/' + id, {method:'DELETE'})
+  toast('已删除'); renderActivities()
+}
+
+/* ============ 活动编辑器（字段对齐小程序列表+详情） ============ */
+let scheduleRows = []
+
+function actBadgeLabel(type, subType) {
+  if (type === 'buddy') {
+    const s = BUDDY_SUBS.find(x => x.key === subType) || BUDDY_SUBS[0]
+    return '找搭子 · ' + s.name
+  }
+  return (ACT_TYPES.find(t => t.key === type) || {}).name || '官方活动'
+}
+
+function actGrad(type, subType) {
+  if (type === 'buddy') {
+    const map = {
+      practice: 'linear-gradient(135deg,#534ab7 0%,#3c3489 100%)',
+      group: 'linear-gradient(135deg,#ff6b35 0%,#c62828 100%)',
+      teammate: 'linear-gradient(135deg,#07c160 0%,#2e7d32 100%)',
+      other: 'linear-gradient(135deg,#7b61ff 0%,#534ab7 100%)'
+    }
+    return map[subType] || map.practice
+  }
+  return GRAD[type] || GRAD.official
+}
+
+async function renderActivityEditor(){
+  const isNew = route() === 'activity-new'
+  const id = isNew ? '' : (location.hash.split('id=')[1] || '')
+  document.getElementById('crumb').innerHTML = `活动管理 / <b>${isNew?'新建活动':'编辑活动'}</b>`
+  document.getElementById('main').innerHTML = '<div class="page-h"><h1>' + (isNew?'新建活动':'编辑活动') + '</h1></div><div id="aed">加载中…</div>'
+  let a = {
+    type:'official', buddySubType:'practice', title:'', desc:'', city:'北京', location:'',
+    dateText:'', timeText:'', danceTypes:'', organizer:'舞岛官方', headcount:'不限',
+    followCount:0, schedule:[], notes:'', pinned:false, status:'draft', lat:39.96, lng:116.4
+  }
+  if (!isNew) a = await api('/api/admin/activities/' + id)
+  scheduleRows = (a.schedule||[]).map(s => ({time: normalizeTimeValue(s.time||''), item:s.item||''}))
+  const isBuddy = a.type === 'buddy'
+  const badge = actBadgeLabel(a.type, a.buddySubType || 'practice')
+  const grad = actGrad(a.type, a.buddySubType || 'practice')
+  const parsedDates = resolveActivityDates(a)
+  const parsedTimes = parseTimeRange(a.timeText)
+  const dateMode = inferDateModeAdmin(a)
+  const weekdays = dateMode === 'weekly'
+    ? (parseWeekdaysAdmin(a.weekdays && a.weekdays.length ? a.weekdays : a.dateText))
+    : []
+  const normDateISO = parsedDates.start
+  const normDateEndISO = parsedDates.end
+  const normTimeStart = normalizeTimeValue(a.startTime) || parsedTimes.start
+  const normTimeEnd = normalizeTimeValue(a.endTime) || parsedTimes.end
+
+  document.getElementById('aed').innerHTML = `
+  <div class="page-h" style="margin-top:0">
+    <div class="actions" style="margin-left:auto">
+      <button class="btn btn-ghost" onclick="location.hash='#/activities'">返回列表</button>
+      <button class="btn btn-ghost" onclick="saveActivity('draft')">存草稿</button>
+      <button class="btn btn-pri" onclick="saveActivity('publish')">发布</button>
+    </div>
+  </div>
+  <div class="tip" style="margin-bottom:16px">以下字段与小程序<strong>活动列表卡片</strong>、<strong>活动详情</strong>一一对应。已去掉地图短标题/坐标（小程序无地图）。</div>
+
+  <div class="editor-layout">
+    <div class="editor-main">
+      <div class="side-card" style="margin-bottom:16px;padding:0;overflow:hidden">
+        <div style="padding:10px 14px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line)">小程序列表封面预览</div>
+        <div id="act-cover-media" style="${a.coverUrl?'':'display:none'};height:160px;background:#fafafa;overflow:hidden;display:${a.coverUrl?'flex':'none'};align-items:center;justify-content:flex-start">
+          <img id="act-cover-img" src="${a.coverUrl?esc(mediaUrl(a.coverUrl)):''}" style="height:100%;width:auto;max-width:100%;display:block;object-fit:contain">
+        </div>
+        <div class="activity-hero-preview" id="act-hero" style="${a.coverUrl?'display:none':''};background:${grad};margin:0;border-radius:0;height:160px;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:20px;text-align:left">
+          <div class="badge" id="act-hero-badge" style="position:static;margin-bottom:8px;background:rgba(255,255,255,.95)">${esc(badge)}</div>
+          <div id="act-hero-date" style="font-size:13px;opacity:.9;margin-bottom:4px">${esc(a.dateText)||'封面日期'}</div>
+          <span id="act-hero-title" style="font-size:18px">${esc(a.title)||'活动标题'}</span>
+        </div>
+        <div style="padding:14px 16px;font-size:13px;color:var(--ink2)">
+          <div id="act-prev-badge-row" style="margin-bottom:8px;${a.coverUrl?'':'display:none'}">
+            <span class="badge" id="act-body-badge" style="background:var(--purple-bg);color:var(--purple-d)">${esc(badge)}</span>
+          </div>
+          <div id="act-prev-title" style="font-size:15px;font-weight:600;margin-bottom:8px;${a.coverUrl?'':'display:none'}">${esc(a.title)||'活动标题'}</div>
+          <div id="act-prev-desc" style="margin-bottom:10px;line-height:1.5;color:var(--muted)">${esc(a.desc)||'列表摘要（活动介绍）'}</div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted)">
+            <span>📍 <b id="act-prev-loc">${esc(a.location)||'地点'}</b></span>
+            <span>🕒 <b id="act-prev-time">${esc(a.timeText)||'列表时间'}</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field"><label>活动类型 * <span style="font-weight:400;color:var(--muted)">→ 小程序顶部分类筛选 + 封面角标</span></label>
+        <select id="a-type" onchange="onActTypeChange()">${ACT_TYPES.map(t=>`<option value="${t.key}" ${a.type===t.key?'selected':''}>${t.name}</option>`).join('')}</select>
+      </div>
+      <div class="field" id="a-buddy-wrap" style="${isBuddy?'':'display:none'}">
+        <label>找搭子子类型 * <span style="font-weight:400;color:var(--muted)">→ 封面角标如「找搭子 · 团购」；影响列表「还差 N 人」文案</span></label>
+        <select id="a-buddy-sub" onchange="onBuddySubChange()">${BUDDY_SUBS.map(t=>`<option value="${t.key}" ${(a.buddySubType||'practice')===t.key?'selected':''}>${t.name}</option>`).join('')}</select>
+      </div>
+      <div class="field field-title"><label>标题 * <span style="font-weight:400;color:var(--muted)">→ 列表封面标题 + 详情大标题</span></label>
+        <input type="text" id="a-title" value="${esc(a.title)}" maxlength="40" oninput="updateActPreview()" placeholder="活动标题（必填）">
+      </div>
+      <div class="field" id="a-contest-wrap" style="${isBuddy && (a.buddySubType||'practice')==='teammate'?'':'display:none'}">
+        <label>比赛名称 <span style="font-weight:400;color:var(--muted)">找队友必填 → 详情展示</span></label>
+        <input type="text" id="a-contest" value="${esc(a.contestName||'')}" maxlength="40" placeholder="如：HHI 北京站">
+      </div>
+      <div class="field"><label>封面图 <span style="font-weight:400;color:var(--muted)">→ 列表封面（可空则用渐变）</span></label>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="url" id="a-cover" value="${esc(a.coverUrl||'')}" placeholder="/uploads/… 或 https://…" style="flex:1" oninput="updateActPreview()">
+          <button class="btn btn-ghost" style="height:38px;flex-shrink:0" onclick="document.getElementById('file-act-cover').click()">上传</button>
+        </div>
+        <input type="file" id="file-act-cover" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none" onchange="onActCoverPicked(event)">
+        <div id="a-cover-preview" style="margin-top:8px">${a.coverUrl?`<img src="${esc(mediaUrl(a.coverUrl))}" style="max-width:100%;max-height:120px;border-radius:8px">`:''}</div>
+      </div>
+      <div class="field"><label>活动介绍 <span style="font-weight:400;color:var(--muted)">→ 列表卡片摘要 + 详情「活动介绍」</span></label>
+        <textarea id="a-desc" rows="4" maxlength="300" oninput="updateActPreview()">${esc(a.desc)}</textarea>
+      </div>
+      <div class="field"><label>注意事项 <span style="font-weight:400;color:var(--muted)">→ 详情底部「注意事项」</span></label>
+        <textarea id="a-notes" rows="3" maxlength="500">${esc(a.notes||'')}</textarea>
+      </div>
+      <div class="field" id="a-schedule-wrap" style="${isBuddy?'display:none':''}"><label>日程安排 <span style="font-weight:400;color:var(--muted)">→ 详情「日程安排」（可空）</span></label>
+        <div class="schedule-editor" id="se-box"></div>
+        <button class="se-add" onclick="addScheduleRow()">＋ 添加日程项</button>
+      </div>
+    </div>
+
+    <div class="editor-side">
+      <div class="side-card">
+        <h3>发布</h3>
+        <div class="switch-row"><span class="lbl">置顶（活动列表靠前）</span>
+          <div class="switch ${a.pinned?'on':''}" id="a-sw-pin" onclick="this.classList.toggle('on')"><div class="knob"></div></div>
+        </div>
+      </div>
+      <div class="side-card">
+        <h3>时间与地点（列表 + 详情）</h3>
+        <div class="field"><label>日期方式</label>${dateModeHtml('a', dateMode)}</div>
+        <div id="a-once-wrap" style="${dateMode==='once'?'':'display:none'}">
+          <div class="dt-pair" style="margin-bottom:12px">
+            <div class="field"><label>开始日期 <span style="font-weight:400;color:var(--muted)">可空</span></label>
+              <input type="date" id="a-date" value="${esc(normDateISO)}" oninput="updateActPreview()">
+            </div>
+            <div class="field"><label>结束日期 <span style="font-weight:400;color:var(--muted)">多日选填</span></label>
+              <input type="date" id="a-date-end" value="${esc(normDateEndISO)}" oninput="updateActPreview()">
+            </div>
+          </div>
+        </div>
+        <div id="a-weekly-wrap" style="${dateMode==='weekly'?'':'display:none'}">
+          <div class="field"><label>每周几 <span style="font-weight:400;color:var(--muted)">可多选</span></label>
+            ${weekdayBoxHtml('a-weekdays', weekdays)}
+          </div>
+        </div>
+        <div class="dt-pair" style="margin-bottom:12px">
+          <div class="field"><label>开始时刻 <span style="font-weight:400;color:var(--muted)">选填</span></label>
+            <input type="time" id="a-time-start" value="${esc(normTimeStart)}" step="900" oninput="updateActPreview()">
+          </div>
+          <div class="field"><label>结束时刻 <span style="font-weight:400;color:var(--muted)">选填</span></label>
+            <input type="time" id="a-time-end" value="${esc(normTimeEnd)}" step="900" oninput="updateActPreview()">
+          </div>
+        </div>
+        <div class="tip" style="margin:0 0 10px;font-size:12px">不设置则列表不展示时间；每周循环不会过期。</div>
+        <div class="field"><label>地点 <span style="font-weight:400;color:var(--muted)">列表地点行 + 详情地点</span></label>
+          <input type="text" id="a-loc" value="${esc(a.location)}" maxlength="60" oninput="updateActPreview()" placeholder="如：北京 工人体育馆">
+        </div>
+        <div class="field"><label>城市 <span style="font-weight:400;color:var(--muted)">后台归类，小程序详情不单独展示</span></label>
+          ${citySelectHtml('a-city', a.city || '北京')}
+        </div>
+      </div>
+      <div class="side-card" id="a-meta-buddy" style="${isBuddy?'':'display:none'}">
+        <h3>找搭子专属（与提交页一致）</h3>
+        <div class="field"><label>人数 <span style="font-weight:400;color:var(--muted)">详情「人数」；团购/找队友数字→「还差 N 人」</span></label>
+          <input type="text" id="a-head" value="${esc(a.headcount||'不限')}" maxlength="10" placeholder="不限 / 3 / 2">
+        </div>
+        <div class="field"><label>舞种 <span style="font-weight:400;color:var(--muted)">详情「舞种」· 可多选</span></label>
+          ${danceMultiHtml('a-dance-buddy', a.danceTypes || '')}
+        </div>
+      </div>
+      <div class="side-card" id="a-meta-normal" style="${isBuddy?'display:none':''}">
+        <h3>详情信息行</h3>
+        <div class="field"><label>舞种 <span style="font-weight:400;color:var(--muted)">详情「舞种」· 可多选</span></label>
+          ${danceMultiHtml('a-dance', a.danceTypes || '')}
+        </div>
+        <div class="field"><label>主办 <span style="font-weight:400;color:var(--muted)">详情「主办」</span></label>
+          <input type="text" id="a-org" value="${esc(a.organizer||'')}" maxlength="30" placeholder="舞岛官方">
+        </div>
+        <div class="field" id="a-follow-wrap" style="${a.type==='official'?'display:none':''}">
+          <label>关注人数 <span style="font-weight:400;color:var(--muted)">列表「已有 N 人关注」初始值</span></label>
+          <input type="number" id="a-follow" value="${a.followCount||0}" min="0">
+        </div>
+        <div class="tip" id="a-official-tip" style="${a.type==='official'?'':'display:none'};margin:0;font-size:12px">官方活动：底部为「加入 / 现场打卡」，人气以真实加入数为准。</div>
+      </div>
+    </div>
+  </div>`
+  renderSchedule()
+}
+
+function formatDateLabelAdmin(dateStr){
+  if (!dateStr) return ''
+  const p = String(dateStr).split('-')
+  if (p.length < 3) return dateStr
+  return Number(p[1]) + '月' + Number(p[2]) + '日'
+}
+function composeDateTextAdmin(start, end){
+  const a = formatDateLabelAdmin(start)
+  const b = formatDateLabelAdmin(end)
+  if (a && b) return a === b ? a : (a + ' - ' + b)
+  return a || b || '时间待定'
+}
+function composeTimeTextAdmin(start, end){
+  const s = normalizeTimeValue(start)
+  const e = normalizeTimeValue(end)
+  if (s && e) return s === e ? s : (s + ' - ' + e)
+  return s || e || ''
+}
+function onBuddyStartChange(){
+  const start = (document.getElementById('a-start') || {}).value || ''
+  const endEl = document.getElementById('a-end')
+  if (start && endEl && !endEl.value) endEl.value = start
+  updateActPreview()
+}
+/** HH:MM / HH:MM:SS → HH:MM，供 type=time */
+function normalizeTimeValue(t){
+  const m = String(t || '').trim().match(/^(\d{1,2}):(\d{2})/)
+  if (!m) return ''
+  return String(m[1]).padStart(2, '0') + ':' + m[2]
+}
+/** 从「14:00 - 22:00」解析起止时刻 */
+function parseTimeRange(text){
+  const s = String(text || '').trim()
+  const m = s.match(/(\d{1,2}:\d{2})(?:\s*[-–—~至到]\s*(\d{1,2}:\d{2}))?/)
+  if (!m) return { start: '', end: '' }
+  return { start: normalizeTimeValue(m[1]), end: normalizeTimeValue(m[2] || '') }
+}
+/** 从 YYYY-MM-DD 或「8月24日」解析 ISO 日期 */
+function parseDateToISO(text){
+  const s = String(text || '').trim()
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s
+  const m = s.match(/(\d{1,2})月(\d{1,2})日/)
+  if (!m) return ''
+  const y = new Date().getFullYear()
+  return y + '-' + String(m[1]).padStart(2, '0') + '-' + String(m[2]).padStart(2, '0')
+}
+/** 编辑回填：优先 startDate/endDate，否则从 dateText 解析 */
+function resolveActivityDates(a){
+  let start = String(a.startDate || '').slice(0, 10)
+  let end = String(a.endDate || '').slice(0, 10)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(start)) start = ''
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(end)) end = ''
+  if (!start && !end) {
+    const text = String(a.dateText || '')
+    const parts = text.split(/\s*[-–—~至到]\s*/)
+    start = parseDateToISO(parts[0] || '')
+    end = parts.length > 1 ? parseDateToISO(parts[1] || '') : ''
+  }
+  return { start, end }
+}
+
+function onBuddySubChange(){
+  const sub = (document.getElementById('a-buddy-sub')||{}).value
+  const wrap = document.getElementById('a-contest-wrap')
+  if (wrap) wrap.style.display = sub === 'teammate' ? '' : 'none'
+  updateActPreview()
+}
+
+async function onActCoverPicked(ev){
+  const file = ev.target.files[0]
+  ev.target.value = ''
+  if (!file) return
+  try{
+    const url = await uploadFile(file, 'image')
+    document.getElementById('a-cover').value = url
+    document.getElementById('a-cover-preview').innerHTML = `<img src="${esc(mediaUrl(url))}" style="max-width:100%;max-height:120px;border-radius:8px">`
+    updateActPreview()
+  }catch(e){ toast(e.message||'上传失败') }
+}
+
+function onActTypeChange(){
+  const type = document.getElementById('a-type').value
+  const buddy = type === 'buddy'
+  document.getElementById('a-buddy-wrap').style.display = buddy ? '' : 'none'
+  document.getElementById('a-meta-buddy').style.display = buddy ? '' : 'none'
+  document.getElementById('a-meta-normal').style.display = buddy ? 'none' : ''
+  const contestWrap = document.getElementById('a-contest-wrap')
+  if (contestWrap) {
+    const sub = (document.getElementById('a-buddy-sub')||{}).value
+    contestWrap.style.display = buddy && sub === 'teammate' ? '' : 'none'
+  }
+  const followWrap = document.getElementById('a-follow-wrap')
+  const officialTip = document.getElementById('a-official-tip')
+  if (followWrap) followWrap.style.display = type === 'official' ? 'none' : ''
+  if (officialTip) officialTip.style.display = type === 'official' ? '' : 'none'
+  const sch = document.getElementById('a-schedule-wrap')
+  if (sch) sch.style.display = buddy ? 'none' : ''
+  updateActPreview()
+}
+
+function updateActPreview(){
+  if (!document.getElementById('a-type')) return
+  const type = document.getElementById('a-type').value
+  const sub = (document.getElementById('a-buddy-sub') || {}).value || 'practice'
+  const badge = actBadgeLabel(type, sub)
+  const grad = actGrad(type, sub)
+  const cover = ((document.getElementById('a-cover') || {}).value || '').trim()
+  const hero = document.getElementById('act-hero')
+  const media = document.getElementById('act-cover-media')
+  const img = document.getElementById('act-cover-img')
+  const titleEl = document.getElementById('act-prev-title')
+  const badgeRow = document.getElementById('act-prev-badge-row')
+  if (cover) {
+    if (media) { media.style.display = 'flex'; }
+    if (img) img.src = mediaUrl(cover)
+    if (hero) hero.style.display = 'none'
+    if (titleEl) { titleEl.style.display = ''; titleEl.textContent = document.getElementById('a-title').value || '活动标题' }
+    if (badgeRow) badgeRow.style.display = ''
+  } else {
+    if (media) media.style.display = 'none'
+    if (hero) { hero.style.display = 'flex'; hero.style.background = grad }
+    if (titleEl) titleEl.style.display = 'none'
+    if (badgeRow) badgeRow.style.display = 'none'
+  }
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v }
+  let coverDate = ''
+  let listTime = ''
+  const dateMode = readDateMode('a')
+  const times = composeTimeTextAdmin(
+    (document.getElementById('a-time-start') || {}).value,
+    (document.getElementById('a-time-end') || {}).value
+  )
+  if (dateMode === 'weekly') {
+    coverDate = formatWeekdaysAdmin(readWeekdays('a-weekdays')) || '每周循环'
+    listTime = [coverDate, times].filter(Boolean).join(' · ')
+  } else if (dateMode === 'once') {
+    coverDate = composeDateTextAdmin(
+      (document.getElementById('a-date') || {}).value,
+      (document.getElementById('a-date-end') || {}).value
+    )
+    if (coverDate === '时间待定') coverDate = ''
+    listTime = times || coverDate
+  } else {
+    coverDate = times
+    listTime = times
+  }
+  set('act-hero-badge', badge)
+  set('act-body-badge', badge)
+  set('act-hero-title', document.getElementById('a-title').value || '活动标题')
+  set('act-hero-date', coverDate)
+  set('act-prev-desc', document.getElementById('a-desc').value || '列表摘要（活动介绍）')
+  set('act-prev-loc', document.getElementById('a-loc').value || '地点')
+  set('act-prev-time', listTime)
+}
+
+function renderSchedule(){
+  const box = document.getElementById('se-box')
+  if (!box) return
+  box.innerHTML = scheduleRows.map((r, i) => `
+    <div class="se-row">
+      <input type="time" value="${esc(normalizeTimeValue(r.time))}" onchange="scheduleRows[${i}].time=normalizeTimeValue(this.value)">
+      <input type="text" placeholder="事项…" value="${esc(r.item)}" onchange="scheduleRows[${i}].item=this.value">
+      <button class="se-del" onclick="scheduleRows.splice(${i},1);renderSchedule()">×</button>
+    </div>`).join('') || '<div style="padding:10px;color:var(--muted2);font-size:13px">暂无日程，点击下方添加</div>'
+}
+function addScheduleRow(){ scheduleRows.push({time:'',item:''}); renderSchedule() }
+
+async function saveActivity(action){
+  const title = document.getElementById('a-title').value.trim()
+  if (!title){ toast('活动标题必填'); return }
+  const type = document.getElementById('a-type').value
+  const isBuddy = type === 'buddy'
+  const danceTypes = readDanceValue(isBuddy ? 'a-dance-buddy' : 'a-dance')
+  const dateMode = readDateMode('a')
+  const weekdays = dateMode === 'weekly' ? readWeekdays('a-weekdays') : []
+  if (dateMode === 'weekly' && !weekdays.length) { toast('请选择每周几'); return }
+  let startDate = ''
+  let endDate = ''
+  if (dateMode === 'once') {
+    startDate = document.getElementById('a-date').value || ''
+    endDate = document.getElementById('a-date-end').value || ''
+  }
+  const startTime = normalizeTimeValue((document.getElementById('a-time-start')||{}).value)
+  const endTime = normalizeTimeValue((document.getElementById('a-time-end')||{}).value)
+  const dateText = dateMode === 'weekly'
+    ? formatWeekdaysAdmin(weekdays)
+    : (dateMode === 'once' ? composeDateTextAdmin(startDate, endDate) : '')
+  const timeText = composeTimeTextAdmin(startTime, endTime)
+  const payload = {
+    action,
+    type,
+    title,
+    desc: document.getElementById('a-desc').value.trim(),
+    notes: document.getElementById('a-notes').value.trim(),
+    city: document.getElementById('a-city').value.trim() || '北京',
+    location: document.getElementById('a-loc').value.trim(),
+    danceTypes,
+    organizer: isBuddy ? '舞岛官方' : (document.getElementById('a-org').value.trim() || '舞岛官方'),
+    followCount: isBuddy || type === 'official' ? 0 : (parseInt(document.getElementById('a-follow').value, 10) || 0),
+    headcount: isBuddy ? (document.getElementById('a-head').value.trim() || '不限') : '不限',
+    buddySubType: isBuddy ? document.getElementById('a-buddy-sub').value : undefined,
+    contestName: isBuddy ? (document.getElementById('a-contest')||{}).value || '' : '',
+    coverUrl: document.getElementById('a-cover').value.trim(),
+    dateMode,
+    weekdays,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    dateText: dateText === '时间待定' ? '' : dateText,
+    timeText,
+    schedule: isBuddy ? [] : scheduleRows.map(r => ({
+      time: normalizeTimeValue(r.time),
+      item: r.item || ''
+    })),
+    pinned: document.getElementById('a-sw-pin').classList.contains('on')
+  }
+  const isNew = route() === 'activity-new'
+  if (isNew) await api('/api/admin/activities', {method:'POST', body:JSON.stringify(payload)})
+  else await api('/api/admin/activities/' + location.hash.split('id=')[1], {method:'PUT', body:JSON.stringify(payload)})
+  toast(action === 'publish' ? '活动已发布！' : '已存草稿')
+  location.hash = '#/activities'
+}
+
+/* ============ 搭子需求审核 ============ */
+const buddyFilter = { status: 'pending' }
+
+function buddyStatusLabel(s){
+  return {pending:'待审核',published:'已发布',rejected:'已驳回',closed:'已结束'}[s] || s
+}
+
+async function renderBuddyRequests(){
+  document.getElementById('crumb').innerHTML = '活动管理 / <b>搭子需求审核</b>'
+  document.getElementById('main').innerHTML = '<div class="page-h"><h1>搭子需求审核</h1></div><div id="br-body">加载中…</div>'
+  const [list, st] = await Promise.all([
+    api('/api/admin/buddy-requests' + (buddyFilter.status ? '?status=' + buddyFilter.status : '')),
+    api('/api/admin/buddy-stats')
+  ])
+  document.getElementById('br-body').innerHTML = `
+    <div class="stats-grid">
+      ${[
+        ['待审核', st.pending, '优先处理'],
+        ['审核通过率', st.passRate, '已发布 / 全部提交'],
+        ['已发布找搭子', st.publishedBuddy, '活动列表可见'],
+        ['平均加入数', st.avgApply, '每局']
+      ].map(x => `<div class="stat-card"><div class="label">${x[0]}</div><div class="val">${x[1]}</div><div class="delta">${x[2]}</div></div>`).join('')}
+    </div>
+    <div class="table-card">
+      <div class="tc-h">
+        <h2>需求列表（${list.length}）</h2>
+        <div class="tc-filters">
+          <select class="filter-select" onchange="buddyFilter.status=this.value;renderBuddyRequests()">
+            <option value="" ${!buddyFilter.status?'selected':''}>全部状态</option>
+            ${['pending','published','rejected','closed'].map(s =>
+              `<option value="${s}" ${buddyFilter.status===s?'selected':''}>${buddyStatusLabel(s)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <table>
+        <tr><th>标题</th><th style="width:80px">类型</th><th style="width:120px">时间</th><th style="width:140px">地点</th><th style="width:110px">联系方式</th><th style="width:80px">状态</th><th style="width:160px">操作</th></tr>
+        ${list.map(r => `
+        <tr>
+          <td><b>${esc(r.title)}</b></td>
+          <td><span class="chip chip-purple">${esc(r.subTypeName)}</span></td>
+          <td>${esc(r.dateText || '时间待定')}</td>
+          <td>${esc(r.location)}</td>
+          <td>${esc(r.contactWechat)}</td>
+          <td><span class="status-dot ${r.status==='pending'?'draft':(r.status==='published'?'published':'offline')}"></span>${buddyStatusLabel(r.status)}</td>
+          <td class="row-actions">
+            ${r.status==='pending' ? `<a style="font-weight:600" onclick="location.hash='#/buddy-review?id=${r.id}'">通过→代发</a>
+            <a class="del" onclick="rejectBuddy('${r.id}')">驳回</a>` : ''}
+            ${r.linkedActivityId ? `<a onclick="location.hash='#/activity-edit?id=${r.linkedActivityId}'">查看活动</a>` : ''}
+          </td>
+        </tr>`).join('') || '<tr><td colspan="7" style="color:var(--muted);padding:24px">暂无需求</td></tr>'}
+      </table>
+    </div>`
+}
+
+async function rejectBuddy(id){
+  const reason = prompt('驳回原因（将展示给用户）', '信息不完整或不符合发布规范')
+  if (reason == null) return
+  await api('/api/admin/buddy-requests/' + id + '/reject', {
+    method:'POST', body: JSON.stringify({ reason })
+  })
+  toast('已驳回'); renderBuddyRequests()
+}
+
+async function renderBuddyReview(){
+  const id = (location.hash.split('id=')[1] || '').split('&')[0]
+  document.getElementById('crumb').innerHTML = '活动管理 / <b>审核 → 代发</b>'
+  document.getElementById('main').innerHTML = '<div class="page-h"><h1>审核 → 代发编辑器</h1></div><div id="brv">加载中…</div>'
+  const r = await api('/api/admin/buddy-requests/' + id)
+  const imgs = (r.refImages || []).map(u => `<img src="${esc(mediaUrl(u))}" style="width:80px;height:80px;object-fit:cover;border-radius:6px">`).join('')
+  document.getElementById('brv').innerHTML = `
+  <div class="page-h" style="margin-top:0">
+    <div class="actions" style="margin-left:auto">
+      <button class="btn btn-ghost" onclick="location.hash='#/buddy-requests'">返回列表</button>
+      <button class="btn btn-danger" onclick="rejectBuddy('${r.id}')">驳回</button>
+      <button class="btn btn-pri" onclick="publishBuddy('${r.id}')">发布为找搭子</button>
+    </div>
+  </div>
+  <div class="tip"><b>审核流程</b>：用户提交需求 → 运营润色 → 发布为「找搭子」活动（小程序活动列表可见）。发布账号 = 舞岛官方，正文不含联系方式。</div>
+  <div class="editor-layout">
+    <div class="editor-main">
+      <h3 style="margin-bottom:12px">用户原始需求（只读）</h3>
+      <div class="side-card" style="margin-bottom:16px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:13px">
+          <div><span style="color:var(--muted)">子类型：</span><b>${esc(r.subTypeName)}</b></div>
+          <div><span style="color:var(--muted)">开始：</span><b>${esc(r.startDate || '暂不设置')}</b></div>
+          <div><span style="color:var(--muted)">结束：</span><b>${esc(r.endDate || '暂不设置')}</b></div>
+          <div><span style="color:var(--muted)">地点：</span><b>${esc(r.location||'—')}</b></div>
+          <div><span style="color:var(--muted)">舞种：</span><b>${esc(r.danceStyle||'—')}</b></div>
+          <div><span style="color:var(--muted)">人数：</span><b>${esc(r.headcount||'不限')}</b></div>
+          <div><span style="color:var(--muted)">城市：</span><b>${esc(r.city||'—')}</b></div>
+          <div><span style="color:var(--muted)">微信号：</span><b>${esc(r.contactWechat)}</b></div>
+          <div><span style="color:var(--muted)">手机：</span><b>${esc(r.contactPhone||'—')}</b></div>
+        </div>
+        <div style="margin-top:12px;font-size:13px"><span style="color:var(--muted)">标题：</span>${esc(r.title)}</div>
+        <div style="margin-top:8px;font-size:13px;color:var(--ink2);white-space:pre-wrap">${esc(r.description||'（无描述）')}</div>
+        ${imgs ? `<div style="margin-top:10px;display:flex;gap:8px">${imgs}</div>` : ''}
+      </div>
+      <h3 style="margin-bottom:12px">代发内容（对齐小程序展示）</h3>
+      <div class="field"><label>找搭子子类型 → 封面角标</label>
+        <select id="br-sub" onchange="toggleBrContest()">${BUDDY_SUBS.map(t=>`<option value="${t.key}" ${r.subType===t.key?'selected':''}>${t.name}</option>`).join('')}</select>
+      </div>
+      <div class="field" id="br-contest-wrap" style="${r.subType==='teammate'?'':'display:none'}">
+        <label>比赛名称 <span style="font-weight:400;color:var(--muted)">找队友必填</span></label>
+        <input type="text" id="br-contest" value="${esc(r.contestName||'')}" maxlength="40" placeholder="如：HHI 北京站">
+      </div>
+      <div class="field field-title"><label>标题 → 列表封面 + 详情标题</label>
+        <input type="text" id="br-title" value="${esc(r.title)}" maxlength="40">
+      </div>
+      <div class="field"><label>活动介绍 → 列表摘要 + 详情介绍</label>
+        <textarea id="br-desc" rows="5" maxlength="300">${esc(r.description||'')}</textarea>
+      </div>
+      <div class="field"><label>注意事项 → 详情底部</label>
+        <textarea id="br-notes" rows="3">加入后你的联系方式将发给发起人，由发起人主动联系你。舞岛不参与线下交易与担保。</textarea>
+      </div>
+    </div>
+    <div class="editor-side">
+      <div class="side-card">
+        <h3>时间地点（与提交页 / 小程序一致）</h3>
+        <div class="field"><label>日期方式</label>${dateModeHtml('br', inferDateModeAdmin(r))}</div>
+        <div id="br-once-wrap" style="${inferDateModeAdmin(r)==='once'?'':'display:none'}">
+        <div class="dt-pair" style="margin-bottom:12px">
+          <div class="field"><label>开始日期</label><input type="date" id="br-start" value="${esc(r.startDate||'')}" oninput="onBrStartChange()"></div>
+          <div class="field"><label>结束日期</label><input type="date" id="br-end" value="${esc(r.endDate||r.startDate||'')}"></div>
+        </div>
+        </div>
+        <div id="br-weekly-wrap" style="${inferDateModeAdmin(r)==='weekly'?'':'display:none'}">
+          <div class="field"><label>每周几</label>${weekdayBoxHtml('br-weekdays', r.weekdays && r.weekdays.length ? r.weekdays : r.dateText)}</div>
+        </div>
+        <div class="dt-pair" style="margin-bottom:12px">
+          <div class="field"><label>开始时刻</label><input type="time" id="br-start-time" value="${esc(r.startTime||'')}" step="900"></div>
+          <div class="field"><label>结束时刻</label><input type="time" id="br-end-time" value="${esc(r.endTime||'')}" step="900"></div>
+        </div>
+        <div class="field"><label>地点</label><input type="text" id="br-loc" value="${esc(r.location||'')}"></div>
+        <div class="field"><label>城市（后台归类）</label>${citySelectHtml('br-city', r.city || '北京')}</div>
+        <div class="field"><label>舞种 · 可多选</label>${danceMultiHtml('br-dance', r.danceStyle || '')}</div>
+        <div class="field"><label>人数（团购/找队友算「还差 N 人」）</label><input type="text" id="br-head" value="${esc(r.headcount||'不限')}"></div>
+      </div>
+      <div class="side-card">
+        <h3>发布信息</h3>
+        <div class="field"><label>发布账号</label><input type="text" value="舞岛官方" disabled></div>
+        <div class="field"><label>发起人（查看加入用）</label><input type="text" value="${esc(r.contactWechat)}" disabled></div>
+      </div>
+    </div>
+  </div>`
+}
+
+async function publishBuddy(id){
+  const desc = document.getElementById('br-desc').value
+  const notes = document.getElementById('br-notes').value
+  const title = document.getElementById('br-title').value
+  const sub = document.getElementById('br-sub').value
+  const contestName = (document.getElementById('br-contest') || {}).value || ''
+  if (sub === 'teammate' && !String(contestName).trim()) {
+    toast('找队友请填写比赛名称'); return
+  }
+  if (/加微|加\s*v|微信[:：]|wechat/i.test(desc + notes + title)){
+    toast('正文不能包含联系方式或「加微信」引流'); return
+  }
+  await api('/api/admin/buddy-requests/' + id + '/publish', {
+    method:'POST',
+    body: JSON.stringify({
+      buddySubType: sub,
+      title,
+      desc, notes,
+      contestName: sub === 'teammate' ? String(contestName).trim() : '',
+      city: document.getElementById('br-city').value,
+      location: document.getElementById('br-loc').value,
+      dateMode: readDateMode('br'),
+      weekdays: readDateMode('br') === 'weekly' ? readWeekdays('br-weekdays') : [],
+      startDate: document.getElementById('br-start') ? document.getElementById('br-start').value : '',
+      endDate: document.getElementById('br-end') ? document.getElementById('br-end').value : '',
+      startTime: normalizeTimeValue((document.getElementById('br-start-time')||{}).value),
+      endTime: normalizeTimeValue((document.getElementById('br-end-time')||{}).value),
+      danceTypes: readDanceValue('br-dance'),
+      headcount: document.getElementById('br-head').value
+    })
+  })
+  toast('已发布为找搭子活动')
+  location.hash = '#/buddy-requests'
+}
+
+function onBrStartChange(){
+  const start = (document.getElementById('br-start') || {}).value || ''
+  const endEl = document.getElementById('br-end')
+  if (start && endEl && !endEl.value) endEl.value = start
+}
+
+function toggleBrContest(){
+  const sub = document.getElementById('br-sub')
+  const wrap = document.getElementById('br-contest-wrap')
+  if (!sub || !wrap) return
+  wrap.style.display = sub.value === 'teammate' ? '' : 'none'
+}
+
+/* ============ 启动 ============ */
+(async function(){
+  if (!TOKEN){ showLogin(); return }
+  try{
+    await api('/api/admin/stats')
+    hideLogin(); render()
+  }catch(e){ showLogin() }
+})()
+document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key==='Enter') doLogin() })
+</script>
+</body>
+</html>

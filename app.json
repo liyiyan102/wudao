@@ -1,0 +1,71 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/persona-test/persona-test",
+    "pages/activities/activities",
+    "pages/profile/profile",
+    "pages/post-detail/post-detail",
+    "pages/activity-detail/activity-detail",
+    "pages/history/history",
+    "pages/library/library",
+    "pages/my-activities/my-activities",
+    "pages/search/search",
+    "pages/settings/settings",
+    "pages/city-pick/city-pick",
+    "pages/login/login",
+    "pages/agreement/agreement",
+    "pages/buddy-request/buddy-request",
+    "pages/buddy-request-success/buddy-request-success",
+    "pages/buddy-apply/buddy-apply",
+    "pages/messages/messages",
+    "pages/my-buddy-requests/my-buddy-requests",
+    "pages/buddy-applications/buddy-applications",
+    "pages/buddy-notice/buddy-notice",
+    "pages/feedback-submit/feedback-submit",
+    "pages/my-feedback/my-feedback"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "舞岛",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f7f7f7",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#b0b0b4",
+    "selectedColor": "#534AB7",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab/tab-home.png",
+        "selectedIconPath": "images/tab/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/activities/activities",
+        "text": "活动",
+        "iconPath": "images/tab/tab-event.png",
+        "selectedIconPath": "images/tab/tab-event-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tab/tab-profile.png",
+        "selectedIconPath": "images/tab/tab-profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于选择活动地点与城市定位"
+    }
+  },
+  "requiredPrivateInfos": [
+    "chooseLocation",
+    "getLocation"
+  ],
+  "sitemapLocation": "sitemap.json"
+}

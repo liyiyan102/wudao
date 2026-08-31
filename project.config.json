@@ -1,0 +1,65 @@
+{
+  "description": "舞岛 MMVP v1.3 · 打开目录须为「兴趣社区」而非副本",
+  "compileType": "miniprogram",
+  "projectname": "wudao-mmvp",
+  "miniprogramRoot": "./",
+  "appid": "wxd9442cb9e9b80cc4",
+  "libVersion": "3.6.6",
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": false,
+    "urlCheck": false,
+    "enhance": true,
+    "coverView": true,
+    "showShadowRootInWxmlPanel": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    },
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "autoAudits": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "userConfirmedBundleSwitch": false,
+    "bundle": false,
+    "lazyloadPlaceholderEnable": false,
+    "preloadBackgroundData": false,
+    "newFeature": false,
+    "scopeDataCheck": false
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  },
+  "packOptions": {
+    "ignore": [
+      { "type": "folder", "value": "agents" },
+      { "type": "folder", "value": "docs" },
+      { "type": "folder", "value": "server" },
+      { "type": "folder", "value": "articles" },
+      { "type": "folder", "value": "published" },
+      { "type": "folder", "value": "assets" },
+      { "type": "folder", "value": ".cursor" },
+      { "type": "folder", "value": "node_modules" },
+      { "type": "suffix", "value": ".md" },
+      { "type": "suffix", "value": ".py" },
+      { "type": "file", "value": "tools_export_seeds.js" },
+      { "type": "file", "value": "tools_build_assets.py" },
+      { "type": "file", "value": "tools_gen_icons.py" }
+    ],
+    "include": []
+  },
+  "condition": {}
+}

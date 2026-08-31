@@ -1,0 +1,80 @@
+<view class="page">
+  <!-- 身份头图 -->
+  <view class="hero">
+    <view class="hero-bg"></view>
+    <view class="hero-inner">
+      <image wx:if="{{user && user.avatar}}" class="avatar-img" src="{{user.avatar}}" mode="aspectFill" />
+      <view wx:else class="avatar">{{nickInitial}}</view>
+      <view class="hero-text">
+        <view class="hero-name">{{user ? (user.nickname || '舞者') : '未登录'}}</view>
+        <view class="hero-sub">{{user ? '同城内容与活动已就绪' : '登录后同步点赞、收藏与活动'}}</view>
+      </view>
+      <view class="hero-action" wx:if="{{!user}}" bindtap="doLogin">登录</view>
+    </view>
+  </view>
+
+  <!-- 快捷入口：点赞 / 收藏 / 活动 -->
+  <view class="stats">
+    <view class="stat" bindtap="goLikes" hover-class="stat-press">
+      <view class="stat-num">{{likeCount}}</view>
+      <view class="stat-label">点赞</view>
+    </view>
+    <view class="stat-div"></view>
+    <view class="stat" bindtap="goCollects" hover-class="stat-press">
+      <view class="stat-num">{{collectCount}}</view>
+      <view class="stat-label">收藏</view>
+    </view>
+    <view class="stat-div"></view>
+    <view class="stat" bindtap="goMyActivities" hover-class="stat-press">
+      <view class="stat-num">{{myActCount}}</view>
+      <view class="stat-label">活动</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="menu">
+      <view class="menu-item" bindtap="goHistory" hover-class="menu-press">
+        <view class="menu-ic-wrap tone-hist">
+          <view class="ic ic-history-brand"></view>
+        </view>
+        <view class="menu-body">
+          <view class="menu-name">浏览历史</view>
+          <view class="menu-desc">最近看过的内容与活动</view>
+        </view>
+        <view class="menu-meta" wx:if="{{historyCount}}">{{historyCount}}</view>
+        <view class="ic ic-chevron-right menu-arrow"></view>
+      </view>
+      <view class="menu-item" bindtap="goMessages" hover-class="menu-press">
+        <view class="menu-ic-wrap tone-msg">
+          <view class="ic ic-bell-brand"></view>
+        </view>
+        <view class="menu-body">
+          <view class="menu-name">消息</view>
+          <view class="menu-desc">搭子需求审核结果</view>
+        </view>
+        <view class="menu-meta" wx:if="{{unreadCount}}">{{unreadCount}}</view>
+        <view class="ic ic-chevron-right menu-arrow"></view>
+      </view>
+      <view class="menu-item" bindtap="goFeedback" hover-class="menu-press">
+        <view class="menu-ic-wrap tone-feedback">
+          <view class="ic ic-chat-brand"></view>
+        </view>
+        <view class="menu-body">
+          <view class="menu-name">问题反馈</view>
+          <view class="menu-desc">遇到问题或有建议告诉我们</view>
+        </view>
+        <view class="ic ic-chevron-right menu-arrow"></view>
+      </view>
+      <view class="menu-item" bindtap="goSettings" hover-class="menu-press">
+        <view class="menu-ic-wrap tone-set">
+          <view class="ic ic-settings-brand"></view>
+        </view>
+        <view class="menu-body">
+          <view class="menu-name">设置</view>
+          <view class="menu-desc">城市、提醒与账号管理</view>
+        </view>
+        <view class="ic ic-chevron-right menu-arrow"></view>
+      </view>
+    </view>
+  </view>
+</view>

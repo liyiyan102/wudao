@@ -1,0 +1,30 @@
+<view class="page" wx:if="{{act}}">
+  <view class="sum">
+    <view class="sum-tag">练舞局 · 代发</view>
+    <view class="sum-t">{{act.title}}</view>
+    <view class="sum-m">{{act.dateText}} {{act.timeText}} · {{act.location}}</view>
+  </view>
+
+  <view class="callout">
+    <text class="b">联系方式仅发起人可见</text>，其他加入者互不可见，公开页面永不展示。
+  </view>
+
+  <view class="field">
+    <view class="lab">一句话说明（选填）</view>
+    <textarea class="ta" placeholder="练 Breaking 2 年，想找同水平搭子一起练 footwork" maxlength="100" value="{{message}}" bindinput="onMsg" auto-height />
+  </view>
+
+  <view class="field">
+    <view class="lab brand">微信号 * <text class="hint">仅发起人可见</text></view>
+    <input class="box brand-in" placeholder="填写微信号" value="{{contactWechat}}" bindinput="onWechat" />
+  </view>
+
+  <view class="field">
+    <view class="lab">手机号（选填）</view>
+    <input class="box" type="number" placeholder="选填" value="{{contactPhone}}" bindinput="onPhone" />
+  </view>
+</view>
+
+<view class="foot">
+  <view class="btn {{busy ? 'off' : ''}}" bindtap="onSubmit">提交加入</view>
+</view>

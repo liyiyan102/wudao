@@ -1,0 +1,10 @@
+<view class="wrap">
+  <view class="circle">
+    <view class="ic ic-check-circle-brand big"></view>
+  </view>
+  <view class="h">需求已提交</view>
+  <view class="sub">预计 24 小时内审核完成</view>
+  <view class="sub2">通过后将以「找搭子」发布在活动列表</view>
+  <view class="btn" bindtap="goMine">查看我的需求</view>
+  <view class="link" bindtap="goActs">返回活动列表 →</view>
+</view>

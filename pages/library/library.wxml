@@ -1,0 +1,19 @@
+<view class="hist-head">
+  <text class="hist-count">共 {{list.length}} 条</text>
+</view>
+
+<view class="hist-card" wx:for="{{list}}" wx:key="index" bindtap="openItem" data-item="{{item}}">
+  <view class="hist-cover">
+    <image wx:if="{{item.coverUrl}}" class="hist-cover-img" src="{{item.coverUrl}}" mode="aspectFill" />
+    <view wx:else class="ic ic-image-pale"></view>
+  </view>
+  <view class="hist-info">
+    <view class="hist-title ellipsis-2">{{item.title}}</view>
+    <view class="hist-tm">{{item.timeText}} · {{item.catName}}</view>
+  </view>
+</view>
+
+<view class="empty" wx:if="{{!list.length}}">
+  <view class="empty-icon">☆</view>
+  {{emptyText}}
+</view>

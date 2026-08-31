@@ -1,0 +1,47 @@
+<view class="page">
+  <view class="card source-card">
+    <view class="source-label">{{sourceLabel}}</view>
+    <view class="source-title" wx:if="{{sourceTitle}}">{{sourceTitle}}</view>
+    <view class="source-title muted" wx:else>告诉我们你遇到的问题或建议</view>
+  </view>
+
+  <view class="card form-card">
+    <view class="field-label">反馈内容</view>
+    <textarea
+      class="textarea"
+      value="{{content}}"
+      maxlength="1000"
+      placeholder="比如内容错误、图片加载异常、活动信息不准确，或你希望增加的功能"
+      placeholder-class="ph"
+      bindinput="onContentInput"
+    />
+    <view class="count">{{content.length}}/1000</view>
+  </view>
+
+  <view class="card form-card">
+    <view class="field-label">联系方式（选填）</view>
+    <input
+      class="input"
+      value="{{contact}}"
+      maxlength="80"
+      placeholder="微信 / 手机号，方便我们追问细节"
+      placeholder-class="ph"
+      bindinput="onContactInput"
+    />
+  </view>
+
+  <view class="submit {{submitting ? 'disabled' : ''}}" bindtap="onSubmit">
+    {{submitting ? '提交中...' : '提交反馈'}}
+  </view>
+
+  <view class="mine-entry" bindtap="goMyFeedback" hover-class="mine-press">
+    <view class="mine-entry-ic">
+      <view class="ic ic-assignment-brand"></view>
+    </view>
+    <view class="mine-entry-body">
+      <view class="mine-entry-name">我的反馈</view>
+      <view class="mine-entry-desc">查看已提交的问题和处理进度</view>
+    </view>
+    <view class="ic ic-chevron-right mine-arrow"></view>
+  </view>
+</view>

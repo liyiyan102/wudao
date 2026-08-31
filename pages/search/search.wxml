@@ -1,0 +1,86 @@
+<!-- 搜索页：顶栏仅返回；搜框在顶栏下方，不与原生胶囊同行 -->
+<view class="nav" style="padding-top:{{statusBarHeight}}px">
+  <view class="search-top" style="height:{{navBarHeight}}px;padding-right:{{capsuleRight}}px">
+    <view class="back-btn" bindtap="goBack">
+      <view class="ic ic-back-muted"></view>
+    </view>
+    <view class="search-title">搜索</view>
+  </view>
+  <view class="search-row">
+    <view class="search-bar">
+      <view class="ic ic-search search-ic"></view>
+      <input
+        class="search-input"
+        placeholder="{{placeholder}}"
+        placeholder-class="ph"
+        maxlength="20"
+        value="{{keyword}}"
+        focus="{{autoFocus}}"
+        confirm-type="search"
+        bindinput="onInput"
+        bindconfirm="doSearch"
+      />
+      <view class="ic ic-close clear-btn" wx:if="{{keyword}}" bindtap="clearKeyword"></view>
+    </view>
+    <view class="search-btn" bindtap="doSearch">搜索</view>
+  </view>
+</view>
+
+<!-- 初始态：搜索历史 + 热门搜索 -->
+<view class="init-panel" wx:if="{{state === 'init'}}">
+  <view class="sec-h" wx:if="{{history.length}}">
+    <text>搜索历史</text>
+    <view class="ic ic-trash" bindtap="clearHistory"></view>
+  </view>
+  <view class="history-row" wx:if="{{history.length}}">
+    <view class="hist-tag" wx:for="{{history}}" wx:key="*this" bindtap="tapWord" data-word="{{item}}">{{item}}</view>
+  </view>
+
+  <view class="sec-h sec-gap" wx:if="{{hot.length}}">
+    <text>热门搜索</text>
+    <view class="ic ic-fire-brand"></view>
+  </view>
+  <view class="hot-list">
+    <view class="hot-item" wx:for="{{hot}}" wx:key="word" bindtap="tapWord" data-word="{{item.word}}">
+      <text class="hot-no {{index < 3 ? 'hot-no-top' : ''}}">{{index + 1}}</text>
+      <text class="hot-word">{{item.word}}</text>
+      <text class="hot-tag" wx:if="{{item.tag}}">{{item.tag}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 结果态：PGC 内容卡片（非社区版，PRD 4.8：仅搜内容） -->
+<view class="result-panel" wx:if="{{state === 'result'}}">
+  <view class="result-count">找到 {{total}} 条相关结果</view>
+
+  <view class="card card-press" wx:for="{{results}}" wx:key="id" bindtap="openItem" data-id="{{item.id}}" data-kind="{{item.kind}}">
+    <view class="cat-tag {{item.tagCls}}">{{item.catName}}</view>
+    <view class="post-title ellipsis-2">{{item.title}}</view>
+    <view class="cover-wrap" wx:if="{{item.hasCover && item.images.length}}">
+      <image class="cover-img" src="{{item.images[0]}}" mode="heightFix" lazy-load="{{true}}" />
+    </view>
+    <view class="cover cov-{{item.coverCls}}" wx:elif="{{item.hasCover}}">
+      <view class="ic ic-image-pale cover-icon"></view>
+    </view>
+    <view class="post-summary ellipsis-2" wx:if="{{!item.hasCover}}">{{item.body}}</view>
+    <view class="meta-row">
+      <view class="avatar av-18">
+        <image wx:if="{{item.publisher.avatar}}" src="{{item.publisher.avatar}}" />
+        <block wx:else>{{item.publisher.nickname[0]}}</block>
+      </view>
+      <text>{{item.publisher.nickname}}</text>
+      <text class="meta-dot">·</text>
+      <text>{{item.timeText}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 空结果态：引导用热门词重搜 -->
+<view class="empty-panel" wx:if="{{state === 'empty'}}">
+  <view class="empty-icon">🔍</view>
+  <view class="empty-title">没找到相关内容</view>
+  <view class="empty-sub">换个关键词试试</view>
+  <view class="retry-row">
+    <view class="hist-tag" wx:for="{{hot}}" wx:key="word" wx:if="{{index < 4}}" bindtap="tapWord" data-word="{{item.word}}">{{item.word}}</view>
+  </view>
+</view>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>舞岛 MMVP（非社区版）· 产品规格文档</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --ink2:#3d3d3d; --muted:#8a8a8e; --muted2:#b0b0b4;
+    --line:#ededed; --line2:#f7f7f8; --bg:#f7f7f7; --card:#ffffff;
+    --purple:#534ab7; --purple-d:#3c3489; --purple-bg:#eeedfe;
+    --red:#fa5151; --green:#07c160; --amber:#f5a623;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:var(--ink);background:#fff;line-height:1.6;}
+  .page{max-width:920px;margin:0 auto;padding:48px 32px 80px;}
+  .hd{margin-bottom:40px;border-bottom:2px solid var(--purple);padding-bottom:20px;}
+  .hd h1{font-size:24px;font-weight:700;letter-spacing:-0.3px;}
+  .hd .meta{display:flex;gap:20px;margin-top:10px;font-size:12px;color:var(--muted);flex-wrap:wrap;}
+  .hd .meta b{color:var(--ink);}
+  .hd .tag{display:inline-block;background:var(--purple);color:#fff;font-size:11px;padding:3px 10px;border-radius:4px;margin-bottom:12px;font-weight:600;}
+  .hd .alert{background:#FFF7E6;border:1px solid #FFD591;border-radius:8px;padding:14px 16px;margin-top:16px;font-size:13px;color:#8C5A00;line-height:1.7;}
+  .hd .alert b{color:#8C5A00;}
+
+  nav.toc{background:var(--bg);border-radius:8px;padding:14px 18px;margin-bottom:32px;display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;}
+  nav.toc a{color:var(--purple-d);text-decoration:none;}
+  nav.toc a:hover{text-decoration:underline;}
+
+  section{margin-bottom:40px;}
+  h2{font-size:19px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;}
+  h2 .no{background:var(--purple);color:#fff;font-size:12px;padding:3px 8px;border-radius:4px;font-weight:600;}
+  h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--purple-d);}
+  h4{font-size:14px;font-weight:600;margin:18px 0 8px;}
+  p{margin-bottom:10px;font-size:14px;color:var(--ink2);}
+  p.sub{color:var(--muted);font-size:13px;}
+
+  table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:13px;}
+  th{background:var(--bg);text-align:left;padding:10px 12px;font-weight:600;border-bottom:2px solid var(--line);}
+  td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:hover td{background:#fafafa;}
+  td b{color:var(--ink);}
+
+  .note{border-radius:8px;padding:14px 16px;margin:12px 0;font-size:13px;line-height:1.7;}
+  .note-info{background:var(--purple-bg);border-left:3px solid var(--purple);}
+  .note-warn{background:#FFF7E6;border-left:3px solid var(--amber);}
+  .note-info b,.note-warn b{color:var(--purple-d);}
+
+  .chip{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:4px;}
+  .chip.p0{background:#ffe0e0;color:#c0392b;}
+  .chip.p1{background:#fff3cd;color:#856404;}
+  .chip.ok{background:#d4edda;color:#155724;}
+  .chip.no{background:#f8d7da;color:#721c24;}
+
+  .story{background:var(--bg);border-radius:6px;padding:10px 14px;margin:6px 0;font-size:13px;color:var(--ink2);border-left:3px solid var(--purple);}
+  ul.ac{list-style:none;margin:10px 0 16px;padding:0;}
+  ul.ac li{font-size:13px;padding:6px 0 6px 20px;position:relative;color:var(--ink2);line-height:1.6;}
+  ul.ac li::before{content:"✓";position:absolute;left:0;color:var(--purple);font-weight:700;}
+  ul.ac li.no::before{content:"✗";color:var(--red);}
+
+  pre{background:var(--bg);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--ink2);font-family:"SF Mono",Monaco,monospace;}
+  code{background:var(--bg);padding:2px 6px;border-radius:3px;font-size:12px;font-family:"SF Mono",Monaco,monospace;}
+
+  footer{border-top:1px solid var(--line);margin-top:60px;padding-top:20px;font-size:12px;color:var(--muted);text-align:center;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="hd">
+  <span class="tag">PRD · v0.2 非社区版 · 工具改活动</span>
+  <h1>舞岛 MMVP（非社区版）· 产品规格文档</h1>
+  <div class="meta">
+    <span>版本 <b>v0.2 · 工具→活动 + 编辑型长内容</b></span>
+    <span>日期 <b>2026-08-20</b></span>
+    <span>撰写 <b>产品通</b></span>
+    <span>状态 <b>待评审</b></span>
+  </div>
+  <div class="alert">
+    <b>⚠️ <b>本版本变更</b>：① 底 bar "工具" tab → <b>"活动"</b> tab（官方赛事/大师课/Jam），删除节拍器/赛事日历/舞室地图 3 屏；② 内容详情页升级为<b>编辑型长内容格式</b>，支持 H3/H4 章节标题 + 引用块（红色左边线 + 浅灰底）。</b>由于个人主体小程序无法申请社交类目和支付能力，本版本删除了所有 UGC 社区功能（发帖/评论/点赞/收藏/找搭子）和交易功能（拼团/商城）。产品形态从"内容社区+社交+交易"退化为"PGC 资讯 + 训练工具"。原社区版 PRD 保留在 <code>街舞社区MMVP-PRD.md</code>，待资质解决后可参照升级。
+  </div>
+</div>
+
+<nav class="toc">
+  <a href="#s1">资质约束</a>
+  <a href="#s2">用户</a>
+  <a href="#s3">功能范围</a>
+  <a href="#s4">详细规格</a>
+  <a href="#s5">Non-goals</a>
+  <a href="#s6">信息架构</a>
+  <a href="#s7">商业化</a>
+  <a href="#s8">指标</a>
+  <a href="#s9">开放问题</a>
+  <a href="#s10">时间线</a>
+  <span style="color:var(--purple);font-weight:600;">+ 打卡挑战 4.9</span>
+  <span style="color:var(--purple);font-weight:600;">+ 通知能力 4.10</span>
+</nav>
+
+<!-- ============ 1 资质约束 ============ -->
+<section id="s1">
+  <h2><span class="no">01</span>资质约束与设计原则</h2>
+  <h3>1.1 硬约束（个人主体小程序）</h3>
+  <table>
+    <tr><th style="width:160px">能力</th><th style="width:80px">状态</th><th>原因</th></tr>
+    <tr><td>PGC 资讯发布</td><td><span class="chip ok">✅ 可做</span></td><td>资讯类目，企业/个人主体均可</td></tr>
+    <tr><td>工具类功能</td><td><span class="chip ok">✅ 可做</span></td><td>工具类目</td></tr>
+    <tr><td>用户发布内容（UGC）</td><td><span class="chip no">❌ 禁止</span></td><td>需社交类目，个人主体不可申请</td></tr>
+    <tr><td>找搭子/搭子帖</td><td><span class="chip no">❌ 禁止</span></td><td>属于用户发布内容</td></tr>
+    <tr><td>评论/点赞/收藏</td><td><span class="chip no">❌ 禁止</span></td><td>互动类功能需社交类目</td></tr>
+    <tr><td>支付/交易/拼团</td><td><span class="chip no">❌ 禁止</span></td><td>无微信支付商户号</td></tr>
+    <tr><td>商城/电商</td><td><span class="chip no">❌ 禁止</span></td><td>需电商类目</td></tr>
+  </table>
+
+  <h3>1.2 设计原则</h3>
+  <ul class="ac">
+    <li><b>纯单向输出</b>：所有内容由平台/合作方生产，用户只消费不产生</li>
+    <li><b>工具做留存</b>：节拍器是日活引擎，赛事日历是周活引擎，舞室地图是月活引擎</li>
+    <li><b>无登录可用</b>：不强制登录，工具和内容都可直接使用；登录仅用于跨设备同步浏览历史</li>
+    <li><b>商业化全部押后</b>：v1 不碰钱，先做流量和工具使用习惯，资质解决后再补齐交易</li>
+    <li><b>为升级留架构</b>：内容对象模型预留评论/点赞字段（v1 不做 UI），未来升级企业主体后可快速补齐社交能力</li>
+  </ul>
+</section>
+
+<!-- ============ 2 用户 ============ -->
+<section id="s2">
+  <h2><span class="no">02</span>用户是谁</h2>
+  <table>
+    <tr><th>画像</th><th>核心诉求</th><th>在产品里的角色</th></tr>
+    <tr><td><b>新手舞者</b>（20岁上下，学舞&lt;1年）</td><td>学舞、找灵感、了解街舞圈</td><td>内容消费者 + 工具使用者</td></tr>
+    <tr><td><b>进阶/资深舞者</b>（练舞1-5年）</td><td>获取专业信息、了解赛事、训练工具</td><td>内容消费者 + 工具核心用户</td></tr>
+    <tr><td><b>泛围观爱好者</b></td><td>刷有审美的街舞内容，了解文化</td><td>内容消费者</td></tr>
+    <tr><td><b>舞蹈老师/工作室</b>（供给侧）</td><td>建立专业形象、课程预告曝光</td><td>PGC 内容合作方（v1 不做入驻系统）</td></tr>
+  </table>
+</section>
+
+<!-- ============ 3 功能范围 ============ -->
+<section id="s3">
+  <h2><span class="no">03</span>功能范围</h2>
+  <table>
+    <tr><th style="width:140px">模块</th><th>功能</th><th style="width:80px">优先级</th></tr>
+    <tr><td><b>账号体系</b></td><td>可选登录（微信授权）；不登录可用全部功能；登录仅同步浏览历史</td><td><span class="chip p1">P1</span></td></tr>
+    <tr><td><b>首页内容流</b></td><td>PGC 内容混排；发现 + 城市名双 tab；内容详情页</td><td><span class="chip p0">P0</span></td></tr>
+    <tr><td><b>工具·节拍器</b></td><td>BPM 自定义、节拍变速、段落循环、预设节奏型</td><td><span class="chip p0">P0</span></td></tr>
+    <tr><td><b>工具·赛事日历</b></td><td>街舞赛事聚合列表、按月视图、赛事详情、赛事提醒（订阅消息）</td><td><span class="chip p1">P1</span></td></tr>
+    <tr><td><b>工具·舞室地图</b></td><td>城市 PGC 舞室列表 + 定位导航 + 舞室详情（PGC 评价）</td><td><span class="chip p1">P1</span></td></tr>
+    <tr><td><b>个人中心</b></td><td>浏览历史、关注的活动、我加入的挑战、设置（含通知开关）</td><td><span class="chip p0">P0</span></td></tr>
+    <tr><td><b>搜索</b></td><td>搜索 PGC 内容（标题+正文+分类）</td><td><span class="chip p1">P1</span></td></tr>
+  </table>
+</section>
+
+<!-- ============ 4 详细规格 ============ -->
+<section id="s4">
+  <h2><span class="no">04</span>详细功能规格</h2>
+
+  <h3>4.1 账号体系（可选登录）</h3>
+  <div class="story">作为<b>用户</b>，我希望不登录就能看内容和用工具，以便零门槛体验</div>
+  <div class="story">作为<b>用户</b>，我希望登录后能同步浏览历史，以便换设备后继续看</div>
+  <ul class="ac">
+    <li>未登录状态：全部功能可用（内容浏览、工具使用）</li>
+    <li>登录方式：wx.login（静默登录，不弹授权框），不强制获取用户信息</li>
+    <li>登录仅用于同步浏览历史到云端；不登录则浏览历史存本地</li>
+    <li class="no">不做用户主页、不做昵称头像展示（无社交场景，不需要身份）</li>
+    <li>边界：微信授权被拒时不阻塞任何功能</li>
+  </ul>
+
+  <h3>4.2 首页内容流（tab1）</h3>
+  <div class="story">作为<b>新手舞者</b>，我希望刷到穿搭和康复内容，以便获得入门价值</div>
+  <div class="story">作为<b>圈内用户</b>，我希望看到赛事和圈内资讯，以便有持续回访的理由</div>
+  <ul class="ac">
+    <li>帖子卡片展示：标题、封面图/视频首帧、摘要、分类色标、发布者名称、发布时间</li>
+    <li class="no"><b>无点赞/收藏/评论数展示</b>（无互动功能）</li>
+    <li>帖子详情页：标题 + 正文 + 图片（多图全屏）+ 视频（内嵌）+ 发布者信息</li>
+    <li class="no"><b>详情页无评论区、无互动按钮</b>（底部只有"分享"）</li>
+    <li>顶部双 tab：<b>发现</b>（全部内容）+ <b>城市名</b>（按发布定位筛选，如"北京"）</li>
+    <li>内容分类：穿搭 / 康复 / 文化 / 赛事 / 新鲜事 / 其他</li>
+    <li>前置内容由运营后台发布，上线前储备 ≥40 篇（6 类 × 每类 ≥6 篇）</li>
+    <li>信息流排序：时间倒序 + 置顶运营位，不做推荐算法</li>
+    <li>视频支持外链上传（微信视频号链接或云存储）</li>
+  </ul>
+
+  <h3>4.3 内容详情页（编辑型长内容格式）</h3>
+  <div class="story">作为<b>用户</b>，我希望专注阅读内容，不被社交元素干扰</div>
+  <div class="story">作为<b>编辑/作者</b>，我希望发布像知乎/公众号一样的编辑型长文，支持标题、引言、块引用、章节、图片混排</div>
+
+  <h4>页面结构</h4>
+  <pre style="font-size:11px;line-height:1.6;background:var(--bg);padding:12px;border-radius:6px;">
+分类标签（穿搭/康复/文化...）
+标题（Title）                    ← 文章主标题
+副标题（Subtitle，选填）         ← 一句话概括
+发布者 · 日期 · 阅读时长
+─────────────────────────────
+引言（Call-out）                 ← 导读/提示/摘要
+H3 章节标题
+段落正文...
+块引用（Blockquote）             ← 引用他人内容
+— 来源
+段落正文...
+图片
+─────────────────────────────
+相关推荐（3 条）
+[    分享给好友    ]             ← 底部分享栏
+  </pre>
+
+  <h4>三种核心元素的定义和视觉规范</h4>
+
+  <p><b>元素 1：标题（Title）</b></p>
+  <table>
+    <tr><th style="width:100px">属性</th><th>规范</th></tr>
+    <tr><td>语义</td><td>文章主标题，概括全文核心</td></tr>
+    <tr><td>字号</td><td>22px / 700</td></tr>
+    <tr><td>字色</td><td>#1A1A1A（Ink）</td></tr>
+    <tr><td>行高</td><td>1.3</td></tr>
+    <tr><td>副标题（可选）</td><td>13px / 400 / #8A8A8E / 下 14px</td></tr>
+  </table>
+
+  <p><b>元素 2：引言 / Call-out 提示块</b></p>
+  <table>
+    <tr><th style="width:100px">属性</th><th>规范</th></tr>
+    <tr><td>语义</td><td><b>作者对读者的导读/提示/摘要，是作者自己的话</b>（区别于块引用的"引用他人"）</td></tr>
+    <tr><td>使用场景</td><td>① 文章开头的导读摘要 ② 文中重要提示/总结 ③ 推荐书单/装备清单的引出</td></tr>
+    <tr><td>背景</td><td>#EEEDFE（浅紫底）</td></tr>
+    <tr><td>左边框</td><td>4px solid #534AB7（主色）</td></tr>
+    <tr><td>圆角</td><td>0 8px 8px 0（左直角右圆角）</td></tr>
+    <tr><td>内边距</td><td>16px 18px</td></tr>
+    <tr><td>可选图标</td><td>右上角 info icon，#534AB7，opacity 0.4</td></tr>
+    <tr><td>标题（可选）</td><td>12px / 700 / #3C3489 / 大写 / letter-spacing 0.5px，如"导读""提示""推荐"</td></tr>
+    <tr><td>正文</td><td>14px / 1.75 行高 / #3D3D3D</td></tr>
+    <tr><td>内嵌粗体</td><td>b 标签用 #1A1A1A（比正文更深）</td></tr>
+  </table>
+  <div class="note note-info" style="margin-top:8px;">
+    <b>Call-out 视觉示意</b>：左侧紫色色条 + 浅紫底 + 可选"导读"标题 + 段落正文。视觉权重高，吸引注意。
+  </div>
+
+  <p><b>元素 3：块引用 / Blockquote</b></p>
+  <table>
+    <tr><th style="width:100px">属性</th><th>规范</th></tr>
+    <tr><td>语义</td><td><b>引用他人内容</b>（书籍原文、名人语录、其他文章片段），不是作者自己的话</td></tr>
+    <tr><td>使用场景</td><td>① 引用书中原文 ② 引用舞者/老师的话 ③ 引用其他媒体内容</td></tr>
+    <tr><td>左边框</td><td>3px solid #D1D5DB（灰色，克制不抢眼）</td></tr>
+    <tr><td>背景</td><td>transparent（无背景色）</td></tr>
+    <tr><td>内边距</td><td>4px 0 4px 16px（仅左侧缩进）</td></tr>
+    <tr><td>字号</td><td>14.5px</td></tr>
+    <tr><td>字色</td><td>#4A4A5A（比正文略浅）</td></tr>
+    <tr><td>字体</td><td>italic（斜体，区分于作者正文）</td></tr>
+    <tr><td>来源标注 cite</td><td>12px / #B0B0B4 / 非斜体 / 上边框 0.5px #E5E7EB / 前缀 "— "</td></tr>
+  </table>
+  <div class="note note-info" style="margin-top:8px;">
+    <b>Blockquote 视觉示意</b>：左侧灰色竖线 + 无底色 + 斜体 + 来源标注。视觉权重低，克制不抢眼。
+  </div>
+
+  <h4>Call-out vs Blockquote 的区别</h4>
+  <table>
+    <tr><th style="width:120px">维度</th><th>Call-out（引言）</th><th>Blockquote（块引用）</th></tr>
+    <tr><td><b>语义</b></td><td>作者自己的话</td><td>引用他人的话</td></tr>
+    <tr><td><b>视觉</b></td><td>紫色系（浅紫底 + 紫色左条）</td><td>灰色系（透明底 + 灰色左线）</td></tr>
+    <tr><td><b>字体</b></td><td>常规</td><td>斜体</td></tr>
+    <tr><td><b>来源</b></td><td>无 cite</td><td>有 cite（来源标注）</td></tr>
+    <tr><td><b>用途</b></td><td>导读/提示/摘要</td><td>引文/语录/书中原文</td></tr>
+    <tr><td><b>视觉权重</b></td><td>高（吸引注意）</td><td>低（克制不抢眼）</td></tr>
+  </table>
+
+  <h4>其他正文元素</h4>
+  <table>
+    <tr><th style="width:120px">元素</th><th>规范</th></tr>
+    <tr><td>H3（一级章节）</td><td>19px / 700 / #1A1A1A / 上下间距 32/14px</td></tr>
+    <tr><td>H4（二级章节）</td><td>16px / 700 / #1A1A1A / 上下间距 24/10px</td></tr>
+    <tr><td>段落 p</td><td>15px / 1.85 行高 / #3D3D3D / 段间距 16px</td></tr>
+    <tr><td>图片 img</td><td>圆角 8px / 上下间距 18px</td></tr>
+    <tr><td>粗体 b</td><td>#1A1A1A（比正文 #3D3D3D 更深）</td></tr>
+  </table>
+
+  <h4>其他验收标准</h4>
+  <ul class="ac">
+    <li class="no"><b>无评论区</b>、<b>无互动按钮</b>（无点赞/收藏/评论）</li>
+    <li>底部分享栏：分享到微信会话/朋友圈</li>
+    <li>关联内容推荐：详情页底部 3 条（按分类匹配）</li>
+    <li><b>顶部阅读时长提示</b>：如"阅读 12 分钟"，从字数自动计算</li>
+    <li>边界：内容含外链视频时，视频在详情页内嵌播放</li>
+    <li><b>后台编辑器</b>：工具栏提供"插入 Call-out"和"插入 Blockquote"两个独立按钮，编辑可选择"引言"或"引用"类型</li>
+  </ul>
+
+      <h3>4.4 活动平台（tab2 核心）</h3>
+  <div class="story">作为<b>舞者</b>，我想看近期有哪些街舞赛事，以便决定参加哪个</div>
+  <div class="story">作为<b>进阶舞者</b>，我想看大师课和 Workshop 信息</div>
+  <div class="story">作为<b>初学者</b>，我想知道附近每周的 Jam / Cypher Night</div>
+  <ul class="ac">
+    <li><b>活动分类筛选 chips</b>：全部 / 找搭子 / 赛事 / 大师课</li>
+    <li><b>活动列表卡片</b>：顶部彩色封面区（赛事=紫、大师课=橙红、Jam=绿）+ 类型徽标 + 日期标签 + 大字标题 + 描述 + 元信息（地点/时间）+ 关注数 + "查看详情 →"</li>
+    <li><b>活动详情页</b>：彩色 hero 区（类型徽标+大标题）+ 活动信息卡（时间/地点/舞种/主办 4 行 icon+文字）+ 活动介绍 + 日程安排（时间轴列表）+ 注意事项 + 底栏"关注活动（赛事提醒）"</li>
+    <li><b>关注功能</b>：调用 wx.requestSubscribeMessage，赛前 3 天/1 天推送订阅消息提醒</li>
+    <li><b>找搭子入口</b>：活动列表顶部固定紫色 banner「找练舞搭子 · 提交需求，审核后官方代发 →」，点击进入搭子需求表单（§6.4）</li>
+    <li><b>活动数据全部由运营 PGC 维护</b>，用户不创建活动</li>
+    <li>边界：活动报名跳转外部 H5/公众号，不在站内完成</li>
+  </ul>
+
+    <h3>4.5 个人中心（tab3）</h3>
+  <div class="story">作为<b>用户</b>，我希望看到我浏览过的内容，以便回看</div>
+  <ul class="ac">
+    <li><b>浏览历史</b>：最近浏览的内容列表（本地存储，登录后同步云端），按时间倒序，最多 100 条</li>
+    <li><b>清空历史</b>：一键清空浏览历史</li>
+    <li><b>设置</b>：通知开关（赛事提醒）、关于舞岛、用户协议、隐私政策</li>
+    <li class="no"><b>不做</b>：发帖、收藏、点赞列表（无此功能）</li>
+    <li class="no"><b>不做</b>：消息中心（无社交互动，无消息来源）</li>
+    <li class="no"><b>不做</b>：草稿箱（无发帖功能）</li>
+    <li>登录入口（可选）："登录同步浏览历史"，不强制</li>
+  </ul>
+
+  <h3>4.7 个人中心·关注的活动（P1）</h3>
+  <div class="story">作为<b>用户</b>，我希望看到我关注过的活动，以便回看</div>
+  <ul class="ac">
+    <li>"我的"列表新增"关注的活动"cell，带关注数 badge</li>
+    <li>点击进入活动关注列表：按关注时间倒序</li>
+    <li>取消关注：活动卡点击取消，回到活动列表</li>
+    <li>边界：未登录状态显示"登录后可跨设备同步关注"</li>
+  </ul>
+
+  <h3>4.8 搜索（P1）</h3>
+  <div class="story">作为<b>用户</b>，我希望搜"Breaking 护腕"快速找到相关内容</div>
+  <ul class="ac">
+    <li>入口：首页顶栏 toptabs 左侧搜索 icon</li>
+    <li>搜索对象：仅 PGC 内容（无用户内容可搜）</li>
+    <li>搜索维度：关键词匹配（标题 + 正文）+ 分类标签</li>
+    <li>初始态：搜索框 + 热门搜索（运营配置 6-8 个词）</li>
+    <li>结果态：按时间倒序，复用内容流卡片样式</li>
+    <li>空结果态：引导"试试 [热门词]"</li>
+  </ul>
+
+  <h3>4.9 打卡挑战（通用能力）</h3>
+  <div class="note note-info"><b>定位</b>：把"21 天 Breaking 基础训练"这类官方打卡活动抽象成<b>通用能力</b>——官方在后台发布任意主题的打卡挑战，用户加入后每日打卡，完成后获得成就海报并分享。不依赖 UGC（用户只点按钮不产生公开内容）、不依赖支付（奖励是电子海报）。</div>
+
+  <div class="story">作为<b>新手舞者</b>，我看到"21 天 Breaking 基础训练"挑战，加入后每天跟着任务练基本功</div>
+  <div class="story">作为<b>用户</b>，我希望每天打开小程序时能看到"今日打卡"入口，点一下就完成打卡</div>
+  <div class="story">作为<b>用户</b>，我完成 21 天后能获得一张好看的成就海报，分享到朋友圈</div>
+  <div class="story">作为<b>运营</b>，我希望能在后台发布不同主题的打卡活动（Breaking/Hip-hop/Locking/康复...）</div>
+
+  <h4>数据模型</h4>
+  <table>
+    <tr><th style="width:140px">对象</th><th>字段</th></tr>
+    <tr><td><b>Challenge</b><br>（打卡活动）</td><td>id / 标题 / 副标题 / 封面图 / 描述（Call-out 格式）/ 总天数 / 开始日期 / 结束日期 / 主题色 / 每日任务模板（Day1: xxx...）/ 奖励文案 / 奖励海报模板 / 状态（招募中/进行中/已结束）/ 参与人数</td></tr>
+    <tr><td><b>UserChallenge</b><br>（用户参与）</td><td>uid / challengeId / 加入时间 / 已打卡天数 / 连续打卡天数 / 最后打卡日期 / 状态（进行中/已完成/已放弃）</td></tr>
+    <tr><td><b>CheckIn</b><br>（打卡记录）</td><td>id / uid / challengeId / 日期 / 打卡时间</td></tr>
+  </table>
+
+  <h4>功能流程</h4>
+  <pre style="font-size:11px;line-height:1.6;background:var(--bg);padding:12px;border-radius:6px;">
+官方发布挑战（PGC 后台）
+    ↓
+用户浏览挑战列表（活动 tab 内"挑战"入口）
+    ↓
+查看挑战详情（封面 + 描述 + 每日任务 + 参与人数 + "加入挑战"按钮）
+    ↓
+点击"加入挑战"→ 弹出一次性订阅消息授权（"每日打卡提醒"模板）
+    ↓
+每日打卡：
+  入口 1：首页顶部 banner"今日打卡 Day 14/21 →"
+  入口 2：我的 → "我加入的挑战" → 今日打卡按钮
+  动作：点击"今日打卡"按钮 → 记录打卡 + 进度+1 + 连续天数+1
+  反馈：打卡成功动画 + 今日任务卡片翻转展示
+    ↓
+断卡处理：断卡 1 天连续天数归零（已打卡天数不归零）；每月 1 次补签卡
+    ↓
+完成挑战（已打卡天数 = 总天数）：
+  生成成就海报（紫色主调 + 标题 + 用户名 + 天数 + 日期 + 二维码）
+  海报可保存到相册 + 分享到微信会话/朋友圈
+  </pre>
+
+  <h4>验收标准</h4>
+  <ul class="ac">
+    <li>挑战列表：活动 tab 顶部"挑战"入口，展示招募中 + 进行中的挑战卡片</li>
+    <li>挑战详情：封面 + Call-out 描述 + 每日任务预览（前 3 天）+ 参与人数 + "加入挑战"按钮</li>
+    <li>加入挑战：点击后调用 wx.requestSubscribeMessage 订阅"每日打卡提醒"模板</li>
+    <li>每日打卡入口：首页顶部 banner（仅加入后显示）+ 我的页"我加入的挑战"列表</li>
+    <li>打卡动作：点击"今日打卡"按钮 → 打卡成功动画 + 进度条更新 + 连续天数更新</li>
+    <li>进度可视化：环形进度条（已打卡/总天数）+ 连续天数火焰图标</li>
+    <li>断卡：断卡 1 天连续天数归零；每月 1 次补签卡</li>
+    <li>完成挑战：自动生成成就海报（Canvas 渲染 → 临时图片）</li>
+    <li><b>成就海报</b>：紫色渐变背景 + 挑战标题 + 用户名 + "21/21 天完成" + 日期范围 + 舞岛 logo + 小程序码</li>
+    <li>分享：海报保存到相册 + 分享到微信会话 + 分享到朋友圈（图片分享）</li>
+    <li>边界：同一用户可加入多个挑战；已结束后不可再加入；打卡需在当日 0:00-23:59 内完成</li>
+  </ul>
+
+  <h4>成就海报设计规范</h4>
+  <table>
+    <tr><th style="width:100px">元素</th><th>规范</th></tr>
+    <tr><td>尺寸</td><td>750×1334px（iPhone 截图比例，适合朋友圈）</td></tr>
+    <tr><td>背景</td><td>紫色渐变 #534AB7 → #3C3489</td></tr>
+    <tr><td>顶部</td><td>舞岛 logo（白色）+ "成就达成"白色标题</td></tr>
+    <tr><td>中部</td><td>挑战标题（白色大字 24px）+ 用户名（白色 16px）</td></tr>
+    <tr><td>进度</td><td>"21/21 天"大数字（白色 48px）+ 日期范围（白色 12px）</td></tr>
+    <tr><td>底部</td><td>舞岛 slogan"练舞人的岛"+ 小程序码（白色圆角底）</td></tr>
+    <tr><td>装饰</td><td>斜向速度线（白色 opacity 0.1）+ 火焰图标（连续打卡满 21 天时显示）</td></tr>
+  </table>
+
+  <h3>4.10 通知能力（通盘设计）</h3>
+  <div class="note note-warn"><b>约束</b>：微信小程序<b>一次性订阅消息</b>——每次用户授权只能推送<b>一条</b>消息，需用户主动点击触发，模板需在微信公众平台后台配置审核。策略：在用户有明确利益动机的时刻请求订阅，并在每次推送后引导重新订阅。</div>
+
+  <h4>四个订阅场景</h4>
+  <table>
+    <tr><th style="width:120px">场景</th><th>模板</th><th>触发时机</th><th>推送内容</th><th>推送时间</th><th>重新订阅引导</th></tr>
+    <tr><td><b>① 活动关注提醒</b></td><td>活动提醒</td><td>点击"关注活动"时</td><td>赛事名称+时间+地点+"点击查看详情"</td><td>赛前 3 天 + 赛前 1 天（两次）</td><td>推送消息内附"关注更多活动"按钮</td></tr>
+    <tr><td><b>② 打卡每日提醒</b></td><td>打卡提醒</td><td>点击"加入挑战"时</td><td>挑战名称+"今日未打卡 Day 14/21"+"去打卡"</td><td>每日 19:00（如未打卡）</td><td>每日首次打开时弹"订阅今日提醒"轻提示</td></tr>
+    <tr><td><b>③ 本周精选更新</b></td><td>内容更新</td><td>设置页主动订阅</td><td>"本周街舞圈 TOP 5 已更新"+点击查看</td><td>每周一 10:00</td><td>推送消息内附"订阅下周更新"按钮</td></tr>
+    <tr><td><b>④ 活动结果更新</b></td><td>活动结果</td><td>活动结束后自动</td><td>赛事名称+"赛果已更新"+点击查看</td><td>活动结束后 2 小时</td><td>推送消息内附"关注更多赛事"按钮</td></tr>
+  </table>
+
+  <h4>验收标准</h4>
+  <ul class="ac">
+    <li><b>活动关注</b>：关注时调用 wx.requestSubscribeMessage，订阅 2 次（赛前 3 天 + 1 天）</li>
+    <li><b>打卡提醒</b>：加入挑战时调用 wx.requestSubscribeMessage</li>
+    <li><b>打卡重订阅</b>：每日首次打开时，如已加入挑战且今日未打卡且未订阅 → 首页顶部轻提示"订阅今日打卡提醒 →"</li>
+    <li><b>本周精选</b>：设置页开关，开启时调用 wx.requestSubscribeMessage</li>
+    <li><b>活动结果</b>：活动结束后自动推送，复用活动关注时的订阅额度</li>
+    <li><b>推送内容</b>：每条含标题 + 摘要 + 跳转路径（点击直达详情页）</li>
+    <li><b>重订阅引导</b>：每条推送后记录"已消耗订阅"，下次打开相关页面时引导重新订阅</li>
+    <li><b>用户拒绝订阅</b>：不阻塞功能，只是不推送提醒</li>
+    <li><b>设置页</b>：通知开关——活动提醒 / 打卡提醒 / 每周精选，可单独开关</li>
+    <li>边界：一次性订阅额度用完后不报错，静默不推送</li>
+  </ul>
+
+  <h4>订阅消息模板配置</h4>
+  <table>
+    <tr><th>模板名称</th><th>字段</th></tr>
+    <tr><td>活动提醒</td><td>活动名称 / 提醒时间 / 活动地点 / 备注</td></tr>
+    <tr><td>打卡提醒</td><td>挑战名称 / 当前天数 / 总天数 / 备注</td></tr>
+    <tr><td>内容更新</td><td>标题 / 更新时间 / 摘要 / 备注</td></tr>
+    <tr><td>活动结果</td><td>活动名称 / 结果摘要 / 更新时间 / 备注</td></tr>
+  </table>
+</section>
+
+<!-- ============ 5 Non-goals ============ -->
+<section id="s5">
+  <h2><span class="no">05</span>Non-goals（明确不做）</h2>
+  <table>
+    <tr><th style="width:200px">不做的事</th><th>原因</th></tr>
+    <tr><td><b>UGC 发帖</b></td><td>个人主体无社交类目资质</td></tr>
+    <tr><td><b>找搭子/搭子帖</b></td><td>属于用户发布内容，需社交类目</td></tr>
+    <tr><td><b>评论/点赞/收藏</b></td><td>互动功能需社交类目</td></tr>
+    <tr><td><b>拼团支付/商城</b></td><td>无微信支付商户号</td></tr>
+    <tr><td><b>用户主页/关注</b></td><td>属于社交功能</td></tr>
+    <tr><td><b>消息中心</b></td><td>无社交互动，无消息来源</td></tr>
+    <tr><td><b>草稿箱</b></td><td>无发帖功能</td></tr>
+    <tr><td><b>推荐算法</b></td><td>v1 内容量小，时间倒序即可</td></tr>
+    <tr><td><b>直播/录播上课</b></td><td>需对应类目资质，开发成本高</td></tr>
+    <tr><td><b>工具类功能（节拍器/赛事日历/舞室地图）</b></td><td>v1 聚焦 PGC 内容 + 活动平台，工具不优先</td></tr>
+  </table>
+</section>
+
+<!-- ============ 6 信息架构 ============ -->
+<section id="s6">
+  <h2><span class="no">06</span>信息架构</h2>
+<pre>舞岛（非社区版 · v1.3）
+├── Tab1 首页
+│   ├── 顶栏：搜索 icon + 发现 / 城市名 双 tab
+│   └── PGC 内容流（6 类内容混排）
+│       └── 内容详情页（编辑型长内容：H3/H4 + 引用块 + 图片）
+├── Tab2 活动
+│   ├── 活动列表（分类筛选 chips + 找搭子入口 banner）
+│   │   └── 活动详情页（彩色 hero + 时间地点 + 日程 + 关注提醒）
+│   ├── 找搭子需求表单 → 提交成功页
+│   └── 练舞局详情（代发）→ 应征表单
+└── Tab3 我的
+    ├── 浏览历史
+    ├── 关注的活动
+    ├── 我的搭子需求（含应征列表入口）
+    ├── 提交搭子需求（快捷 cell）
+    └── 设置（通知/关于/协议）
+</pre>
+  <div class="note note-info"><b>底 bar 三 tab 变化</b>：原"工具" tab 已改为"<b>活动</b>" tab。工具类（节拍器/赛事日历/舞室地图）全部移除，活动作为唯一第二核心入口承担留存。</div>
+  <div class="note note-info"><b>底 bar 三 tab 变化</b>：原社区版是"首页/找搭子/我的" → 非社区版 v0.1 是"首页/工具/我的" → v0.2 改为"<b>首页/活动/我的</b>"。活动（官方赛事/大师课/Jam）成为第二核心入口。</div>
+</section>
+
+<!-- ============ 7 商业化 ============ -->
+<section id="s7">
+  <h2><span class="no">07</span>商业化路径</h2>
+  <div class="note note-warn"><b>v1（非社区版）</b>：无直接商业化路径。先做流量和工具使用习惯。</div>
+  <h3>资质解决后（升级企业主体）可补齐</h3>
+  <ul class="ac">
+    <li>拼团支付（大师课拼团，平台抽佣）</li>
+    <li>商城（街舞垂类装备）</li>
+    <li>推广位售卖（赛事/舞室/品牌推广）</li>
+    <li>找搭子（结构化撮合，需确认社交类目）</li>
+    <li>评论/点赞/收藏（社交互动）</li>
+  </ul>
+  <h3>间接路径（v1 可探索）</h3>
+  <ul class="ac">
+    <li>内容赞助：舞室/品牌付费让平台发布软文（走公众号广告模式）</li>
+    <li>舞室收录费：舞室地图收录 PGC 评价，舞室付费优先展示（需标注"广告"）</li>
+  </ul>
+</section>
+
+<!-- ============ 8 指标 ============ -->
+<section id="s8">
+  <h2><span class="no">08</span>成功指标</h2>
+  <table>
+    <tr><th style="width:120px">指标类型</th><th>指标</th><th style="width:200px">目标</th></tr>
+    <tr><td>内容消费</td><td>周活跃用户数（UV）</td><td>冷启动期 ≥500</td></tr>
+    <tr><td>内容深度</td><td>人均内容浏览数/次</td><td>≥3 篇</td></tr>
+    <tr><td>长内容阅读</td><td>编辑型长文平均阅读完成率</td><td>≥40%（章节标题锚点促跳读）</td></tr>
+    <tr><td>活动关注</td><td>活动详情页关注转化率</td><td>≥15%</td></tr>
+    <tr><td>活动提醒</td><td>订阅消息用户数</td><td>≥200</td></tr>
+    <tr><td>留存</td><td>次周留存率</td><td>≥25%（内容+活动型产品基准）</td></tr>
+    <tr><td>内容更新</td><td>周均 PGC 新增篇数</td><td>≥5 篇</td></tr>
+  </table>
+</section>
+
+<!-- ============ 9 开放问题 ============ -->
+<section id="s9">
+  <h2><span class="no">09</span>开放问题</h2>
+  <table>
+    <tr><th>问题</th><th style="width:120px">归属</th><th style="width:120px">状态</th></tr>
+    <tr><td>个人主体小程序能申请哪些类目？</td><td>产品 + 法务</td><td><span class="chip p1">待确认</span></td></tr>
+    <tr><td>节拍器后台播放是否需要额外资质？</td><td>工程</td><td><span class="chip p1">待确认</span></td></tr>
+    <tr><td>订阅消息（赛事提醒）的配额和审核要求？</td><td>产品 + 工程</td><td><span class="chip p1">待确认</span></td></tr>
+    <tr><td>PGC 内容是否需要内容安全审核？</td><td>产品 + 法务</td><td><span class="chip p1">待确认</span></td></tr>
+    <tr><td>是否注册个体工商户升级企业主体？</td><td>创始人决策</td><td><span class="chip p0">战略决策</span></td></tr>
+  </table>
+</section>
+
+<!-- ============ 10 时间线 ============ -->
+<section id="s10">
+  <h2><span class="no">10</span>时间线建议</h2>
+  <h3>阶段一 · v1 MVP（建议 4-5 周）</h3>
+  <p>账号体系（可选登录）→ 首页内容流 → 内容详情页 → 节拍器 → 个人中心</p>
+  <p class="sub">顺序：内容流是冷启动地基，节拍器是留存工具，同步开发</p>
+
+  <h3>阶段二 · v1.1（v1 上线后 3-4 周）</h3>
+  <p>赛事日历、舞室地图、搜索补齐</p>
+
+  <h3>阶段三 · 资质解决后</h3>
+  <p>拿到企业主体 → 补齐支付 → 拼团/商城上线</p>
+  <p>确认社交类目 → 补齐找搭子/评论/点赞</p>
+</section>
+
+<footer>
+  舞岛 MMVP PRD · v0.1 非社区版 · 2026-08-20 · 建议评审后先确认第 9 章开放问题，再进入详细交互设计阶段
+</footer>
+
+</div>
+</body>
+</html>

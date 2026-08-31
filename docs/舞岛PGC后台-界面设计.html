@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>舞岛 PGC 后台 · 界面设计稿</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --ink2:#3d3d3d; --muted:#8a8a8e; --muted2:#b0b0b4;
+    --line:#e5e7eb; --line2:#f3f4f6; --bg:#f9fafb; --card:#ffffff;
+    --purple:#534ab7; --purple-d:#3c3489; --purple-bg:#eeedfe; --purple-bg2:#f5f4fd;
+    --red:#fa5151; --green:#07c160; --amber:#f5a623; --orange:#ff6b35;
+    --sidebar-w:220px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","SF Pro Text",sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:14px;}
+
+  /* 顶部栏 */
+  .topbar{height:56px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;position:sticky;top:0;z-index:100;}
+  .topbar .logo{font-size:16px;font-weight:700;color:var(--purple-d);display:flex;align-items:center;gap:8px;}
+  .topbar .logo .dot{width:24px;height:24px;border-radius:6px;background:var(--purple);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;}
+  .topbar .crumb{margin-left:32px;font-size:13px;color:var(--muted);}
+  .topbar .crumb b{color:var(--ink);}
+  .topbar .right{margin-left:auto;display:flex;align-items:center;gap:16px;font-size:13px;color:var(--muted);}
+  .topbar .ava{width:28px;height:28px;border-radius:50%;background:var(--purple);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+
+  /* 主体布局 */
+  .layout{display:flex;min-height:calc(100vh - 56px);}
+
+  /* 侧边栏 */
+  .sidebar{width:var(--sidebar-w);background:var(--card);border-right:1px solid var(--line);padding:16px 0;flex-shrink:0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
+  .sidebar .group{margin-bottom:20px;}
+  .sidebar .group-h{font-size:11px;font-weight:600;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;padding:0 20px 8px;}
+  .sidebar .item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;color:var(--ink2);cursor:pointer;border-left:3px solid transparent;}
+  .sidebar .item:hover{background:var(--bg);}
+  .sidebar .item.on{background:var(--purple-bg);color:var(--purple-d);font-weight:600;border-left-color:var(--purple);}
+  .sidebar .item .ic{width:18px;height:18px;fill:currentColor;flex-shrink:0;}
+
+  /* 主内容区 */
+  .main{flex:1;padding:24px 32px;max-width:calc(100vw - var(--sidebar-w));overflow-x:hidden;}
+
+  /* 页面标题 */
+  .page-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .page-h h1{font-size:20px;font-weight:700;}
+  .page-h .actions{display:flex;gap:8px;}
+  .btn{height:36px;padding:0 16px;border-radius:6px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px;cursor:pointer;border:none;}
+  .btn-pri{background:var(--purple);color:#fff;}
+  .btn-pri:hover{background:var(--purple-d);}
+  .btn-ghost{background:var(--card);color:var(--ink2);border:1px solid var(--line);}
+  .btn-ghost:hover{background:var(--bg);}
+  .btn-sm{height:30px;padding:0 12px;font-size:12px;}
+  .btn .ic{width:16px;height:16px;fill:currentColor;}
+
+  /* 数据卡片 */
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+  .stat-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;}
+  .stat-card .label{font-size:12px;color:var(--muted);margin-bottom:8px;}
+  .stat-card .val{font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-0.5px;}
+  .stat-card .delta{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:3px;}
+  .stat-card .delta.up{color:var(--green);}
+  .stat-card .delta.down{color:var(--red);}
+  .stat-card .delta .ic{width:12px;height:12px;fill:currentColor;}
+
+  /* 表格 */
+  .table-card{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:24px;}
+  .table-card .tc-h{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+  .table-card .tc-h h2{font-size:15px;font-weight:600;}
+  .table-card .tc-h .filters{display:flex;gap:8px;}
+  .filter-input{height:32px;padding:0 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;width:180px;}
+  .filter-select{height:32px;padding:0 28px 0 12px;border:1px solid var(--line);border-radius:6px;font-size:13px;background:var(--card);appearance:none;cursor:pointer;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:var(--bg);text-align:left;padding:10px 16px;font-weight:600;color:var(--muted);font-size:12px;border-bottom:1px solid var(--line);}
+  td{padding:12px 16px;border-bottom:1px solid var(--line2);vertical-align:middle;}
+  tr:hover td{background:#fafbfc;}
+  td b{color:var(--ink);}
+  .chip{display:inline-block;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:600;}
+  .chip-purple{background:var(--purple-bg);color:var(--purple-d);}
+  .chip-green{background:#E8F5E9;color:#2E7D32;}
+  .chip-amber{background:#FFF3E0;color:#E65100;}
+  .chip-blue{background:#E3F2FD;color:#1565C0;}
+  .chip-red{background:#FFEBEE;color:#C62828;}
+  .chip-gray{background:var(--line2);color:var(--muted);}
+  .row-actions{display:flex;gap:8px;}
+  .row-actions a{font-size:12px;color:var(--purple);text-decoration:none;cursor:pointer;}
+  .row-actions a:hover{text-decoration:underline;}
+  .row-actions a.del{color:var(--red);}
+  .status-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px;}
+  .status-dot.published{background:var(--green);}
+  .status-dot.draft{background:var(--muted2);}
+  .status-dot.scheduled{background:var(--amber);}
+
+  /* ============ 编辑器 ============ */
+  .editor-layout{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start;}
+  .editor-main{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:28px 32px;min-width:0;}
+  .editor-side{position:sticky;top:80px;}
+
+  /* 编辑器工具栏 */
+  .editor-toolbar{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line);margin:-12px -16px 20px;background:var(--bg);border-radius:8px 8px 0 0;flex-wrap:wrap;}
+  .tb-btn{width:32px;height:32px;border:none;background:transparent;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink2);}
+  .tb-btn:hover{background:var(--card);color:var(--purple);}
+  .tb-btn .ic{width:16px;height:16px;fill:currentColor;}
+  .tb-sep{width:1px;background:var(--line);margin:4px 4px;}
+  .tb-btn.callout{color:var(--purple);}
+  .tb-btn.blockquote{color:var(--muted);}
+
+  /* 编辑器字段 */
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;}
+  .field input[type=text],.field input[type=url],.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;color:var(--ink);background:var(--card);}
+  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--purple);box-shadow:0 0 0 3px rgba(83,74,183,0.1);}
+  .field-title input{font-size:20px;font-weight:700;border:none;padding:0;border-bottom:1px solid var(--line);border-radius:0;}
+  .field-title input:focus{border-bottom-color:var(--purple);box-shadow:none;}
+  .field-subtitle input{font-size:13px;color:var(--muted);border:none;padding:0;}
+  .field-subtitle input:focus{box-shadow:none;}
+
+  /* 编辑器正文预览区 */
+  .editor-preview{min-height:400px;font-size:15px;line-height:1.85;color:var(--ink2);}
+  .editor-preview h3{font-size:19px;font-weight:700;color:var(--ink);margin:32px 0 14px;}
+  .editor-preview h4{font-size:16px;font-weight:700;color:var(--ink);margin:24px 0 10px;}
+  .editor-preview p{margin-bottom:16px;}
+  .editor-preview b{color:var(--ink);}
+
+  /* Call-out（编辑器内预览） */
+  .callout{background:var(--purple-bg);border-left:4px solid var(--purple);padding:16px 18px;margin:0 0 24px;border-radius:0 8px 8px 0;position:relative;}
+  .callout .co-icon{position:absolute;top:14px;right:16px;width:18px;height:18px;fill:var(--purple);opacity:0.4;}
+  .callout .co-title{font-size:12px;font-weight:700;color:var(--purple-d);letter-spacing:0.5px;margin-bottom:6px;text-transform:uppercase;}
+  .callout .co-body{font-size:14px;line-height:1.75;color:var(--ink2);}
+  .callout .co-body p{margin-bottom:8px;}
+  .callout .co-body p:last-child{margin-bottom:0;}
+  .callout .co-body b{color:var(--ink);}
+
+  /* Blockquote（编辑器内预览） */
+  .editor-preview blockquote{border-left:3px solid #D1D5DB;padding:4px 0 4px 16px;margin:18px 0;background:transparent;border-radius:0;font-size:14.5px;color:#4a4a5a;line-height:1.8;font-style:italic;}
+  .editor-preview blockquote p{margin-bottom:8px;}
+  .editor-preview blockquote .cite{display:block;font-size:12px;color:var(--muted2);font-style:normal;margin-top:10px;padding-top:8px;border-top:0.5px solid #E5E7EB;}
+  .editor-preview blockquote .cite::before{content:"— ";color:var(--muted2);}
+
+  /* 编辑器右侧设置面板 */
+  .side-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;margin-bottom:16px;}
+  .side-card h3{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--ink);}
+  .side-card .field{margin-bottom:14px;}
+  .side-card .field:last-child{margin-bottom:0;}
+
+  /* 图片上传 */
+  .img-upload{border:2px dashed var(--line);border-radius:6px;padding:20px;text-align:center;color:var(--muted);font-size:13px;cursor:pointer;}
+  .img-upload:hover{border-color:var(--purple);color:var(--purple);}
+  .img-upload .ic{width:28px;height:28px;fill:currentColor;margin-bottom:6px;}
+
+  /* 标签输入 */
+  .tag-input{display:flex;flex-wrap:wrap;gap:6px;padding:6px;border:1px solid var(--line);border-radius:6px;min-height:38px;}
+  .tag-input .tag{display:inline-flex;align-items:center;gap:4px;background:var(--purple-bg);color:var(--purple-d);font-size:12px;padding:3px 8px;border-radius:3px;font-weight:600;}
+  .tag-input .tag .x{cursor:pointer;font-size:14px;}
+  .tag-input input{border:none;outline:none;flex:1;font-size:13px;min-width:80px;}
+
+  /* 活动编辑专用 */
+  .activity-hero-preview{height:140px;border-radius:8px;background:linear-gradient(135deg,var(--purple) 0%,var(--purple-d) 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:700;text-align:center;padding:0 24px;margin-bottom:16px;position:relative;}
+  .activity-hero-preview .badge{position:absolute;top:10px;left:10px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:3px;background:rgba(255,255,255,0.95);color:var(--purple);}
+  .schedule-editor{border:1px solid var(--line);border-radius:6px;overflow:hidden;}
+  .schedule-editor .se-row{display:grid;grid-template-columns:100px 1fr 32px;gap:0;border-bottom:1px solid var(--line2);}
+  .schedule-editor .se-row:last-child{border-bottom:none;}
+  .schedule-editor .se-row input{border:none;padding:8px 10px;font-size:13px;}
+  .schedule-editor .se-row .se-del{border:none;background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .schedule-editor .se-add{padding:8px 10px;font-size:13px;color:var(--purple);cursor:pointer;background:var(--bg);font-weight:600;}
+
+  /* 开关 */
+  .switch{position:relative;width:40px;height:22px;background:var(--line);border-radius:11px;cursor:pointer;transition:background 0.2s;}
+  .switch.on{background:var(--purple);}
+  .switch .knob{position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:left 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+  .switch.on .knob{left:20px;}
+
+  /* 提示框 */
+  .tip{background:var(--purple-bg);border:1px solid var(--purple);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--purple-d);line-height:1.6;margin-bottom:16px;}
+  .tip b{color:var(--purple-d);}
+
+  @media (max-width:1100px){.editor-layout{grid-template-columns:1fr;}.stats-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+<!-- 顶部栏 -->
+<div class="topbar">
+  <div class="logo">
+    <div class="dot">舞</div>
+    舞岛后台
+  </div>
+  <div class="crumb">内容管理 / <b>内容列表</b></div>
+  <div class="right">
+    <span>编辑 · 小贝</span>
+    <div class="ava">贝</div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- 侧边栏 -->
+  <div class="sidebar">
+    <div class="group">
+      <div class="group-h">概览</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>数据看板</div>
+    </div>
+    <div class="group">
+      <div class="group-h">内容</div>
+      <div class="item on"><svg class="ic" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>内容列表</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>新建内容</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>分类管理</div>
+    </div>
+    <div class="group">
+      <div class="group-h">活动</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>活动列表</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>新建活动</div>
+      <div class="item on"><svg class="ic" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>搭子需求审核</div>
+    </div>
+    <div class="group">
+      <div class="group-h">合作方</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>KOL / 作者</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>舞室 / 赛事方</div>
+    </div>
+    <div class="group">
+      <div class="group-h">系统</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M12 1C7 1 2.73 4.11 1 8.5 2.73 12.89 7 16 12 16s9.27-3.11 11-7.5C21.27 4.11 17 1 12 1z"/></svg>运营位管理</div>
+      <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>设置</div>
+    </div>
+  </div>
+
+  <!-- 主内容区 - 内容列表 -->
+  <div class="main">
+
+    <div class="page-h">
+      <h1>内容列表</h1>
+      <div class="actions">
+        <button class="btn btn-ghost"><svg class="ic" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>导出</button>
+        <button class="btn btn-pri"><svg class="ic" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>新建内容</button>
+      </div>
+    </div>
+
+    <!-- 数据卡片 -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="label">已发布内容</div>
+        <div class="val">42</div>
+        <div class="delta up"><svg class="ic" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>本周 +5</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">本周总阅读量</div>
+        <div class="val">8,341</div>
+        <div class="delta up"><svg class="ic" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>+12%</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">平均阅读完成率</div>
+        <div class="val">38%</div>
+        <div class="delta up"><svg class="ic" viewBox="0 0 24 24"><path d="M7 14l5-5 5 5z"/></svg>+3%</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">分享次数</div>
+        <div class="val">156</div>
+        <div class="delta down"><svg class="ic" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>-8%</div>
+      </div>
+    </div>
+
+    <!-- 内容表格 -->
+    <div class="table-card">
+      <div class="tc-h">
+        <h2>全部内容（42 篇）</h2>
+        <div class="filters">
+          <select class="filter-select">
+            <option>全部分类</option>
+            <option>穿搭</option>
+            <option>康复</option>
+            <option>文化</option>
+            <option>赛事</option>
+            <option>新鲜事</option>
+            <option>其他</option>
+          </select>
+          <select class="filter-select">
+            <option>全部状态</option>
+            <option>已发布</option>
+            <option>草稿</option>
+            <option>定时发布</option>
+          </select>
+          <input type="text" class="filter-input" placeholder="搜索标题...">
+        </div>
+      </div>
+      <table>
+        <tr>
+          <th style="width:40px"><input type="checkbox"></th>
+          <th>标题</th>
+          <th style="width:100px">分类</th>
+          <th style="width:80px">状态</th>
+          <th style="width:70px">阅读量</th>
+          <th style="width:60px">完成率</th>
+          <th style="width:60px">分享</th>
+          <th style="width:100px">发布时间</th>
+          <th style="width:120px">操作</th>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><b>嘻哈从哪来：1973 年那个改变了音乐的派对</b></td>
+          <td><span class="chip chip-blue">文化</span></td>
+          <td><span class="status-dot published"></span>已发布</td>
+          <td>1,248</td>
+          <td>52%</td>
+          <td>34</td>
+          <td>08-19 14:30</td>
+          <td class="row-actions"><a>编辑</a><a>数据</a><a class="del">删除</a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><b>新手穿搭指南：从一双对的鞋开始</b></td>
+          <td><span class="chip chip-purple">穿搭</span></td>
+          <td><span class="status-dot published"></span>已发布</td>
+          <td>892</td>
+          <td>41%</td>
+          <td>18</td>
+          <td>08-18 10:15</td>
+          <td class="row-actions"><a>编辑</a><a>数据</a><a class="del">删除</a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><b>Breaking 护腕真的有用吗？康复师拆解手腕损伤预防</b></td>
+          <td><span class="chip chip-green">康复</span></td>
+          <td><span class="status-dot published"></span>已发布</td>
+          <td>678</td>
+          <td>45%</td>
+          <td>12</td>
+          <td>08-17 16:00</td>
+          <td class="row-actions"><a>编辑</a><a>数据</a><a class="del">删除</a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><b>KOD 世界总决赛回归？近期赛事一文看懂</b></td>
+          <td><span class="chip chip-amber">赛事</span></td>
+          <td><span class="status-dot published"></span>已发布</td>
+          <td>2,103</td>
+          <td>28%</td>
+          <td>56</td>
+          <td>08-16 09:00</td>
+          <td class="row-actions"><a>编辑</a><a>数据</a><a class="del">删除</a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><b>Hip-hop 律动入门：5 个基本功每天练 10 分钟</b></td>
+          <td><span class="chip chip-purple">穿搭</span></td>
+          <td><span class="status-dot draft"></span>草稿</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td class="row-actions"><a>编辑</a><a>预览</a><a class="del">删除</a></td>
+        </tr>
+        <tr>
+          <td><input type="checkbox"></td>
+          <td><b>Kilo 老师专访：从 B-boy 到编舞师的 10 年</b></td>
+          <td><span class="chip chip-red">老师介绍</span></td>
+          <td><span class="status-dot scheduled"></span>定时 08-22</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>08-22 10:00</td>
+          <td class="row-actions"><a>编辑</a><a>取消定时</a><a class="del">删除</a></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- ============ 编辑器预览（下方面板展示编辑器） ============ -->
+    <div class="page-h" style="margin-top:40px;">
+      <h1>内容编辑器</h1>
+      <div class="actions">
+        <button class="btn btn-ghost">预览</button>
+        <button class="btn btn-ghost">存草稿</button>
+        <button class="btn btn-pri"><svg class="ic" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>发布</button>
+      </div>
+    </div>
+
+    <div class="tip">
+      <b>编辑器说明</b>：工具栏支持插入 <b>Call-out（引言）</b>和 <b>Blockquote（块引用）</b>两种特殊块。Call-out 用于作者导读/提示（紫色系），Blockquote 用于引用他人内容（灰色系+斜体+来源）。两者语义不同，视觉不同，不要混用。
+    </div>
+
+    <div class="editor-layout">
+      <!-- 编辑器主区 -->
+      <div class="editor-main">
+        <!-- 工具栏 -->
+        <div class="editor-toolbar">
+          <button class="tb-btn" title="标题 H3"><svg class="ic" viewBox="0 0 24 24"><path d="M5 4v3h5.5v12h3V7H19V4z"/></svg></button>
+          <button class="tb-btn" title="标题 H4"><svg class="ic" viewBox="0 0 24 24"><path d="M9 7H4v3h5.5v12h3V10H18V7h-5.5V4H9z" opacity="0.7"/></svg></button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" title="加粗"><svg class="ic" viewBox="0 0 24 24"><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.21-1.79-4-4-4H7v14h7.04c2.21 0 3.96-1.79 3.96-4 0-1.19-.55-2.25-1.4-2.97zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg></button>
+          <button class="tb-btn" title="斜体"><svg class="ic" viewBox="0 0 24 24"><path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/></svg></button>
+          <div class="tb-sep"></div>
+          <button class="tb-btn" title="插入链接"><svg class="ic" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></button>
+          <button class="tb-btn" title="插入图片"><svg class="ic" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></button>
+          <div class="tb-sep"></div>
+          <!-- 关键：Call-out 和 Blockquote 两个独立按钮 -->
+          <button class="tb-btn callout" title="插入引言 Call-out"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17v-2h-2v2h-1v-2h-1v-2h1v-2H9v-2h2V9h1V7h-1v2H8v2h1v2h1v2H9v2h1v2h2v-2h1v-2h1v-2h-1v2h-2zm0-6V9h2V7h-2v2h-1v4h1z"/></svg></button>
+          <button class="tb-btn blockquote" title="插入块引用 Blockquote"><svg class="ic" viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg></button>
+        </div>
+
+        <!-- 字段：分类 -->
+        <div class="field">
+          <label>分类</label>
+          <select>
+            <option>文化</option>
+            <option>穿搭</option>
+            <option>康复</option>
+            <option>赛事</option>
+            <option>新鲜事</option>
+            <option>其他</option>
+          </select>
+        </div>
+
+        <!-- 字段：标题 -->
+        <div class="field field-title">
+          <label>标题</label>
+          <input type="text" value="嘻哈从哪来：1973 年那个改变了音乐的派对">
+        </div>
+
+        <!-- 字段：副标题 -->
+        <div class="field field-subtitle">
+          <label>副标题（选填）</label>
+          <input type="text" value="三本书叠在一起读，拼出嘻哈从 Bronx 街头到全球化的完整图景">
+        </div>
+
+        <!-- 正文编辑预览区 -->
+        <div class="field">
+          <label>正文</label>
+          <div class="editor-preview" style="border:1px solid var(--line);border-radius:6px;padding:20px;min-height:500px;">
+
+            <!-- Call-out 示例（编辑器内可视化预览） -->
+            <div class="callout">
+              <svg class="co-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+              <div class="co-title">导读</div>
+              <div class="co-body">
+                <p>市面上讲嘻哈的中文书不少，但能称得上"必读组合"的，我推荐这三本——<b>《别再问我什么是嘻哈》</b>入门科普，<b>《给年轻一代的嘻哈简史》</b>偏历史脉络，<b>《20 世纪最后的草根艺术》</b>偏深度文化分析。</p>
+                <p>三本叠在一起读，恰好能拼出嘻哈从 1973 年 Bronx 街头到今天全球化文化的完整图景。</p>
+              </div>
+            </div>
+
+            <h3>一、嘻哈从哪来：1973 年 8 月 11 日那个派对</h3>
+            <p>所有讲嘻哈的书都绕不开一个日期：<b>1973 年 8 月 11 日</b>。</p>
+            <p>那天晚上，一个叫 Kool Herc 的牙买加裔 DJ 在纽约布朗克斯区 Sedgwick Avenue 1520 号的休闲室里给妹妹 Cindy 办返校派对...</p>
+
+            <!-- Blockquote 示例 -->
+            <blockquote>
+              <p>嘻哈是一种用极低门槛的设备创造出来的艺术形式。它的核心不是技术先进，而是资源匮乏下的创造力爆发。</p>
+              <span class="cite">袁越《20 世纪最后的草根艺术》</span>
+            </blockquote>
+
+            <p>第一批 bboy / bgirl 就在这个派对上诞生...</p>
+
+            <h3>二、为什么是 Bronx</h3>
+            <p>理解嘻哈为什么诞生在 Bronx 而不是曼哈顿...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 编辑器右侧设置面板 -->
+      <div class="editor-side">
+        <!-- 发布设置 -->
+        <div class="side-card">
+          <h3>发布设置</h3>
+          <div class="field">
+            <label>状态</label>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-sm btn-ghost">存草稿</button>
+              <button class="btn btn-sm btn-pri">立即发布</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>定时发布</label>
+            <input type="text" placeholder="2026-08-22 10:00" style="font-size:13px;">
+          </div>
+          <div class="field">
+            <label>置顶</label>
+            <div class="switch" style="display:inline-block;vertical-align:middle;">
+              <div class="knob"></div>
+            </div>
+            <span style="font-size:12px;color:var(--muted);margin-left:8px;">关闭</span>
+          </div>
+        </div>
+
+        <!-- 标签 -->
+        <div class="side-card">
+          <h3>标签</h3>
+          <div class="tag-input">
+            <span class="tag">嘻哈起源 <span class="x">×</span></span>
+            <span class="tag">Kool Herc <span class="x">×</span></span>
+            <span class="tag">Bronx <span class="x">×</span></span>
+            <span class="tag">文化 <span class="x">×</span></span>
+            <input type="text" placeholder="添加标签...">
+          </div>
+        </div>
+
+        <!-- 封面图 -->
+        <div class="side-card">
+          <h3>封面图</h3>
+          <div class="img-upload">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div>点击或拖拽上传封面图</div>
+            <div style="font-size:11px;margin-top:4px;">建议 16:9，≥750px</div>
+          </div>
+        </div>
+
+        <!-- 关联活动 -->
+        <div class="side-card">
+          <h3>关联活动（选填）</h3>
+          <div class="field">
+            <input type="text" placeholder="搜索活动名称..." style="font-size:13px;">
+          </div>
+          <div style="font-size:12px;color:var(--muted);">关联后，活动详情页底部展示此内容</div>
+        </div>
+
+        <!-- 作者 -->
+        <div class="side-card">
+          <h3>作者 / 来源</h3>
+          <div class="field">
+            <label>署名</label>
+            <input type="text" value="舞岛官方" style="font-size:13px;">
+          </div>
+          <div class="field">
+            <label>作者简介（选填）</label>
+            <input type="text" placeholder="街舞垂类内容平台" style="font-size:13px;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 活动编辑器预览 ============ -->
+    <div class="page-h" style="margin-top:40px;">
+      <h1>活动编辑器</h1>
+      <div class="actions">
+        <button class="btn btn-ghost">预览</button>
+        <button class="btn btn-ghost">存草稿</button>
+        <button class="btn btn-pri"><svg class="ic" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>发布活动</button>
+      </div>
+    </div>
+
+    <div class="editor-layout">
+      <div class="editor-main">
+        <!-- 活动封面预览 -->
+        <div class="activity-hero-preview">
+          <span class="badge">赛事 · 国际</span>
+          KOD 世界总决赛中国区预选
+        </div>
+
+        <div class="field">
+          <label>活动类型</label>
+          <select>
+            <option>赛事</option>
+            <option>大师课</option>
+            <option>Jam / Cypher</option>
+            <option>Workshop</option>
+            <option>官方活动</option>
+          </select>
+        </div>
+
+        <div class="field field-title">
+          <label>活动标题</label>
+          <input type="text" value="KOD 世界总决赛中国区预选">
+        </div>
+
+        <div class="field">
+          <label>活动描述（2-3 行，列表卡片展示用）</label>
+          <textarea rows="2">中国街舞最高级别赛事海选，Breaking / Hip-hop / Locking / Popping 四舞种同台竞技，优胜者获得 KOD 世界赛参赛资格。</textarea>
+        </div>
+
+        <div class="field">
+          <label>活动介绍（详情页展示）</label>
+          <textarea rows="4">中国街舞最高级别赛事海选，4 个舞种同台竞技，优胜者获得 KOD 世界赛参赛资格。海选阶段免费观赛，参赛需通过官方报名通道报名。</textarea>
+        </div>
+
+        <!-- 活动信息 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="field">
+            <label>开始时间</label>
+            <input type="text" value="2026-08-24 14:00">
+          </div>
+          <div class="field">
+            <label>结束时间</label>
+            <input type="text" value="2026-08-24 22:00">
+          </div>
+        </div>
+        <div class="field">
+          <label>地点</label>
+          <input type="text" value="北京 工人体育馆">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="field">
+            <label>舞种（多选，逗号分隔）</label>
+            <input type="text" value="Breaking, Hip-hop, Locking, Popping">
+          </div>
+          <div class="field">
+            <label>级别</label>
+            <select>
+              <option>国际</option>
+              <option>全国</option>
+              <option>区域</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>主办方</label>
+          <input type="text" value="KOD 中国区组委会">
+        </div>
+        <div class="field">
+          <label>报名链接（外部）</label>
+          <input type="url" value="https://mp.weixin.qq.com/...">
+        </div>
+
+        <!-- 日程安排编辑器 -->
+        <div class="field">
+          <label>日程安排</label>
+          <div class="schedule-editor">
+            <div class="se-row">
+              <input type="text" value="14:00">
+              <input type="text" value="签到入场">
+              <button class="se-del"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+            </div>
+            <div class="se-row">
+              <input type="text" value="15:00">
+              <input type="text" value="Breaking 1v1 海选">
+              <button class="se-del"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+            </div>
+            <div class="se-row">
+              <input type="text" value="17:00">
+              <input type="text" value="Hip-hop 1v1 海选">
+              <button class="se-del"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+            </div>
+            <div class="se-row">
+              <input type="text" value="19:00">
+              <input type="text" value="Locking · Popping 2v2 海选">
+              <button class="se-del"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+            </div>
+            <div class="se-row">
+              <input type="text" value="21:00">
+              <input type="text" value="决赛 · 颁奖">
+              <button class="se-del"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
+            </div>
+            <div class="se-add">+ 添加日程项</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>注意事项</label>
+          <textarea rows="3">参赛选手需提前 1 小时到场签到；观赛免预约，14:00 入场；场馆内禁止闪光灯。</textarea>
+        </div>
+      </div>
+
+      <div class="editor-side">
+        <div class="side-card">
+          <h3>发布设置</h3>
+          <div class="field">
+            <label>状态</label>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-sm btn-ghost">存草稿</button>
+              <button class="btn btn-sm btn-pri">立即发布</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>关注提醒推送</label>
+            <div class="switch on" style="display:inline-block;vertical-align:middle;">
+              <div class="knob"></div>
+            </div>
+            <span style="font-size:12px;color:var(--muted);margin-left:8px;">开启（赛前 3 天/1 天推送）</span>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>封面图</h3>
+          <div class="img-upload">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div>上传活动封面</div>
+            <div style="font-size:11px;margin-top:4px;">建议 16:9，≥750px</div>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>定位</h3>
+          <div class="field">
+            <label>地图定位</label>
+            <input type="text" value="39.9042, 116.4074" style="font-size:13px;">
+          </div>
+          <div style="font-size:12px;color:var(--muted);">经纬度坐标，用于地图模式 pin 标记</div>
+        </div>
+
+        <div class="side-card">
+          <h3>关联内容（选填）</h3>
+          <div class="field">
+            <input type="text" placeholder="搜索关联的 PGC 内容..." style="font-size:13px;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 搭子需求审核 ============ -->
+    <div class="page-h">
+      <h1>搭子需求审核</h1>
+      <div class="actions">
+        <button class="btn btn-ghost"><svg class="ic" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>导出</button>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="label">待审核</div>
+        <div class="val">5</div>
+        <div class="delta up">今日新增 2</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">审核通过率</div>
+        <div class="val">72%</div>
+        <div class="delta">本月</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">已发布练舞局</div>
+        <div class="val">18</div>
+        <div class="delta up">+3 本周</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">平均应征数</div>
+        <div class="val">2.4</div>
+        <div class="delta">每局</div>
+      </div>
+    </div>
+
+    <!-- 需求列表 -->
+    <div class="table-card">
+      <div class="tc-h">
+        <h2>待审核需求（5 条）</h2>
+        <div class="filters">
+          <select class="filter-select">
+            <option>全部状态</option>
+            <option>待审核</option>
+            <option>已通过</option>
+            <option>已驳回</option>
+            <option>已发布</option>
+          </select>
+          <select class="filter-select">
+            <option>全部类型</option>
+            <option>练舞局</option>
+            <option>拼团</option>
+            <option>比赛</option>
+            <option>其他</option>
+          </select>
+        </div>
+      </div>
+      <table>
+        <tr>
+          <th>标题</th>
+          <th style="width:80px">类型</th>
+          <th style="width:100px">时间</th>
+          <th style="width:100px">地点</th>
+          <th style="width:80px">联系方式</th>
+          <th style="width:80px">状态</th>
+          <th style="width:140px">操作</th>
+        </tr>
+        <tr>
+          <td><b>周三晚望京 Breaking 练舞局</b></td>
+          <td><span class="chip chip-purple">练舞局</span></td>
+          <td>08-27 19:00</td>
+          <td>望京 SOHO</td>
+          <td><span style="font-size:11px;color:var(--muted);">微信号</span></td>
+          <td><span class="chip chip-amber">待审核</span></td>
+          <td class="row-actions"><a style="font-weight:600;">通过→代发</a><a class="del">驳回</a></td>
+        </tr>
+        <tr>
+          <td><b>KOD Workshop 3 人拼团</b></td>
+          <td><span class="chip chip-green">拼团</span></td>
+          <td>09-02 14:00</td>
+          <td>线上+线下</td>
+          <td><span style="font-size:11px;color:var(--muted);">微信号</span></td>
+          <td><span class="chip chip-amber">待审核</span></td>
+          <td class="row-actions"><a style="font-weight:600;">通过→代发</a><a class="del">驳回</a></td>
+        </tr>
+        <tr>
+          <td><b>HHI 齐舞赛差 2 人 Breaking</b></td>
+          <td><span class="chip chip-blue">比赛</span></td>
+          <td>09-08 10:00</td>
+          <td>五道口</td>
+          <td><span style="font-size:11px;color:var(--muted);">微信号</span></td>
+          <td><span class="chip chip-amber">待审核</span></td>
+          <td class="row-actions"><a style="font-weight:600;">通过→代发</a><a class="del">驳回</a></td>
+        </tr>
+        <tr>
+          <td><b>求 Hip-hop 律动搭子每周六</b></td>
+          <td><span class="chip chip-purple">练舞局</span></td>
+          <td>每周六 15:00</td>
+          <td>国贸</td>
+          <td><span style="font-size:11px;color:var(--muted);">微信号</span></td>
+          <td><span class="chip chip-green">已通过</span></td>
+          <td class="row-actions"><a>查看活动</a><a>编辑</a></td>
+        </tr>
+        <tr>
+          <td><b>周末 Cypher 求搭子</b></td>
+          <td><span class="chip chip-gray">其他</span></td>
+          <td>08-31 20:00</td>
+          <td>望京</td>
+          <td><span style="font-size:11px;color:var(--muted);">微信号</span></td>
+          <td><span class="chip chip-red">已驳回</span></td>
+          <td class="row-actions"><a>查看原因</a></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 审核编辑器（通过后代发） -->
+    <div class="page-h" style="margin-top:40px;">
+      <h1>审核 → 代发编辑器</h1>
+      <div class="actions">
+        <button class="btn btn-ghost">驳回</button>
+        <button class="btn btn-pri"><svg class="ic" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>发布为练舞局</button>
+      </div>
+    </div>
+
+    <div class="tip">
+      <b>审核流程</b>：用户提交需求 → 运营审核（通过/驳回）→ 通过后预填活动编辑器 → 运营润色文案 → 发布为 type=buddy 活动。发布账号 = 舞岛官方号，正文不含发起人联系方式。
+    </div>
+
+    <div class="editor-layout">
+      <div class="editor-main">
+        <!-- 用户原始需求（只读） -->
+        <div style="background:var(--bg);border-radius:8px;padding:16px;margin-bottom:20px;border:1px solid var(--line);">
+          <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;">用户原始需求（只读）</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;">
+            <div><span style="color:var(--muted);">类型：</span><b>练舞局</b></div>
+            <div><span style="color:var(--muted);">舞种：</span>Breaking</div>
+            <div><span style="color:var(--muted);">时间：</span>08-27 19:00</div>
+            <div><span style="color:var(--muted);">地点：</span>望京 SOHO T3</div>
+            <div><span style="color:var(--muted);">人数：</span>不限</div>
+            <div><span style="color:var(--muted);">微信号：</span><b style="color:var(--purple);">yoKoi_dance</b></div>
+          </div>
+          <div style="margin-top:10px;font-size:13px;color:var(--ink2);line-height:1.6;">找同水平 Breaking 舞者一起练基本功，从 toprock 到 footwork，互相交流进步。适合练舞 1 年以上的 bboy/bgirl。</div>
+          <div style="margin-top:10px;font-size:11px;color:var(--muted2);">提交时间：2026-08-24 14:32 · 参考图 2 张（仅审核可见）</div>
+        </div>
+
+        <!-- 代发编辑器（基于用户需求预填，可编辑） -->
+        <div class="field">
+          <label>活动类型</label>
+          <select>
+            <option>练舞局（buddy）</option>
+            <option>拼团</option>
+            <option>比赛</option>
+            <option>其他</option>
+          </select>
+        </div>
+        <div class="field field-title">
+          <label>活动标题（代发）</label>
+          <input type="text" value="周三晚望京 Breaking 练舞局">
+        </div>
+        <div class="field">
+          <label>活动描述（运营润色后）</label>
+          <textarea rows="3">找同水平 Breaking 舞者一起练基本功，从 toprock 到 footwork，互相交流进步。适合练舞 1 年以上的 bboy/bgirl。</textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="field">
+            <label>时间</label>
+            <input type="text" value="2026-08-27 19:00-21:00">
+          </div>
+          <div class="field">
+            <label>地点</label>
+            <input type="text" value="望京 SOHO T3 · B1">
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="field">
+            <label>舞种</label>
+            <input type="text" value="Breaking">
+          </div>
+          <div class="field">
+            <label>人数</label>
+            <input type="text" value="不限">
+          </div>
+        </div>
+        <div class="field">
+          <label>注意事项</label>
+          <textarea rows="2">应征后你的联系方式将发给发起人，由发起人主动联系你。舞岛不参与线下交易与担保。</textarea>
+        </div>
+      </div>
+
+      <div class="editor-side">
+        <div class="side-card">
+          <h3>发布设置</h3>
+          <div class="field">
+            <label>发布账号</label>
+            <input type="text" value="舞岛官方" style="font-size:13px;background:var(--bg);" readonly>
+          </div>
+          <div class="field">
+            <label>发起人（查看应征用）</label>
+            <input type="text" value="yoKoi_dance" style="font-size:13px;" readonly>
+          </div>
+          <div class="field">
+            <label>通知发起人</label>
+            <div class="switch on" style="display:inline-block;vertical-align:middle;">
+              <div class="knob"></div>
+            </div>
+            <span style="font-size:12px;color:var(--muted);margin-left:8px;">发布后订阅消息通知</span>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>封面图</h3>
+          <div class="img-upload">
+            <svg class="ic" viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <div>上传练舞局封面</div>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>地图定位</h3>
+          <div class="field">
+            <input type="text" value="39.9975, 116.4758" style="font-size:13px;">
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>驳回原因（选填）</h3>
+          <div class="field">
+            <textarea rows="3" placeholder="如需驳回，填写原因..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

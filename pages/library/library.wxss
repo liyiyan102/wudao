@@ -1,0 +1,47 @@
+page { background: var(--bg); padding: 20rpx 24rpx 40rpx; box-sizing: border-box; }
+
+.hist-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8rpx 8rpx 20rpx;
+}
+.hist-count { font-size: 24rpx; color: var(--muted); }
+
+.hist-card {
+  background: var(--card);
+  border-radius: 16rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 16rpx;
+  display: flex;
+  gap: 20rpx;
+}
+.hist-cover {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+  background: var(--brand-bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.hist-cover-img { width: 100%; height: 100%; }
+.hist-cover .ic { font-size: var(--ic-xl); }
+.hist-info { flex: 1; min-width: 0; }
+.hist-title {
+  font-size: 26rpx;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 10rpx;
+}
+.hist-tm { font-size: 22rpx; color: var(--muted); }
+
+.empty {
+  text-align: center;
+  padding: 140rpx 0;
+  font-size: 26rpx;
+  color: var(--muted);
+}
+.empty-icon { font-size: var(--ic-media); margin-bottom: 16rpx; }

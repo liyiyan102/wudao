@@ -1,0 +1,172 @@
+<view class="detail" wx:if="{{post}}">
+  <view class="dcard">
+    <!-- 分类标签 + 标题 + 副标题（PRD 4.3 结构） -->
+    <view class="cat-tag {{post.tagCls}}">{{post.catName}}</view>
+    <view class="dtitle">{{post.title}}</view>
+    <view class="dsubtitle" wx:if="{{post.subtitle}}">{{post.subtitle}}</view>
+
+    <!-- 元信息行：发布者 · 发布时间 -->
+    <view class="dmeta">
+      <image wx:if="{{post.publisher && post.publisher.avatar}}" class="dmeta-ava-img" src="{{post.publisher.avatar}}" mode="aspectFill" />
+      <view wx:else class="dmeta-ava">{{post.publisher.nickname[0]}}</view>
+      <text class="dmeta-name">{{post.publisher.nickname}}</text>
+      <text class="dmeta-dot">·</text>
+      <text class="dmeta-time">{{post.dateText}}</text>
+    </view>
+
+    <!-- 正文：编辑型长内容（Call-out / Blockquote / H3 / H4 / 段落） -->
+    <view class="dbody">
+      <block wx:for="{{blocks}}" wx:key="index" wx:for-item="b">
+
+        <!-- Call-out 引言：作者导读（浅紫底 + 紫左条 + 右上 info） -->
+        <view wx:if="{{b.type === 'callout'}}" class="callout">
+          <view class="ic ic-info callout-icon"></view>
+          <view class="callout-title" wx:if="{{b.title}}">{{b.title}}</view>
+          <view class="callout-body">
+            <block wx:for="{{b.segs}}" wx:key="index" wx:for-item="s">
+              <text wx:if="{{s.bold}}" class="bold">{{s.text}}</text>
+              <text wx:else>{{s.text}}</text>
+            </block>
+          </view>
+        </view>
+
+        <!-- Blockquote 块引用：引用他人（灰左线 + 斜体 + cite） -->
+        <view wx:elif="{{b.type === 'quote'}}" class="blockquote">
+          <view class="bq-text" wx:if="{{b.text}}">
+            <block wx:for="{{b.segs}}" wx:key="index" wx:for-item="s">
+              <text wx:if="{{s.bold}}" class="bold">{{s.text}}</text>
+              <text wx:else>{{s.text}}</text>
+            </block>
+          </view>
+          <view class="bq-cite" wx:if="{{b.cite}}">{{b.cite}}</view>
+        </view>
+
+        <view wx:elif="{{b.type === 'h3'}}" class="dh3">{{b.text}}</view>
+        <view wx:elif="{{b.type === 'h4'}}" class="dh4">{{b.text}}</view>
+
+        <view wx:elif="{{b.type === 'ul'}}" class="dlist">
+          <view class="dli" wx:for="{{b.items}}" wx:key="index" wx:for-item="li">
+            <text class="dli-mark">•</text>
+            <view class="dli-text">
+              <block wx:for="{{li.segs}}" wx:key="index" wx:for-item="s">
+                <text wx:if="{{s.bold}}" class="bold">{{s.text}}</text>
+                <text wx:else>{{s.text}}</text>
+              </block>
+            </view>
+          </view>
+        </view>
+
+        <view wx:elif="{{b.type === 'ol'}}" class="dlist">
+          <view class="dli" wx:for="{{b.items}}" wx:key="index" wx:for-item="li">
+            <text class="dli-mark">{{li.n}}.</text>
+            <view class="dli-text">
+              <block wx:for="{{li.segs}}" wx:key="index" wx:for-item="s">
+                <text wx:if="{{s.bold}}" class="bold">{{s.text}}</text>
+                <text wx:else>{{s.text}}</text>
+              </block>
+            </view>
+          </view>
+        </view>
+
+        <!-- 表格：横向滑动封装 + 精美排版 -->
+        <scroll-view scroll-x class="dtable-wrap" wx:elif="{{b.type === 'table'}}">
+          <view class="dtable">
+            <view class="dtr dth-row">
+              <view
+                wx:for="{{b.headers}}"
+                wx:key="index"
+                wx:for-item="th"
+                class="dcell dth align-{{b.aligns[index] || 'left'}}"
+              >
+                <block wx:for="{{th.segs}}" wx:key="index" wx:for-item="s">
+                  <text wx:if="{{s.bold}}" class="bold">{{s.text}}</text>
+                  <text wx:else>{{s.text}}</text>
+                </block>
+              </view>
+            </view>
+            <view class="dtr dtd-row" wx:for="{{b.rows}}" wx:key="index" wx:for-item="row">
+              <view
+                wx:for="{{row}}"
+                wx:key="index"
+                wx:for-item="td"
+                class="dcell dtd align-{{b.aligns[index] || 'left'}}"
+              >
+                <block wx:for="{{td.segs}}" wx:key="index" wx:for-item="s">
+                  <text wx:if="{{s.bold}}" class="bold">{{s.text}}</text>
+                  <text wx:else>{{s.text}}</text>
+                </block>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+
+        <!-- 图片：真实图（点击全屏预览）/ 无 url 占位块 -->
+        <block wx:elif="{{b.type === 'img'}}">
+          <image
+            wx:if="{{b.url}}"
+            class="dimg-real"
+            src="{{b.url}}"
+            mode="widthFix"
+            data-url="{{b.url}}"
+            bindtap="previewImg"
+            lazy-load="{{true}}"
+          />
+          <view wx:else class="dimg">
+            <view class="ic ic-image-pale"></view>
+          </view>
+        </block>
+
+        <!-- 视频：原生 video 播放 -->
+        <video
+          wx:elif="{{b.type === 'video' && b.url}}"
+          class="dvideo"
+          src="{{b.url}}"
+          controls
+          object-fit="contain"
+        ></video>
+
+        <view wx:else class="dp">
+          <block wx:for="{{b.segs}}" wx:key="index" wx:for-item="s">
+            <text wx:if="{{s.bold}}" class="bold">{{s.text}}</text>
+            <text wx:else>{{s.text}}</text>
+          </block>
+        </view>
+      </block>
+    </view>
+
+    <!-- 相关推荐（同分类 3 条） -->
+    <view class="relate" wx:if="{{post.related.length}}">
+      <view class="relate-h">相关推荐</view>
+      <view class="relate-item" wx:for="{{post.related}}" wx:key="id" bindtap="openRelated" data-id="{{item.id}}">
+        <view class="cat-tag {{item.tagCls}} relate-tag">{{item.catName}}</view>
+        <view class="relate-title ellipsis-1">{{item.title}}</view>
+      </view>
+    </view>
+
+    <view class="feedback-entry" bindtap="goFeedback" hover-class="feedback-press">
+      <view>
+        <view class="feedback-title">内容有问题？</view>
+        <view class="feedback-desc">错别字、图片异常、信息不准确都可以反馈</view>
+      </view>
+      <view class="feedback-action">反馈</view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部互动：点赞 / 收藏 + 分享主按钮 -->
+<view class="engage-bar">
+  <view class="engage-actions">
+    <view class="engage-icon-btn {{liked ? 'on' : ''}}" bindtap="onLike" hover-class="engage-press">
+      <view class="ic {{liked ? 'ic-heart-brand' : 'ic-heart'}}"></view>
+      <text class="engage-num">{{likeCount}}</text>
+    </view>
+    <view class="engage-icon-btn {{collected ? 'on' : ''}}" bindtap="onCollect" hover-class="engage-press">
+      <view class="ic {{collected ? 'ic-star-brand' : 'ic-star'}}"></view>
+      <text class="engage-num">{{collectCount}}</text>
+    </view>
+  </view>
+  <button class="engage-share-btn" open-type="share" hover-class="engage-share-press">
+    <view class="ic ic-share-white"></view>
+    <text>分享</text>
+  </button>
+</view>

@@ -1,0 +1,41 @@
+<view class="set-group">
+  <view class="set-title">通用</view>
+  <view class="set-card">
+    <view class="set-row">
+      <view class="ic ic-bell set-icon"></view>
+      <view class="set-info">
+        <view class="set-label">活动提醒</view>
+        <view class="set-sub">关注的活动开赛前 3 天 / 1 天推送</view>
+      </view>
+      <switch checked="{{notify}}" color="#534AB7" bindchange="onNotify" />
+    </view>
+    <view class="set-row">
+      <view class="ic ic-bell set-icon"></view>
+      <view class="set-info">
+        <view class="set-label">找搭子通知</view>
+        <view class="set-sub">需求通过代发、有人加入时提醒</view>
+      </view>
+      <switch checked="{{buddyNotify}}" color="#534AB7" bindchange="onBuddyNotify" />
+    </view>
+  </view>
+</view>
+
+<view class="set-group">
+  <view class="set-title">关于</view>
+  <view class="set-card">
+    <view class="set-row" bindtap="goAgreement">
+      <view class="set-info">
+        <view class="set-label">用户协议</view>
+      </view>
+      <view class="ic ic-chevron-right"></view>
+    </view>
+    <view class="set-row" bindtap="goPrivacy">
+      <view class="set-info">
+        <view class="set-label">隐私政策</view>
+      </view>
+      <view class="ic ic-chevron-right"></view>
+    </view>
+  </view>
+</view>
+
+<view class="logout-btn" wx:if="{{loggedIn}}" bindtap="onLogout">退出登录</view>

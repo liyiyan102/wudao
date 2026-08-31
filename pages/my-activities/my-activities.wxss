@@ -1,0 +1,127 @@
+page { background: var(--bg); }
+
+.ma-list { padding: 20rpx 24rpx 40rpx; }
+
+/* 活动卡（与活动列表页同构） */
+.act-card {
+  background: var(--card);
+  border-radius: 16rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+}
+.act-cover {
+  height: 220rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0 48rpx;
+}
+.act-cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.act-badge {
+  position: absolute;
+  top: 20rpx;
+  left: 20rpx;
+  font-size: 20rpx;
+  font-weight: 600;
+  padding: 6rpx 16rpx;
+  border-radius: 6rpx;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--brand);
+}
+.act-date {
+  position: absolute;
+  bottom: 20rpx;
+  right: 20rpx;
+  font-size: 22rpx;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  padding: 6rpx 16rpx;
+  border-radius: 6rpx;
+}
+.act-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+.act-body { padding: 22rpx 28rpx; }
+.act-meta { display: flex; gap: 20rpx; flex-wrap: wrap; }
+.act-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 23rpx;
+  color: var(--muted);
+}
+.act-meta-item .ic { font-size: var(--ic-sm); }
+.act-status {
+  margin-top: 18rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx solid var(--line2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ma-followed { font-size: 23rpx; color: var(--muted); }
+.ma-cancel {
+  font-size: 24rpx;
+  color: var(--red);
+  padding: 8rpx 20rpx;
+  border: 1rpx solid var(--red);
+  border-radius: 28rpx;
+}
+
+.empty {
+  text-align: center;
+  padding: 140rpx 0;
+  font-size: 26rpx;
+  color: var(--muted);
+}
+.empty-icon { font-size: var(--ic-media); margin-bottom: 16rpx; }
+
+/* ================= 顶部分段 ================= */
+.seg {
+  display: flex;
+  background: var(--card);
+  border-radius: 16rpx;
+  padding: 6rpx;
+  margin-bottom: 20rpx;
+}
+.seg-item {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--muted);
+  padding: 16rpx 0;
+  border-radius: 12rpx;
+}
+.seg-item.on {
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 打卡状态 chip */
+.ck-chip {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 23rpx;
+  color: var(--muted);
+  background: var(--line2);
+  padding: 6rpx 18rpx;
+  border-radius: 24rpx;
+}
+.ck-chip.ok {
+  color: #2E7D32;
+  background: #E8F5E9;
+}
+.ck-chip .ic { font-size: var(--ic-sm); }

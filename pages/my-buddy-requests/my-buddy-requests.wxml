@@ -1,0 +1,25 @@
+<view class="list">
+  <view class="card" wx:for="{{list}}" wx:key="id">
+    <view class="row">
+      <view class="st st-{{item.status}}">{{item.statusName}}</view>
+      <view class="time">{{item.timeText}}</view>
+    </view>
+    <view class="title">{{item.title}}</view>
+    <view class="meta">{{item.metaLine}}</view>
+    <view class="reason" wx:if="{{item.status === 'rejected'}}">原因：{{item.rejectReason}}</view>
+    <view class="acts">
+      <view class="lnk" wx:if="{{item.status === 'pending'}}" catchtap="onWithdraw" data-id="{{item.id}}">撤回</view>
+      <view class="lnk" wx:if="{{item.status === 'rejected'}}" catchtap="onRetry" data-id="{{item.id}}">修改重提</view>
+      <view class="lnk" wx:if="{{item.status === 'published'}}" catchtap="onApps" data-id="{{item.id}}">加入 {{item.applicationCount}} 人</view>
+      <view class="lnk" wx:if="{{item.status === 'published' && item.linkedActivityId}}" catchtap="onShare" data-id="{{item.linkedActivityId}}">分享</view>
+      <view class="lnk danger" wx:if="{{item.status === 'published'}}" catchtap="onClose" data-id="{{item.id}}">标记已结束</view>
+      <view class="lnk" wx:if="{{item.linkedActivityId}}" catchtap="onOpen" data-id="{{item.linkedActivityId}}">查看活动</view>
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!list.length}}">
+    <view class="empty-icon">🤝</view>
+    <view>还没有提交过需求</view>
+    <view class="empty-link" bindtap="goNew">提交搭子需求 →</view>
+  </view>
+</view>

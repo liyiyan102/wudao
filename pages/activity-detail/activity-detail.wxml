@@ -1,0 +1,81 @@
+<view wx:if="{{act}}">
+  <view class="hero" style="background:{{act.grad}}">
+    <image wx:if="{{act.coverUrl}}" class="hero-img" src="{{act.coverUrl}}" mode="aspectFill" />
+    <view class="hero-badge">{{act.typeName}}</view>
+    <view class="hero-ended" wx:if="{{act.expired}}">已结束</view>
+  </view>
+
+  <view class="a-body">
+    <view class="title-block">
+      <view class="a-title">{{act.title}}</view>
+      <view class="meta-chips">
+        <view class="meta-chip" wx:for="{{act.metaRows}}" wx:key="index">
+          <text class="meta-k">{{item.label}}</text>
+          <text class="meta-v">{{item.value}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="a-section">
+      <view class="sec-h">活动介绍</view>
+      <view class="sec-desc" wx:if="{{!act.descBlocks.length}}">暂未补充活动介绍</view>
+      <view class="story-p" wx:for="{{act.descBlocks}}" wx:key="index">{{item}}</view>
+    </view>
+
+    <view class="a-section" wx:if="{{act.schedule && act.schedule.length}}">
+      <view class="sec-h">日程安排</view>
+      <view class="sch-row" wx:for="{{act.schedule}}" wx:key="index">
+        <view class="sch-dot"></view>
+        <text class="sch-time">{{item.time}}</text>
+        <text class="sch-item">{{item.item}}</text>
+      </view>
+    </view>
+
+    <view class="a-section" wx:if="{{act.notesBlocks.length}}">
+      <view class="sec-h">注意事项</view>
+      <view class="story-p note" wx:for="{{act.notesBlocks}}" wx:key="index">{{item}}</view>
+    </view>
+
+    <view class="feedback-entry" bindtap="goFeedback" hover-class="feedback-press">
+      <view>
+        <view class="feedback-title">活动信息有问题？</view>
+        <view class="feedback-desc">时间、地点、报名信息不准确可以反馈</view>
+      </view>
+      <view class="feedback-action">反馈</view>
+    </view>
+  </view>
+
+  <view class="follow-bar">
+    <view class="engage-side">
+      <view class="engage-icon-btn {{liked ? 'on' : ''}}" bindtap="onLike" hover-class="engage-press">
+        <view class="ic {{liked ? 'ic-heart-brand' : 'ic-heart'}}"></view>
+        <text class="engage-num">{{likeCount}}</text>
+      </view>
+      <view class="engage-icon-btn {{collected ? 'on' : ''}}" bindtap="onCollect" hover-class="engage-press">
+        <view class="ic {{collected ? 'ic-star-brand' : 'ic-star'}}"></view>
+        <text class="engage-num">{{collectCount}}</text>
+      </view>
+      <button class="engage-icon-btn engage-share-chip" open-type="share" hover-class="engage-press">
+        <view class="ic ic-share-brand"></view>
+      </button>
+    </view>
+
+    <block wx:if="{{act.expired}}">
+      <view class="follow-btn done">已结束</view>
+    </block>
+    <block wx:elif="{{act.type === 'buddy'}}">
+      <view class="follow-btn followed" wx:if="{{act.isInitiator}}" bindtap="goMyRequest">查看加入</view>
+      <view class="follow-btn done" wx:elif="{{act.applied}}">已报名</view>
+      <view class="follow-btn" wx:else bindtap="onWantJoin">报名</view>
+    </block>
+    <block wx:elif="{{act.type === 'official'}}">
+      <view class="follow-btn done" wx:if="{{act.checkedIn}}">已打卡</view>
+      <view class="follow-btn checkin" wx:elif="{{act.joined}}" bindtap="onCheckIn">现场打卡</view>
+      <view class="follow-btn" wx:else bindtap="onJoin">报名</view>
+    </block>
+    <block wx:else>
+      <view class="follow-btn followed" wx:if="{{act.followed}}" bindtap="onFollow">已报名</view>
+      <view class="follow-btn" wx:else bindtap="onFollow">报名</view>
+    </block>
+  </view>
+</view>

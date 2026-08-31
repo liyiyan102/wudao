@@ -1,0 +1,10 @@
+page { background: var(--card); padding: 40rpx 32rpx 80rpx; box-sizing: border-box; }
+.h { font-size: 36rpx; font-weight: 700; margin-bottom: 28rpx; color: var(--ink); }
+.h2 {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin: 40rpx 0 20rpx;
+  color: var(--ink);
+}
+.p { font-size: 28rpx; color: var(--ink2); line-height: 1.8; margin-bottom: 20rpx; }
+.muted { font-size: 24rpx; color: var(--muted); margin-top: 32rpx; }

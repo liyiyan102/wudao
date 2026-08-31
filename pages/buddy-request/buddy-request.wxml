@@ -1,0 +1,174 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-badge">舞岛代发</view>
+    <view class="hero-title">一步一步，把这局说清楚</view>
+    <view class="hero-desc">先描述你想约什么，再留联系方式。公开页不会展示你的微信。</view>
+    <view class="step-row">
+      <view class="step-item {{step >= 1 ? 'on' : ''}}">
+        <view class="step-dot">1</view>
+        <text>约什么局</text>
+      </view>
+      <view class="step-line {{step >= 2 ? 'on' : ''}}"></view>
+      <view class="step-item {{step >= 2 ? 'on' : ''}}">
+        <view class="step-dot">2</view>
+        <text>留下联系</text>
+      </view>
+    </view>
+  </view>
+
+  <block wx:if="{{step === 1}}">
+    <view class="card">
+      <view class="sec-title">这次想组什么局</view>
+      <view class="sec-sub">先选大方向，后面系统会帮你生成发布标题。</view>
+      <view class="chips">
+        <view
+          wx:for="{{subTypes}}"
+          wx:key="key"
+          class="chip {{subType === item.key ? 'on' : ''}}"
+          bindtap="onSub"
+          data-key="{{item.key}}"
+        >{{item.name}}</view>
+      </view>
+      <view class="field" wx:if="{{subType === 'teammate'}}">
+        <view class="lab">比赛名称</view>
+        <input class="box-in" placeholder="如：HHI 北京站齐舞赛" maxlength="40" value="{{contestName}}" bindinput="onContest" />
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="sec-title">说说你想找什么人</view>
+      <view class="sec-sub">写清水平、目标、想练的内容，审核会帮你润色成活动文案。</view>
+      <textarea class="desc-in" placeholder="比如：想找能一起刷基础、互拍视频、周末在国贸附近练 House 的搭子" maxlength="500" value="{{description}}" bindinput="onDesc" auto-height />
+    </view>
+
+    <view class="card">
+      <view class="sec-title">时间和地点</view>
+      <view class="sec-sub">日期可以不填，也可以设成每周几循环。</view>
+      <view class="chips" style="margin-bottom:16rpx">
+        <view class="chip {{dateMode === 'none' ? 'on' : ''}}" bindtap="onDateMode" data-mode="none">不设置</view>
+        <view class="chip {{dateMode === 'once' ? 'on' : ''}}" bindtap="onDateMode" data-mode="once">指定日期</view>
+        <view class="chip {{dateMode === 'weekly' ? 'on' : ''}}" bindtap="onDateMode" data-mode="weekly">每周循环</view>
+      </view>
+      <view class="key-block" wx:if="{{dateMode === 'weekly'}}">
+        <view class="lab" style="margin-bottom:12rpx">每周几</view>
+        <view class="chips">
+          <view
+            wx:for="{{weekdaysOptions}}"
+            wx:key="n"
+            class="chip {{weekdayOn[item.n] ? 'on' : ''}}"
+            bindtap="onWeekday"
+            data-n="{{item.n}}"
+          >周{{item.name}}</view>
+        </view>
+        <picker mode="time" value="{{startTimeStr || '19:00'}}" bindchange="onStartTimeOnly">
+          <view class="key-row">
+            <view class="ic ic-clock-brand"></view>
+            <text>开始时刻</text>
+            <view class="key-val">{{startTimeStr || '可不填'}}</view>
+            <view class="ic ic-chevron-right"></view>
+          </view>
+        </picker>
+        <picker mode="time" value="{{endTimeStr || '21:00'}}" bindchange="onEndTimeOnly">
+          <view class="key-row">
+            <view class="ic ic-event-brand"></view>
+            <text>结束时刻</text>
+            <view class="key-val">{{endTimeStr || '可不填'}}</view>
+            <view class="ic ic-chevron-right"></view>
+          </view>
+        </picker>
+      </view>
+      <view class="key-block" wx:if="{{dateMode === 'once'}}">
+        <picker mode="multiSelector" range="{{dtRange}}" value="{{startDtIndex}}" bindchange="onStartDt">
+          <view class="key-row">
+            <view class="ic ic-clock-brand"></view>
+            <text>开始时间</text>
+            <view class="key-val">{{startDateLabel || '暂不设置'}}</view>
+            <view class="ic ic-chevron-right"></view>
+          </view>
+        </picker>
+        <view class="key-row clear-row" wx:if="{{startDateStr}}" catchtap="clearStartDate">
+          <text class="clear-link">清除开始时间</text>
+        </view>
+        <picker mode="multiSelector" range="{{dtRange}}" value="{{endDtIndex}}" bindchange="onEndDt">
+          <view class="key-row">
+            <view class="ic ic-event-brand"></view>
+            <text>结束时间</text>
+            <view class="key-val">{{endDateLabel || '暂不设置'}}</view>
+            <view class="ic ic-chevron-right"></view>
+          </view>
+        </picker>
+        <view class="key-row clear-row" wx:if="{{endDateStr}}" catchtap="clearEndDate">
+          <text class="clear-link">清除结束时间</text>
+        </view>
+      </view>
+      <view class="key-block">
+        <view class="key-row" bindtap="onLocation">
+          <view class="ic ic-location-brand"></view>
+          <text>地点</text>
+          <view class="key-val">{{location || '选择地点'}}</view>
+          <view class="ic ic-chevron-right"></view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="card">
+      <view class="sec-title">补充一点细节</view>
+      <view class="sec-sub">这些都不是必须，但会让别人更快判断要不要加入。</view>
+      <view class="field">
+        <view class="lab">舞种</view>
+        <view class="quick-row">
+          <view
+            wx:for="{{quickDances}}"
+            wx:key="*this"
+            class="quick-chip {{danceStyle === item ? 'on' : ''}}"
+            data-value="{{item}}"
+            bindtap="onQuickDance"
+          >{{item}}</view>
+        </view>
+        <input class="box-in" placeholder="也可以自己填，比如 Urban / 全舞种" value="{{danceStyle}}" bindinput="onDance" />
+      </view>
+      <view class="field row2">
+        <view class="half">
+          <view class="lab">人数</view>
+          <input class="box-in" placeholder="不限" value="{{headcount}}" bindinput="onHead" />
+        </view>
+        <view class="half">
+          <view class="lab">自定义标题</view>
+          <input class="box-in" placeholder="不填则用系统生成标题" maxlength="30" value="{{title}}" bindinput="onTitle" />
+        </view>
+      </view>
+    </view>
+
+    <view class="card contact-card">
+      <view class="sec-title">联系方式</view>
+      <view class="sec-sub">只给审核和发起后的加入者看，不会出现在公开页面。</view>
+      <view class="field">
+        <view class="lab brand">微信号</view>
+        <input class="box-in brand-in" placeholder="填写微信号" value="{{contactWechat}}" bindinput="onWechat" />
+      </view>
+      <view class="field">
+        <view class="lab">手机号</view>
+        <input class="box-in" type="number" placeholder="选填" value="{{contactPhone}}" bindinput="onPhone" />
+      </view>
+    </view>
+
+    <view class="agree" bindtap="toggleAgree">
+      <view class="cb {{agreed ? 'on' : ''}}">
+        <view class="ic ic-check-circle-white" wx:if="{{agreed}}"></view>
+      </view>
+      <view class="agree-txt">我已阅读并同意<text class="link" catchtap="goNotice">《搭子代发须知》</text>，需求会由舞岛审核后代发，请勿填写违规内容</view>
+    </view>
+  </block>
+
+  <view class="foot">
+    <view class="foot-row" wx:if="{{step === 1}}">
+      <view class="btn primary {{stepOneReady ? '' : 'off'}}" bindtap="nextStep">下一步</view>
+    </view>
+    <view class="foot-row" wx:else>
+      <view class="btn ghost" bindtap="prevStep">上一步</view>
+      <view class="btn primary {{busy ? 'off' : ''}}" bindtap="onSubmit">提交</view>
+    </view>
+  </view>
+</view>

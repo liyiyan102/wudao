@@ -1,0 +1,117 @@
+page { background: var(--bg); }
+.page {
+  padding: 24rpx 24rpx calc(48rpx + env(safe-area-inset-bottom));
+}
+.card {
+  background: var(--card);
+  border-radius: 22rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: var(--shadow-2);
+}
+.source-card {
+  border-left: 8rpx solid var(--brand);
+}
+.source-label {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: var(--brand);
+  margin-bottom: 8rpx;
+}
+.source-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.source-title.muted {
+  color: var(--muted);
+  font-weight: 400;
+}
+.field-label {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 18rpx;
+}
+.textarea {
+  width: 100%;
+  min-height: 300rpx;
+  box-sizing: border-box;
+  padding: 22rpx;
+  border-radius: 16rpx;
+  background: var(--bg);
+  font-size: 27rpx;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.input {
+  height: 88rpx;
+  padding: 0 22rpx;
+  border-radius: 16rpx;
+  background: var(--bg);
+  font-size: 27rpx;
+  color: var(--ink);
+}
+.ph { color: var(--muted2); }
+.count {
+  margin-top: 12rpx;
+  text-align: right;
+  font-size: 22rpx;
+  color: var(--muted2);
+}
+.submit {
+  height: 92rpx;
+  border-radius: 46rpx;
+  background: linear-gradient(135deg, #5B52C4 0%, var(--brand-dark) 100%);
+  box-shadow: 0 10rpx 24rpx rgba(83, 74, 183, 0.3);
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.submit.disabled {
+  background: var(--muted2);
+  box-shadow: none;
+}
+.mine-entry {
+  margin-top: 32rpx;
+  background: var(--card);
+  border-radius: 22rpx;
+  padding: 28rpx 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  box-shadow: var(--shadow-2);
+}
+.mine-press { opacity: 0.82; }
+.mine-entry-ic {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 18rpx;
+  background: var(--brand-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.mine-entry-ic .ic { font-size: var(--ic-lg); }
+.mine-entry-body { flex: 1; min-width: 0; }
+.mine-entry-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+.mine-entry-desc {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: var(--muted2);
+}
+.mine-arrow {
+  font-size: var(--ic-md);
+  opacity: 0.35;
+  flex-shrink: 0;
+}

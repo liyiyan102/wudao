@@ -1,0 +1,14 @@
+.DS_Store
+.cursor/
+.env
+server/.env
+node_modules/
+**/cookies.json
+project.private.config.json
+
+# 第三方 clone 自带独立 git 历史，不打进本仓库
+agents/xiaohongshu-mcp/
+agents/xhs-workflow/
+
+# 运行时 JSON 库（可由 seeds-data.json 初始化）
+server/data/

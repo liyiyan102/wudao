@@ -1,0 +1,77 @@
+<!-- 我的活动：关注 / 加入 / 搭子需求 -->
+<view class="page-wrap">
+  <view class="seg">
+    <view class="seg-item {{tab === 'followed' ? 'on' : ''}}" bindtap="switchTab" data-tab="followed">关注</view>
+    <view class="seg-item {{tab === 'joined' ? 'on' : ''}}" bindtap="switchTab" data-tab="joined">加入</view>
+    <view class="seg-item {{tab === 'buddy' ? 'on' : ''}}" bindtap="switchTab" data-tab="buddy">搭子需求</view>
+  </view>
+
+  <!-- 关注 / 加入 -->
+  <block wx:if="{{tab !== 'buddy'}}">
+    <view class="act-card" wx:for="{{list}}" wx:key="id" bindtap="openActivity" data-id="{{item.id}}">
+      <view class="act-cover" style="background:{{item.grad}}">
+        <image class="act-cover-img" src="{{item.coverUrl}}" mode="aspectFill" wx:if="{{item.coverUrl}}" />
+        <view class="act-badge">{{item.typeName}}</view>
+        <view class="act-date" wx:if="{{item.dateText}}">{{item.dateText}}</view>
+        <view class="act-title" wx:if="{{!item.coverUrl}}">{{item.title}}</view>
+      </view>
+      <view class="act-body">
+        <view class="act-meta">
+          <view class="act-meta-item" wx:if="{{item.location}}">
+            <view class="ic ic-location-brand"></view>
+            <text>{{item.location}}</text>
+          </view>
+          <view class="act-meta-item">
+            <view class="ic ic-clock-brand"></view>
+            <text>{{item.timeText || item.dateText || '时间待定'}}</text>
+          </view>
+        </view>
+        <view class="act-status">
+          <block wx:if="{{tab === 'joined'}}">
+            <view class="ck-chip {{item.checkedIn ? 'ok' : ''}}">
+              <view class="ic ic-check-circle"></view>
+              <text>{{item.checkedIn ? '已打卡' : '未打卡'}}</text>
+            </view>
+            <view class="ma-cancel" catchtap="onJoinCancel" data-id="{{item.id}}">取消加入</view>
+          </block>
+          <block wx:else>
+            <text class="ma-followed">{{item.followText}} 人关注</text>
+            <view class="ma-cancel" catchtap="onUnfollow" data-id="{{item.id}}">取消关注</view>
+          </block>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!list.length}}">
+      <view class="empty-icon">{{tab === 'joined' ? '🎫' : '💜'}}</view>
+      {{tab === 'joined' ? '还没有加入官方活动，去活动页看看吧' : '还没有关注的活动，去活动页看看吧'}}
+    </view>
+  </block>
+
+  <!-- 搭子需求 -->
+  <block wx:else>
+    <view class="buddy-card" wx:for="{{buddyList}}" wx:key="id">
+      <view class="buddy-row">
+        <view class="st st-{{item.status}}">{{item.statusName}}</view>
+        <view class="buddy-time">{{item.timeText}}</view>
+      </view>
+      <view class="buddy-title">{{item.title}}</view>
+      <view class="buddy-meta">{{item.metaLine}}</view>
+      <view class="buddy-reason" wx:if="{{item.status === 'rejected'}}">原因：{{item.rejectReason}}</view>
+      <view class="buddy-acts">
+        <view class="lnk" wx:if="{{item.status === 'pending'}}" catchtap="onWithdraw" data-id="{{item.id}}">撤回</view>
+        <view class="lnk" wx:if="{{item.status === 'rejected'}}" catchtap="onRetry" data-id="{{item.id}}">修改重提</view>
+        <view class="lnk" wx:if="{{item.status === 'published'}}" catchtap="onApps" data-id="{{item.id}}">加入 {{item.applicationCount}} 人</view>
+        <view class="lnk" wx:if="{{item.status === 'published' && item.linkedActivityId}}" catchtap="onShare" data-id="{{item.linkedActivityId}}">分享</view>
+        <view class="lnk danger" wx:if="{{item.status === 'published'}}" catchtap="onClose" data-id="{{item.id}}">标记已结束</view>
+        <view class="lnk" wx:if="{{item.linkedActivityId}}" catchtap="onOpen" data-id="{{item.linkedActivityId}}">查看活动</view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!buddyList.length}}">
+      <view class="empty-icon">🤝</view>
+      <view>还没有提交过需求</view>
+      <view class="empty-link" bindtap="goBuddyNew">去活动页提交 →</view>
+    </view>
+  </block>
+</view>
