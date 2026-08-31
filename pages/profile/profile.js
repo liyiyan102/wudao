@@ -32,7 +32,8 @@ Page({
     })
   },
 
-  async doLogin() {
+  doLogin() {
+    if (api.getCurrentUser()) return
     wx.navigateTo({ url: '/pages/login/login' })
   },
 

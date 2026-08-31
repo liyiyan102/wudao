@@ -18,18 +18,6 @@
     <view class="count">{{content.length}}/1000</view>
   </view>
 
-  <view class="card form-card">
-    <view class="field-label">联系方式（选填）</view>
-    <input
-      class="input"
-      value="{{contact}}"
-      maxlength="80"
-      placeholder="微信 / 手机号，方便我们追问细节"
-      placeholder-class="ph"
-      bindinput="onContactInput"
-    />
-  </view>
-
   <view class="submit {{submitting ? 'disabled' : ''}}" bindtap="onSubmit">
     {{submitting ? '提交中...' : '提交反馈'}}
   </view>

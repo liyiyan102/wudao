@@ -635,19 +635,19 @@ Then：
 | F | 终于敢站进圈里，跳完一整轮 | edgewalker +3 | Freestyle | 即兴局 | Student | 你想要的高光，别人可能觉得很小：终于敢站进圈里，跳完一整轮。 |
 | G | 在台下把一场好比赛看透，比自己跳还满足 | watcher +3 | Observe | 观赛 | Observer | 你的高光时刻在台下：把一场好比赛看透，比自己跳完还满足。 |
 
-#### Q4 已经到了练舞现场，音乐一响、圈也围起来了，你会变成哪种？
+#### Q4 歌一响、圈一围——你在里面通常怎么进？
 
 | 选项 | 题面 | 人格分 | 身体 | 战场 | 角色 | 结果 echo |
 |---|---|---|---|---|---|---|
 | A | 场子一起来，我第一个进圈 | wildfire +2，tactician +1 | Power | Battle | Player | 在练舞局和 Cypher 里，你是那种场子一起来就第一个进圈的人。 |
-| B | 有人接我，我接回去，这样最爽 | resonance +3 | Freestyle | Cypher | Connector | 在练舞局里你要的不是独舞，是有人接住你、你再接回去。 |
+| B | 我会盯着前一个人的点，进圈就接上 | resonance +3 | Freestyle | Cypher | Connector | 你进圈很少是单独开一段：你会盯着前一个人的点，进去就接上，再把火递回去。 |
 | C | 我先在旁边消化一会儿，等身体热起来 | lone +2，groove +1 | Control | 独练 | Student | 圈围起来时，你会先在旁边消化一会儿，等身体热起来再进入自己的节奏。 |
 | D | 我会站在圈边，把高手的东西拆开看 | watcher +3，wanderer +1 | Observe | 观赛 | Observer | 你站在圈边也能很兴奋：看到高手炸场，你想的是把它拆开看。 |
-| E | 有人拍吗？我想把这段录出来 | storyteller +2，stylekeeper +1 | Line | 成片 | Creator | 练舞局你会先问：有人拍吗？你想把今晚变成一段能留下的东西。 |
-| F | 先看今天练什么，再决定怎么进入 | wanderer +2，tactician +1 | Foundation | 课堂 | Teacher | 到了现场你还是会先确认今天练什么、有没有主题，再决定怎么进入。 |
+| E | 我会先找镜头/找光位，进圈也要好看 | storyteller +2，stylekeeper +1 | Line | 成片 | Creator | 你会先找镜头和光位：进圈不只是跳完，还要跳得好看、能留下。 |
+| F | 我更像“拆解员”，先看大家在练什么套路 | wanderer +2，tactician +1 | Foundation | 课堂 | Student | 你更像拆解员：先看大家在练什么套路、哪段卡住，再决定从哪里切进去。 |
 | G | 心跳很快，脚在动，人还在圈外 | edgewalker +3 | Freestyle | 即兴局 | Student | 圈围起来那一刻，你的心跳先上场了，人还站在圈外。 |
-| H | 我先去跟新朋友打个招呼 | socialweaver +3 | Flow | Party | Connector | 到了现场你会先去认识新面孔——对你来说，跳舞也是最快的破冰方式。 |
-| undefined | 先看看身体今天给不给面子 | patcher +3 | Recovery | 观赛 | Observer | 音乐响了你也不会立刻冲，先看看膝盖和身体今天给不给面子。 |
+| H | 我会先跟人打个招呼，顺手把人拽进圈 | socialweaver +3 | Flow | Party | Connector | 你在圈里很少只跳自己的：你会先跟人打招呼，再顺手把人拽进圈，场子热起来你最爽。 |
+| undefined | 我会先热身两轮，能跳再进，不能就当观众 | patcher +3 | Recovery | 观赛 | Observer | 你不会硬冲：先热身两轮，能跳再进；不行就当观众，留着身体明天继续。 |
 
 #### Q5 上课的时候，你大概是这幅样子
 

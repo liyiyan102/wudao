@@ -438,7 +438,6 @@ function submitFeedback(payload) {
     sourceId: (payload && payload.sourceId) || '',
     sourceTitle: (payload && payload.sourceTitle) || '',
     content,
-    contact: String((payload && payload.contact) || '').trim(),
     status: 'pending',
     statusName: '已收到',
     createdAt: Date.now(),

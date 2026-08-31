@@ -45,14 +45,6 @@ page { background: var(--bg); }
   line-height: 1.6;
   color: var(--ink);
 }
-.input {
-  height: 88rpx;
-  padding: 0 22rpx;
-  border-radius: 16rpx;
-  background: var(--bg);
-  font-size: 27rpx;
-  color: var(--ink);
-}
 .ph { color: var(--muted2); }
 .count {
   margin-top: 12rpx;

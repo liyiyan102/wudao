@@ -1,6 +1,4 @@
 {
   "navigationStyle": "custom",
-  "backgroundColor": "#f7f7f7",
-  "enableShareAppMessage": true,
-  "enableShareTimeline": true
+  "backgroundColor": "#f7f7f7"
 }

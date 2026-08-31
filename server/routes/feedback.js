@@ -32,7 +32,6 @@ function publicFeedback(f) {
     sourceId: f.sourceId || '',
     sourceTitle: f.sourceTitle || '',
     content: f.content || '',
-    contact: f.contact || '',
     status: f.status || 'pending',
     statusName: f.status === 'resolved' ? '已处理' : '已收到',
     createdAt: f.createdAt,
@@ -66,7 +65,6 @@ router.post('/', (req, res) => {
     sourceId: String(req.body.sourceId || '').trim().slice(0, 80),
     sourceTitle: String(req.body.sourceTitle || '').trim().slice(0, 80),
     content,
-    contact: String(req.body.contact || '').trim().slice(0, 80),
     status: 'pending',
     createdAt: Date.now(),
     updatedAt: Date.now()

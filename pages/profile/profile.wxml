@@ -1,6 +1,6 @@
 <view class="page">
   <!-- 身份头图 -->
-  <view class="hero">
+  <view class="hero" bindtap="doLogin">
     <view class="hero-bg"></view>
     <view class="hero-inner">
       <image wx:if="{{user && user.avatar}}" class="avatar-img" src="{{user.avatar}}" mode="aspectFill" />
@@ -9,7 +9,7 @@
         <view class="hero-name">{{user ? (user.nickname || '舞者') : '未登录'}}</view>
         <view class="hero-sub">{{user ? '同城内容与活动已就绪' : '登录后同步点赞、收藏与活动'}}</view>
       </view>
-      <view class="hero-action" wx:if="{{!user}}" bindtap="doLogin">登录</view>
+      <view class="hero-action" wx:if="{{!user}}" catchtap="doLogin">登录</view>
     </view>
   </view>
 

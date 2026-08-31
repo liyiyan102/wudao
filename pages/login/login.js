@@ -5,6 +5,7 @@ Page({
     avatar: '',
     nickname: '',
     agreed: false,
+    privacyAuthorized: false,
     saving: false,
     done: false
   },
@@ -26,21 +27,39 @@ Page({
   toggleAgree() {
     const agreed = !this.data.agreed
     this.setData({ agreed })
-    // 同意后才向微信换取登录凭证，勾选前不触碰任何账号信息
-    if (agreed) api.wxLoginCode().catch(() => {})
   },
 
-  // 未勾选时不落任何微信信息，避免「先收集再征求同意」
+  onAvatarTap() {
+    if (!this.data.agreed) {
+      wx.showToast({ title: '请先勾选并阅读协议', icon: 'none' })
+      return
+    }
+  },
+
   requireAgreed() {
     if (this.data.agreed) return true
     wx.showToast({ title: '请先阅读并同意协议与隐私政策', icon: 'none' })
     return false
   },
 
-  onChooseAvatar(e) {
+  onPrivacyAgree() {
+    this.setData({ privacyAuthorized: true })
+    api.wxLoginCode().catch(() => {})
+  },
+
+  onGetUserInfo(e) {
     if (!this.requireAgreed()) return
-    const avatar = (e.detail && e.detail.avatarUrl) || ''
-    this.setData({ avatar })
+    const userInfo = (e.detail && e.detail.userInfo) || {}
+    const avatar = userInfo.avatarUrl || ''
+    const nickname = userInfo.nickName || ''
+    if (!avatar) {
+      wx.showToast({ title: '未获取到头像，请重试', icon: 'none' })
+      return
+    }
+    this.setData({
+      avatar,
+      nickname: nickname || this.data.nickname
+    })
   },
 
   onNickInput(e) {

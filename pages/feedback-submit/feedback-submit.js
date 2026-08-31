@@ -13,7 +13,6 @@ Page({
     sourceTitle: '',
     sourceLabel: SOURCE_LABEL.general,
     content: '',
-    contact: '',
     submitting: false
   },
 
@@ -36,10 +35,6 @@ Page({
     this.setData({ content: e.detail.value })
   },
 
-  onContactInput(e) {
-    this.setData({ contact: e.detail.value })
-  },
-
   async onSubmit() {
     const content = String(this.data.content || '').trim()
     if (!content) {
@@ -54,10 +49,9 @@ Page({
         sourceType: this.data.sourceType,
         sourceId: this.data.sourceId,
         sourceTitle: this.data.sourceTitle,
-        content,
-        contact: this.data.contact
+        content
       })
-      this.setData({ content: '', contact: '', submitting: false })
+      this.setData({ content: '', submitting: false })
       wx.showToast({ title: '已提交', icon: 'success' })
     } catch (e) {
       wx.showToast({ title: (e && e.msg) || '提交失败', icon: 'none' })
