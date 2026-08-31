@@ -175,8 +175,11 @@
 
     <!-- 底部操作按钮 -->
     <view class="result-btn-group">
-      <view class="action-btn share-btn" bindtap="openPosterModal">
-        ★ 分享我的街舞人格
+      <button class="action-btn share-btn" open-type="share">
+        ★ 分享给微信好友
+      </button>
+      <view class="action-btn poster-save-btn" bindtap="openPosterModal">
+        保存海报
       </view>
       <view class="action-btn buddy-btn" bindtap="goBuddy">
         ⚡ 寻找同类练舞搭子
@@ -205,11 +208,14 @@
         </view>
       </view>
       <view class="modal-actions" wx:if="{{posterImgPath}}">
+        <button class="modal-act-btn share-native-btn" open-type="share">
+          发给好友
+        </button>
         <button class="modal-act-btn save-btn" bindtap="savePosterToPhotos">
-          保存海报到相册
+          保存到相册
         </button>
       </view>
-      <view class="modal-tip">保存后即可发到微信 / 朋友圈</view>
+      <view class="modal-tip">右上角菜单也可转发，或分享到朋友圈</view>
     </view>
   </view>
 </view>

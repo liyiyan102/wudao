@@ -250,7 +250,7 @@ Page({
 
   onShow() {
     try {
-      wx.hideShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] })
+      require('../../utils/share').enableShareMenu()
     } catch (e) {}
   },
 
@@ -606,5 +606,35 @@ Page({
         }
       }
     })
+  },
+
+  sharePayload() {
+    var result = this.data.result
+    var imageUrl = this.data.posterImgPath || '/images/covers/official.jpg'
+    if (this.data.phase === 'result' && result && result.persona) {
+      return {
+        title: '我测出是「' + result.persona.name + '」｜街舞人格测试',
+        path: '/pages/persona-test/persona-test',
+        imageUrl: imageUrl
+      }
+    }
+    return {
+      title: '你为什么被街舞吸引？测测你的街舞人格',
+      path: '/pages/persona-test/persona-test',
+      imageUrl: '/images/covers/official.jpg'
+    }
+  },
+
+  onShareAppMessage() {
+    return this.sharePayload()
+  },
+
+  onShareTimeline() {
+    var card = this.sharePayload()
+    return {
+      title: card.title,
+      query: '',
+      imageUrl: card.imageUrl
+    }
   }
 })
