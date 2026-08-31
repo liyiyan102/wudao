@@ -11,6 +11,9 @@ const DEFAULT_COVERS = {
   other: '/images/covers/other.jpg'
 }
 
+/** 首页/测试等品牌位分享卡，5:4 定制视觉 */
+const BRAND_SHARE_COVER = '/images/covers/home-share.jpg'
+
 function getDefaultCover(type, buddySubType) {
   if (type === 'buddy') {
     const sub = buddySubType || 'practice'
@@ -54,7 +57,7 @@ function homeShareCard() {
   return {
     title: title,
     path: '/pages/index/index',
-    imageUrl: DEFAULT_COVERS.official
+    imageUrl: BRAND_SHARE_COVER
   }
 }
 
@@ -64,7 +67,7 @@ function shareCardForPost(post) {
     return {
       title: '舞岛 · 街舞独家精选内容',
       path: '/pages/index/index',
-      imageUrl: DEFAULT_COVERS.official
+      imageUrl: BRAND_SHARE_COVER
     }
   }
 
@@ -162,7 +165,7 @@ function shareCardForPersona(result) {
   return {
     title: title,
     path: '/pages/persona-test/persona-test',
-    imageUrl: DEFAULT_COVERS.official
+    imageUrl: BRAND_SHARE_COVER
   }
 }
 
@@ -177,6 +180,7 @@ function shareImageForActivity(act) {
 
 module.exports = {
   DEFAULT_COVERS,
+  BRAND_SHARE_COVER,
   getDefaultCover,
   withDefaultCover,
   isUsableCover,

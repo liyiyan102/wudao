@@ -610,7 +610,7 @@ Page({
 
   sharePayload() {
     var result = this.data.result
-    var imageUrl = this.data.posterImgPath || '/images/covers/official.jpg'
+    var imageUrl = this.data.posterImgPath || '/images/covers/home-share.jpg'
     if (this.data.phase === 'result' && result && result.persona) {
       return {
         title: '我测出是「' + result.persona.name + '」｜街舞人格测试',
@@ -621,7 +621,7 @@ Page({
     return {
       title: '你为什么被街舞吸引？测测你的街舞人格',
       path: '/pages/persona-test/persona-test',
-      imageUrl: '/images/covers/official.jpg'
+      imageUrl: '/images/covers/home-share.jpg'
     }
   },
 

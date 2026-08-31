@@ -93,7 +93,7 @@ Page({
     return {
       title: '舞岛活动 · 官方课、赛事和找搭子',
       path: '/pages/activities/activities',
-      imageUrl: DEFAULT_COVERS.official
+      imageUrl: BRAND_SHARE_COVER
     }
   },
 
@@ -101,7 +101,7 @@ Page({
     return {
       title: '舞岛活动 · 官方课、赛事和找搭子',
       query: '',
-      imageUrl: DEFAULT_COVERS.official
+      imageUrl: BRAND_SHARE_COVER
     }
   }
 })

@@ -149,7 +149,7 @@ Page({
   },
 
   onShareAppMessage() {
-    const { DEFAULT_COVERS } = require('../../utils/default-covers')
+    const { BRAND_SHARE_COVER } = require('../../utils/default-covers')
     const kw = (this.data.keyword || '').trim()
     const path = kw
       ? '/pages/search/search?q=' + encodeURIComponent(kw)
@@ -157,17 +157,17 @@ Page({
     return {
       title: kw ? ('舞岛 · 搜「' + kw + '」') : '舞岛 · 搜索街舞内容和活动',
       path,
-      imageUrl: DEFAULT_COVERS.official
+      imageUrl: BRAND_SHARE_COVER
     }
   },
 
   onShareTimeline() {
-    const { DEFAULT_COVERS } = require('../../utils/default-covers')
+    const { BRAND_SHARE_COVER } = require('../../utils/default-covers')
     const kw = (this.data.keyword || '').trim()
     return {
       title: kw ? ('舞岛 · 搜「' + kw + '」') : '舞岛 · 搜索街舞内容和活动',
       query: kw ? ('q=' + encodeURIComponent(kw)) : '',
-      imageUrl: DEFAULT_COVERS.official
+      imageUrl: BRAND_SHARE_COVER
     }
   }
 })
