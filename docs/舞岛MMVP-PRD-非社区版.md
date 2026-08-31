@@ -585,17 +585,17 @@ Then：
 | 风格藏家 | 13 |
 | Battle 棋手 | 12 |
 | 独行者 | 12 |
+| 观舞学者 | 11 |
 | 齐舞团魂 | 11 |
 | 护膝战士 | 11 |
+| 游牧者 | 10 |
 | 舞房游学生 | 10 |
-| 观舞学者 | 10 |
-| 游牧者 | 9 |
+| 回放解剖师 | 10 |
+| 厨房即兴犯 | 9 |
+| 舞圈社交家 | 9 |
 | 挖歌人 | 8 |
 | 圈外人 | 8 |
-| 厨房即兴犯 | 8 |
-| 舞圈社交家 | 8 |
-| 回放解剖师 | 7 |
-| 囤课仓鼠 | 6 |
+| 囤课仓鼠 | 7 |
 
 #### Q1 最近耳机里循环最多的，是哪一挂？
 
@@ -603,24 +603,24 @@ Then：
 
 | 选项 | 题面 | 人格分 | 音乐 DNA | 身体 | 战场 | 角色 | 结果 echo |
 |---|---|---|---|---|---|---|---|
-| A | Funk / Boom bap，鼓点一响身体先醒 | groove +2，wildfire +1 | Funk、Boom bap | Groove | 即兴局 | Player | 音乐上你认 Funk、Boom bap——鼓点一起来，你先问身体醒了没有。 |
-| B | R&B / Soul，旋律先开口，情绪跟着走 | storyteller +2，stylekeeper +1 | R&B、Soul | Line | 成片 | Creator | 音乐上你认 R&B、Soul——旋律先开口，你会把一首歌听成一段故事。 |
-| C | House / Afro，bass 一上来房间就被推开 | nomad +2，resonance +1 | House、Afro | Flow | Party | Connector | 音乐上你认 House、Afro——你先感觉房间被 bass 推开了没有。 |
-| D | Breaks / Battle Beat，专挑能点着场子的那截 | wildfire +1，tactician +2 | Breaks、Battle Beat | Power | Battle | Player | 音乐上你认 Breaks、Battle Beat——你要的是能把场子点燃的那一截。 |
-| E | K-pop / 编舞向流行，一听就想到走位 | crewsoul +2，storyteller +1 | K-pop、Pop | Line | 齐舞 | Creator | 音乐上你认编舞向的流行——一听前奏，你脑子里已经在排队形了。 |
-| F | 没人用过的老歌，从各种角落翻出来的 | digger +3，groove +1 | Rare Groove、Old School | Groove | 挖歌 | Digger | 音乐上你走的是冷门路线——别人挑歌，你是在挖歌。 |
+| A | Funk / Boom bap，鼓点一响身体先醒 | groove +2，wildfire +1，midnight +1 | Funk、Boom bap | Groove | 即兴局 | Player | 音乐上你认 Funk、Boom bap——鼓点一起来，你先问身体醒了没有。 |
+| B | R&B / Soul，旋律先开口，情绪跟着走 | storyteller +2，stylekeeper +1，rewinder +1 | R&B、Soul | Line | 成片 | Creator | 音乐上你认 R&B、Soul——旋律先开口，你会把一首歌听成一段故事。 |
+| C | House / Afro，bass 一上来房间就被推开 | nomad +2，resonance +1，socialweaver +1 | House、Afro | Flow | Party | Connector | 音乐上你认 House、Afro——你先感觉房间被 bass 推开了没有。 |
+| D | Breaks / Battle Beat，专挑能点着场子的那截 | wildfire +1，tactician +2，watcher +1 | Breaks、Battle Beat | Power | Battle | Player | 音乐上你认 Breaks、Battle Beat——你要的是能把场子点燃的那一截。 |
+| E | K-pop / 编舞向流行，一听就想到走位 | crewsoul +2，storyteller +1，hoarder +1 | K-pop、Pop | Line | 齐舞 | Creator | 音乐上你认编舞向的流行——一听前奏，你脑子里已经在排队形了。 |
+| F | 没人用过的老歌，从各种角落翻出来的 | digger +3，groove +1，watcher +1 | Rare Groove、Old School | Groove | 挖歌 | Digger | 音乐上你走的是冷门路线——别人挑歌，你是在挖歌。 |
 
 #### Q2 说实话，你最开始为什么想跳舞？
 
 
 | 选项 | 题面 | 人格分 | 身体 | 战场 | 角色 | 结果 echo |
 |---|---|---|---|---|---|---|
-| A | 认识有意思的人，扩圈子 | socialweaver +3，nomad +1 | Flow | Party | Connector | 你最开始跳舞，就是冲着能认识人去的。换个新场子，就是换一批还没加上的微信。 |
+| A | 认识有意思的人，扩圈子 | socialweaver +3，nomad +1，resonance +1 | Flow | Party | Connector | 你最开始跳舞，就是冲着能认识人去的。换个新场子，就是换一批还没加上的微信。 |
 | B | 音乐让我上瘾，身体忍不住 | groove +2，midnight +1 | Groove | 独练 | Player | 你最开始跳舞，是因为音乐响起来的时候身体会先于脑子做决定。 |
 | C | 想表达点东西，说不出口的那种 | storyteller +2，stylekeeper +1 | Line | 成片 | Creator | 你最开始跳舞，是因为有些话说不出口，但可以放进一个停顿里。 |
 | D | 对抗的快感，赢一轮的感觉很爽 | wildfire +2，tactician +1 | Power | Battle | Player | 你最开始跳舞，就是冲着那种一轮下来、目光都在你身上的感觉去的。 |
 | E | 想变强/变好看，身体是自己的 | lone +2，patcher +1 | Control | 独练 | Student | 你最开始跳舞，是想让身体变成你想要的样子——这是你能掌控的事。 |
-| F | 看到别人跳得帅，也想试试 | watcher +2，wanderer +1，hoarder +2 | Observe | 课堂 | Student | 你最开始跳舞，是因为看到别人跳得很帅，然后想知道自己能不能也做到。 |
+| F | 看到别人跳得帅，也想试试 | watcher +2，wanderer +1，hoarder +2，rewinder +1 | Observe | 课堂 | Student | 你最开始跳舞，是因为看到别人跳得很帅，然后想知道自己能不能也做到。 |
 | G | 朋友/队友拉我来的，然后留下了 | resonance +2，crewsoul +1 | Freestyle | 朋友练舞 | Connector | 你最开始跳舞，是因为有人拉你。然后你发现，有人一起的时候，这件事才真正有意思。 |
 
 #### Q3 你偷偷幻想过的高光时刻是哪个？
@@ -640,14 +640,14 @@ Then：
 | 选项 | 题面 | 人格分 | 身体 | 战场 | 角色 | 结果 echo |
 |---|---|---|---|---|---|---|
 | A | 场子一起来，我第一个进圈 | wildfire +2，tactician +2 | Power | Battle | Player | 在练舞局和 Cypher 里，你是那种场子一起来就第一个进圈的人。 |
-| B | 我会盯着前一个人的点，进圈就接上 | resonance +2 | Freestyle | Cypher | Connector | 你进圈很少是单独开一段：你会盯着前一个人的点，进去就接上，再把火递回去。 |
+| B | 我会盯着前一个人的点，进圈就接上 | resonance +2，groove +1，socialweaver +1 | Freestyle | Cypher | Connector | 你进圈很少是单独开一段：你会盯着前一个人的点，进去就接上，再把火递回去。 |
 | C | 我先在旁边消化一会儿，等身体热起来 | lone +2，groove +1 | Control | 独练 | Student | 圈围起来时，你会先在旁边消化一会儿，等身体热起来再进入自己的节奏。 |
-| D | 我会站在圈边，把高手的东西拆开看 | watcher +3，wanderer +1 | Observe | 观赛 | Observer | 你站在圈边也能很兴奋：看到高手炸场，你想的是把它拆开看。 |
-| E | 我会先找镜头/找光位，进圈也要好看 | storyteller +2，stylekeeper +2 | Line | 成片 | Creator | 你会先找镜头和光位：进圈不只是跳完，还要跳得好看、能留下。 |
-| F | 我更像“拆解员”，先看大家在练什么套路 | wanderer +2，tactician +1 | Foundation | 课堂 | Student | 你更像拆解员：先看大家在练什么套路、哪段卡住，再决定从哪里切进去。 |
+| D | 我会站在圈边，把高手的东西拆开看 | watcher +3，wanderer +1，tactician +1 | Observe | 观赛 | Observer | 你站在圈边也能很兴奋：看到高手炸场，你想的是把它拆开看。 |
+| E | 我会先找镜头/找光位，进圈也要好看 | storyteller +2，stylekeeper +2，rewinder +1 | Line | 成片 | Creator | 你会先找镜头和光位：进圈不只是跳完，还要跳得好看、能留下。 |
+| F | 我更像“拆解员”，先看大家在练什么套路 | wanderer +2，tactician +1，watcher +1 | Foundation | 课堂 | Student | 你更像拆解员：先看大家在练什么套路、哪段卡住，再决定从哪里切进去。 |
 | G | 心跳很快，脚在动，人还在圈外 | edgewalker +3，lone +1 | Freestyle | 即兴局 | Student | 圈围起来那一刻，你的心跳先上场了，人还站在圈外。 |
-| H | 我会先跟人打个招呼，顺手把人拽进圈 | socialweaver +3，resonance +1 | Flow | Party | Connector | 你在圈里很少只跳自己的：你会先跟人打招呼，再顺手把人拽进圈，场子热起来你最爽。 |
-| undefined | 我会先热身两轮，能跳再进，不能就当观众 | patcher +3，watcher +1 | Recovery | 观赛 | Observer | 你不会硬冲：先热身两轮，能跳再进；不行就当观众，留着身体明天继续。 |
+| H | 我会先跟人打个招呼，顺手把人拽进圈 | socialweaver +3，resonance +1，nomad +1 | Flow | Party | Connector | 你在圈里很少只跳自己的：你会先跟人打招呼，再顺手把人拽进圈，场子热起来你最爽。 |
+| undefined | 我会先热身两轮，能跳再进，不能就当观众 | patcher +3，watcher +1，lone +1 | Recovery | 观赛 | Observer | 你不会硬冲：先热身两轮，能跳再进；不行就当观众，留着身体明天继续。 |
 
 #### Q5 上课的时候，你大概是这幅样子
 
