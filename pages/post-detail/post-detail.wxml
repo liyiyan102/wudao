@@ -154,18 +154,19 @@
 </view>
 
 <!-- 底部互动：点赞 / 收藏 + 分享主按钮 -->
-<view class="engage-bar">
-  <view class="engage-actions">
-    <view class="engage-icon-btn {{liked ? 'on' : ''}}" bindtap="onLike" hover-class="engage-press">
+<view class="action-bar">
+  <view class="action-stats">
+    <view class="stat-btn {{liked ? 'on' : ''}}" bindtap="onLike" hover-class="stat-press">
       <view class="ic {{liked ? 'ic-heart-brand' : 'ic-heart'}}"></view>
-      <text class="engage-num">{{likeCount}}</text>
+      <text class="stat-btn-num">{{likeCount}}</text>
     </view>
-    <view class="engage-icon-btn {{collected ? 'on' : ''}}" bindtap="onCollect" hover-class="engage-press">
+    <view class="stat-btn {{collected ? 'on' : ''}}" bindtap="onCollect" hover-class="stat-press">
       <view class="ic {{collected ? 'ic-star-brand' : 'ic-star'}}"></view>
-      <text class="engage-num">{{collectCount}}</text>
+      <text class="stat-btn-num">{{collectCount}}</text>
     </view>
   </view>
-  <button class="engage-share-btn" open-type="share" hover-class="engage-share-press">
+  <view class="action-div"></view>
+  <button class="bar-btn bar-btn-primary" open-type="share" hover-class="bar-press">
     <view class="ic ic-share-white"></view>
     <text>分享</text>
   </button>

@@ -45,37 +45,39 @@
     </view>
   </view>
 
-  <view class="follow-bar">
-    <view class="engage-side">
-      <view class="engage-icon-btn {{liked ? 'on' : ''}}" bindtap="onLike" hover-class="engage-press">
+  <view class="action-bar">
+    <view class="action-stats">
+      <view class="stat-btn {{liked ? 'on' : ''}}" bindtap="onLike" hover-class="stat-press">
         <view class="ic {{liked ? 'ic-heart-brand' : 'ic-heart'}}"></view>
-        <text class="engage-num">{{likeCount}}</text>
+        <text class="stat-btn-num">{{likeCount}}</text>
       </view>
-      <view class="engage-icon-btn {{collected ? 'on' : ''}}" bindtap="onCollect" hover-class="engage-press">
+      <view class="stat-btn {{collected ? 'on' : ''}}" bindtap="onCollect" hover-class="stat-press">
         <view class="ic {{collected ? 'ic-star-brand' : 'ic-star'}}"></view>
-        <text class="engage-num">{{collectCount}}</text>
+        <text class="stat-btn-num">{{collectCount}}</text>
       </view>
-      <button class="engage-icon-btn engage-share-chip" open-type="share" hover-class="engage-press">
-        <view class="ic ic-share-brand"></view>
-      </button>
     </view>
+    <view class="action-div"></view>
+    <button class="bar-btn bar-btn-ghost" open-type="share" hover-class="bar-press">
+      <view class="ic ic-share-brand"></view>
+      <text>分享</text>
+    </button>
 
     <block wx:if="{{act.expired}}">
-      <view class="follow-btn done">已结束</view>
+      <view class="bar-btn bar-btn-done">已结束</view>
     </block>
     <block wx:elif="{{act.type === 'buddy'}}">
-      <view class="follow-btn followed" wx:if="{{act.isInitiator}}" bindtap="goMyRequest">查看加入</view>
-      <view class="follow-btn done" wx:elif="{{act.applied}}">已报名</view>
-      <view class="follow-btn" wx:else bindtap="onWantJoin">报名</view>
+      <view class="bar-btn bar-btn-soft" wx:if="{{act.isInitiator}}" bindtap="goMyRequest">查看加入</view>
+      <view class="bar-btn bar-btn-done" wx:elif="{{act.applied}}">已报名</view>
+      <view class="bar-btn bar-btn-primary" wx:else bindtap="onWantJoin" hover-class="bar-press">报名</view>
     </block>
     <block wx:elif="{{act.type === 'official'}}">
-      <view class="follow-btn done" wx:if="{{act.checkedIn}}">已打卡</view>
-      <view class="follow-btn checkin" wx:elif="{{act.joined}}" bindtap="onCheckIn">现场打卡</view>
-      <view class="follow-btn" wx:else bindtap="onJoin">报名</view>
+      <view class="bar-btn bar-btn-done" wx:if="{{act.checkedIn}}">已打卡</view>
+      <view class="bar-btn bar-btn-primary bar-btn-checkin" wx:elif="{{act.joined}}" bindtap="onCheckIn" hover-class="bar-press">现场打卡</view>
+      <view class="bar-btn bar-btn-primary" wx:else bindtap="onJoin" hover-class="bar-press">报名</view>
     </block>
     <block wx:else>
-      <view class="follow-btn followed" wx:if="{{act.followed}}" bindtap="onFollow">已报名</view>
-      <view class="follow-btn" wx:else bindtap="onFollow">报名</view>
+      <view class="bar-btn bar-btn-soft" wx:if="{{act.followed}}" bindtap="onFollow">已报名</view>
+      <view class="bar-btn bar-btn-primary" wx:else bindtap="onFollow" hover-class="bar-press">报名</view>
     </block>
   </view>
 </view>

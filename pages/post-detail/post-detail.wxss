@@ -1,6 +1,6 @@
 page { background: var(--bg); }
 
-.detail { padding: 24rpx 24rpx calc(120rpx + env(safe-area-inset-bottom)); }
+.detail { padding: 24rpx 24rpx calc(160rpx + env(safe-area-inset-bottom)); }
 .dcard {
   background: var(--card);
   border-radius: 16rpx;
@@ -303,74 +303,3 @@ page { background: var(--bg); }
   align-items: center;
 }
 .feedback-press { opacity: 0.78; }
-
-/* ================= 底部互动栏 ================= */
-.engage-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: 20rpx;
-  padding: 16rpx 28rpx calc(16rpx + env(safe-area-inset-bottom));
-  background: var(--glass);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-top: 1rpx solid var(--glass-line);
-  box-shadow: 0 -8rpx 28rpx rgba(32, 28, 74, 0.06);
-  box-sizing: border-box;
-}
-.engage-actions {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  flex-shrink: 0;
-}
-.engage-icon-btn {
-  min-width: 88rpx;
-  height: 88rpx;
-  padding: 0 8rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rpx;
-  border-radius: 16rpx;
-}
-.engage-icon-btn .ic {
-  font-size: var(--ic-xl);
-  line-height: 1;
-}
-.engage-num {
-  font-size: 20rpx;
-  color: var(--muted);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.engage-icon-btn.on .engage-num { color: var(--brand); }
-.engage-press { background: var(--brand-bg2); opacity: 0.92; }
-
-.engage-share-btn {
-  flex: 1;
-  height: 88rpx;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: 44rpx;
-  background: linear-gradient(135deg, #5B52C4 0%, var(--brand-dark) 100%);
-  color: #fff;
-  font-size: 30rpx;
-  font-weight: 600;
-  letter-spacing: 1rpx;
-  box-shadow: 0 8rpx 20rpx rgba(83, 74, 183, 0.32);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10rpx;
-  line-height: 1;
-}
-.engage-share-btn::after { border: none; }
-.engage-share-btn .ic { font-size: var(--ic-lg); }
-.engage-share-press { opacity: 0.88; }

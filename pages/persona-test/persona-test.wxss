@@ -279,7 +279,7 @@ page {
 .pad-option-list {
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  gap: 14rpx;
 }
 
 .pad-option {
@@ -289,7 +289,7 @@ page {
   background: #14141A;
   border: 1rpx solid #282834;
   border-radius: 20rpx;
-  padding: 28rpx 24rpx;
+  padding: 22rpx 22rpx;
   transition: all 0.2s ease;
 }
 
@@ -337,7 +337,7 @@ page {
 .quiz-controls {
   display: flex;
   gap: 20rpx;
-  margin-top: 48rpx;
+  margin-top: 36rpx;
 }
 
 .ctrl-btn {
@@ -500,6 +500,47 @@ page {
   margin-top: 14rpx;
 }
 
+/* 天赋 / 暗面 */
+.insight-card {
+  margin-top: 20rpx;
+  padding: 22rpx 24rpx;
+  border-radius: 16rpx;
+  border: 1rpx solid transparent;
+}
+
+.insight-power {
+  background: rgba(226, 255, 0, 0.05);
+  border-color: rgba(226, 255, 0, 0.28);
+}
+
+.insight-shadow {
+  background: rgba(255, 90, 122, 0.05);
+  border-color: rgba(255, 90, 122, 0.28);
+}
+
+.insight-label {
+  display: block;
+  font-size: 22rpx;
+  letter-spacing: 2rpx;
+  font-family: monospace;
+  margin-bottom: 12rpx;
+}
+
+.insight-power .insight-label {
+  color: #E2FF00;
+}
+
+.insight-shadow .insight-label {
+  color: #FF5A7A;
+}
+
+.insight-text {
+  display: block;
+  font-size: 26rpx;
+  color: #C5C5D5;
+  line-height: 1.65;
+}
+
 /* 标签列表 */
 .traits-container {
   display: flex;
@@ -645,7 +686,7 @@ page {
   left: -9999px;
   top: -9999px;
   width: 750px;
-  height: 1280px;
+  height: 1500px;
   z-index: -1;
 }
 

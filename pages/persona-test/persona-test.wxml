@@ -53,7 +53,7 @@
   <!-- 阶段 2：答题页 -->
   <view wx:elif="{{phase === 'quiz'}}" class="quiz-wrap">
     <view class="quiz-status-bar">
-      <view class="track-no">TRACK {{currentIndex < 9 ? '0' + (currentIndex + 1) : currentIndex + 1}} / 10</view>
+      <view class="track-no">TRACK {{currentIndex < 9 ? '0' + (currentIndex + 1) : currentIndex + 1}} / {{questions.length}}</view>
       <view class="matrix-logo">DANCE ISLAND</view>
     </view>
 
@@ -118,6 +118,16 @@
         <view class="manifesto-line" wx:for="{{result.reading}}" wx:key="*this">
           {{item}}
         </view>
+      </view>
+
+      <!-- 天赋与暗面 -->
+      <view class="insight-card insight-power">
+        <text class="insight-label">[ 你的天赋 ]</text>
+        <text class="insight-text">{{result.persona.superpower}}</text>
+      </view>
+      <view class="insight-card insight-shadow">
+        <text class="insight-label">[ 你的暗面 ]</text>
+        <text class="insight-text">{{result.persona.shadow}}</text>
       </view>
 
       <!-- 特质芯片 -->

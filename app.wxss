@@ -80,6 +80,126 @@ page {
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
+/* ================= 详情页底部操作栏（内容 / 活动共用） ================= */
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 51;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  box-sizing: border-box;
+  padding: 14rpx 24rpx calc(14rpx + env(safe-area-inset-bottom));
+  background: var(--glass);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1rpx solid var(--glass-line);
+  box-shadow: 0 -8rpx 28rpx rgba(32, 28, 74, 0.06);
+}
+/* 左侧：点赞 / 收藏，图标与计数同一行 */
+.action-stats {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+  flex-shrink: 0;
+}
+.stat-btn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  height: 76rpx;
+  padding: 0 16rpx;
+  border-radius: 38rpx;
+  transition: background 0.15s;
+}
+.stat-btn .ic { font-size: var(--ic-lg); }
+/* 点赞图形比星形实心、外框更满，缩一档才和收藏看起来一样大 */
+.stat-btn .ic-heart,
+.stat-btn .ic-heart-brand { font-size: 33rpx; }
+.stat-btn-num {
+  font-size: 24rpx;
+  color: var(--muted);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-btn.on .stat-btn-num {
+  color: var(--brand);
+  font-weight: 600;
+}
+.stat-press { background: var(--brand-bg2); }
+
+/* 竖分隔，把互动与操作分开 */
+.action-div {
+  width: 1rpx;
+  height: 40rpx;
+  background: var(--line);
+  flex-shrink: 0;
+  margin: 0 4rpx;
+}
+
+/* 胶囊按钮：次要（分享）与主要（报名 / 分享） */
+.bar-btn {
+  /* button 默认 width:100%，不覆盖会把同行按钮挤出屏幕 */
+  width: auto;
+  box-sizing: border-box;
+  height: 88rpx;
+  margin: 0;
+  padding: 0 32rpx;
+  border: none;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+.bar-btn::after { border: none; }
+.bar-btn .ic { font-size: var(--ic-md); }
+.bar-btn-ghost {
+  flex: 0 0 auto;
+  height: 72rpx;
+  padding: 0 22rpx;
+  border-radius: 36rpx;
+  font-size: 25rpx;
+  font-weight: 500;
+  letter-spacing: 0;
+  gap: 6rpx;
+  background: var(--brand-bg);
+  color: var(--brand);
+}
+.bar-btn-ghost .ic { font-size: var(--ic-sm); }
+.bar-btn-primary {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: linear-gradient(135deg, #5B52C4 0%, var(--brand-dark) 100%);
+  color: #fff;
+  box-shadow: 0 8rpx 20rpx rgba(83, 74, 183, 0.32);
+}
+.bar-btn-checkin {
+  background: linear-gradient(135deg, #18b566 0%, #07c160 100%);
+  box-shadow: 0 8rpx 20rpx rgba(7, 193, 96, 0.28);
+}
+.bar-btn-soft {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: var(--brand-bg);
+  color: var(--brand);
+  box-shadow: none;
+}
+.bar-btn-done {
+  flex: 1 1 auto;
+  min-width: 0;
+  background: #ececec;
+  color: var(--muted);
+  box-shadow: none;
+}
+.bar-press { opacity: 0.82; }
+
 /* 顶栏标题：三栏布局里绝对居中，字号全局统一 */
 .nav-title {
   position: absolute;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>舞岛 MMVP（非社区版）· 产品规格文档</title>
+<title>舞岛 MMVP PRD · 非社区版 v1.5</title>
 <style>
   :root{
     --ink:#1a1a1a; --ink2:#3d3d3d; --muted:#8a8a8e; --muted2:#b0b0b4;
@@ -32,7 +32,6 @@
   h3{font-size:15px;font-weight:600;margin:24px 0 10px;color:var(--purple-d);}
   h4{font-size:14px;font-weight:600;margin:18px 0 8px;}
   p{margin-bottom:10px;font-size:14px;color:var(--ink2);}
-  p.sub{color:var(--muted);font-size:13px;}
 
   table{width:100%;border-collapse:collapse;margin:10px 0 16px;font-size:13px;}
   th{background:var(--bg);text-align:left;padding:10px 12px;font-weight:600;border-bottom:2px solid var(--line);}
@@ -46,18 +45,14 @@
   .note-info b,.note-warn b{color:var(--purple-d);}
 
   .chip{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;font-weight:600;margin-right:4px;}
-  .chip.p0{background:#ffe0e0;color:#c0392b;}
-  .chip.p1{background:#fff3cd;color:#856404;}
   .chip.ok{background:#d4edda;color:#155724;}
   .chip.no{background:#f8d7da;color:#721c24;}
 
-  .story{background:var(--bg);border-radius:6px;padding:10px 14px;margin:6px 0;font-size:13px;color:var(--ink2);border-left:3px solid var(--purple);}
   ul.ac{list-style:none;margin:10px 0 16px;padding:0;}
   ul.ac li{font-size:13px;padding:6px 0 6px 20px;position:relative;color:var(--ink2);line-height:1.6;}
   ul.ac li::before{content:"✓";position:absolute;left:0;color:var(--purple);font-weight:700;}
-  ul.ac li.no::before{content:"✗";color:var(--red);}
 
-  pre{background:var(--bg);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--ink2);font-family:"SF Mono",Monaco,monospace;}
+  pre{background:var(--bg);border-radius:8px;padding:16px;font-size:12px;overflow-x:auto;line-height:1.6;color:var(--ink2);font-family:"SF Mono",Monaco,monospace;white-space:pre-wrap;}
   code{background:var(--bg);padding:2px 6px;border-radius:3px;font-size:12px;font-family:"SF Mono",Monaco,monospace;}
 
   footer{border-top:1px solid var(--line);margin-top:60px;padding-top:20px;font-size:12px;color:var(--muted);text-align:center;}
@@ -67,471 +62,829 @@
 <div class="page">
 
 <div class="hd">
-  <span class="tag">PRD · v0.2 非社区版 · 工具改活动</span>
-  <h1>舞岛 MMVP（非社区版）· 产品规格文档</h1>
+  <span class="tag">PRD · v1.4 非社区版 · 人格测试 + 代发撮合</span>
+  <h1>舞岛 MMVP PRD · 非社区版 v1.5</h1>
   <div class="meta">
-    <span>版本 <b>v0.2 · 工具→活动 + 编辑型长内容</b></span>
-    <span>日期 <b>2026-08-20</b></span>
-    <span>撰写 <b>产品通</b></span>
-    <span>状态 <b>待评审</b></span>
+    <span>版本 <b>v1.4 · 街舞人格测试 + 全站分享策略</b></span>
+    <span>日期 <b>2026-08-31</b></span>
+    <span>同步自 <b>舞岛MMVP-PRD-非社区版.md</b></span>
+    <span>状态 <b>已对齐实际功能</b></span>
   </div>
   <div class="alert">
-    <b>⚠️ <b>本版本变更</b>：① 底 bar "工具" tab → <b>"活动"</b> tab（官方赛事/大师课/Jam），删除节拍器/赛事日历/舞室地图 3 屏；② 内容详情页升级为<b>编辑型长内容格式</b>，支持 H3/H4 章节标题 + 引用块（红色左边线 + 浅灰底）。</b>由于个人主体小程序无法申请社交类目和支付能力，本版本删除了所有 UGC 社区功能（发帖/评论/点赞/收藏/找搭子）和交易功能（拼团/商城）。产品形态从"内容社区+社交+交易"退化为"PGC 资讯 + 训练工具"。原社区版 PRD 保留在 <code>街舞社区MMVP-PRD.md</code>，待资质解决后可参照升级。
+    v1.5（2026-08-31）：<b>街舞人格测试</b>扩容——人格从 10 种扩到 <b>17 种</b>（新增齐舞团魂者、挖歌人、逐帧自审者、圈外颤抖者、护膝修行者、厨房即兴犯、囤课仓鼠），每题选项放开 4 个限制（现 6–8 个），题面改口语化，人格文案新增 <b>superpower（天赋）/ shadow（暗面）</b> 两块以提升传播性；海报改为 750×1500。§7.2–§7.4 由 <code>scripts/gen-persona-prd.js</code> 从 <code>pages/persona-test/persona-data.js</code> 自动生成。<br>
+    v1.4（2026-08-31）：新增<b>街舞人格测试</b>（冷启动期自评式偏好采集 + 分享裂变入口，见 §7）；补充<b>全站分享卡片策略</b>（§8）；信息架构补充 persona-test 页；版本记录见 §14。<br>
+    v1.3（2026-08-24）：采用<b>方案 B · 代发撮合</b>——在个人主体无 UGC 资质下，间接验证找搭子需求；<b>移除打卡挑战</b>（防作弊与激励不足）；修正资质路径（搭子真 UGC 需<b>公司 + ICP 备案</b>）。
   </div>
 </div>
 
 <nav class="toc">
-  <a href="#s1">资质约束</a>
-  <a href="#s2">用户</a>
-  <a href="#s3">功能范围</a>
-  <a href="#s4">详细规格</a>
-  <a href="#s5">Non-goals</a>
-  <a href="#s6">信息架构</a>
-  <a href="#s7">商业化</a>
-  <a href="#s8">指标</a>
-  <a href="#s9">开放问题</a>
-  <a href="#s10">时间线</a>
-  <span style="color:var(--purple);font-weight:600;">+ 打卡挑战 4.9</span>
-  <span style="color:var(--purple);font-weight:600;">+ 通知能力 4.10</span>
+  <a href="#s1">01 产品概述</a>
+  <a href="#s2">02 信息架构</a>
+  <a href="#s3">03 首页</a>
+  <a href="#s4">04 内容详情</a>
+  <a href="#s5">05 活动平台</a>
+  <a href="#s6">06 代发撮合</a>
+  <a href="#s7">07 街舞人格测试</a>
+  <a href="#s8">08 全站分享卡片策略</a>
+  <a href="#s9">09 搜索</a>
+  <a href="#s10">10 通知能力</a>
+  <a href="#s11">11 个人中心</a>
+  <a href="#s12">12 非功能边界</a>
+  <a href="#s13">13 成功指标</a>
+  <a href="#s14">14 版本记录</a>
 </nav>
 
-<!-- ============ 1 资质约束 ============ -->
+<!-- ============ 1 产品概述 ============ -->
 <section id="s1">
-  <h2><span class="no">01</span>资质约束与设计原则</h2>
-  <h3>1.1 硬约束（个人主体小程序）</h3>
-  <table>
-    <tr><th style="width:160px">能力</th><th style="width:80px">状态</th><th>原因</th></tr>
-    <tr><td>PGC 资讯发布</td><td><span class="chip ok">✅ 可做</span></td><td>资讯类目，企业/个人主体均可</td></tr>
-    <tr><td>工具类功能</td><td><span class="chip ok">✅ 可做</span></td><td>工具类目</td></tr>
-    <tr><td>用户发布内容（UGC）</td><td><span class="chip no">❌ 禁止</span></td><td>需社交类目，个人主体不可申请</td></tr>
-    <tr><td>找搭子/搭子帖</td><td><span class="chip no">❌ 禁止</span></td><td>属于用户发布内容</td></tr>
-    <tr><td>评论/点赞/收藏</td><td><span class="chip no">❌ 禁止</span></td><td>互动类功能需社交类目</td></tr>
-    <tr><td>支付/交易/拼团</td><td><span class="chip no">❌ 禁止</span></td><td>无微信支付商户号</td></tr>
-    <tr><td>商城/电商</td><td><span class="chip no">❌ 禁止</span></td><td>需电商类目</td></tr>
-  </table>
-
-  <h3>1.2 设计原则</h3>
-  <ul class="ac">
-    <li><b>纯单向输出</b>：所有内容由平台/合作方生产，用户只消费不产生</li>
-    <li><b>工具做留存</b>：节拍器是日活引擎，赛事日历是周活引擎，舞室地图是月活引擎</li>
-    <li><b>无登录可用</b>：不强制登录，工具和内容都可直接使用；登录仅用于跨设备同步浏览历史</li>
-    <li><b>商业化全部押后</b>：v1 不碰钱，先做流量和工具使用习惯，资质解决后再补齐交易</li>
-    <li><b>为升级留架构</b>：内容对象模型预留评论/点赞字段（v1 不做 UI），未来升级企业主体后可快速补齐社交能力</li>
-  </ul>
+  <h2><span class="no">01</span>产品概述</h2>
+<p><b>定位</b>：年轻街舞人的内容资讯 + 官方活动平台 + <b>代发练舞撮合</b>。</p>
+<p>个人主体不可做 UGC 社区（用户公开发帖/评论/搭子帖）。全部<b>公开展示内容</b>由运营经 PGC 后台发布；用户侧为内容消费 + 活动参与 + <b>私密需求提交</b>（审核后代发为官方练舞局）。</p>
+<p><b>合规定位（提审口径）</b>：</p>
+<table>
+<tr><th>对外说法</th><th>实际机制</th></tr>
+<tr><td>「官方活动发布与预约报名平台」</td><td>赛事/Jam/大师课 = PGC 活动</td></tr>
+<tr><td>「练舞需求登记，平台审核后代发」</td><td>用户填表 → 不公开展示 → 运营编辑发布</td></tr>
+<tr><td>「活动报名，联系方式仅发起人可见」</td><td>应征 = 结构化表单，非公开 UGC</td></tr>
+</table>
+<p><b>类目建议</b>：生活服务 &gt; 工具 &gt; <b>预约/报名</b>（主）+ 资讯展示（辅）。<b>不选</b>社交-社区/论坛。</p>
+<h3>1.1 三句话验证假设</h3>
+<table>
+<tr><th>#</th><th>假设</th><th>验证方式</th><th>4 周目标</th></tr>
+<tr><td>1</td><td>垂类 PGC 内容能否留人</td><td>阅读深度、次周留存</td><td>次周留存 ≥20%；人均内容 PV ≥3</td></tr>
+<tr><td>2</td><td>活动信息能否让人回来</td><td>关注率、提醒打开率</td><td>活动关注转化 ≥15%</td></tr>
+<tr><td>3</td><td><b>找搭子需求是否真实</b>（代发撮合）</td><td>需求提交量、代发率、应征率、成局率</td><td>见 §9</td></tr>
+</table>
+<h3>1.2 资质边界</h3>
+<table>
+<tr><th>能力</th><th>个人主体</th><th>公司 + ICP 备案</th></tr>
+<tr><td>PGC 内容/活动</td><td><span class="chip ok">✅</span></td><td><span class="chip ok">✅</span></td></tr>
+<tr><td>代发撮合（本方案）</td><td><span class="chip ok">✅ 灰色可试</span></td><td><span class="chip ok">✅</span></td></tr>
+<tr><td>用户自发搭子帖、评论、点赞</td><td><span class="chip no">❌</span></td><td><span class="chip ok">✅</span></td></tr>
+<tr><td>支付/商城</td><td><span class="chip no">❌</span></td><td><span class="chip ok">✅（另需商户号）</span></td></tr>
+</table>
+<div class="note note-info"><b>个体工商户不能替代公司解锁真 UGC 搭子</b>；v2 社交能力前置条件 = 注册<b>有限公司</b> + ICP 备案 + 社交类目 + 内容安全体系。</div>
 </section>
 
-<!-- ============ 2 用户 ============ -->
+<!-- ============ 2 信息架构 ============ -->
 <section id="s2">
-  <h2><span class="no">02</span>用户是谁</h2>
-  <table>
-    <tr><th>画像</th><th>核心诉求</th><th>在产品里的角色</th></tr>
-    <tr><td><b>新手舞者</b>（20岁上下，学舞&lt;1年）</td><td>学舞、找灵感、了解街舞圈</td><td>内容消费者 + 工具使用者</td></tr>
-    <tr><td><b>进阶/资深舞者</b>（练舞1-5年）</td><td>获取专业信息、了解赛事、训练工具</td><td>内容消费者 + 工具核心用户</td></tr>
-    <tr><td><b>泛围观爱好者</b></td><td>刷有审美的街舞内容，了解文化</td><td>内容消费者</td></tr>
-    <tr><td><b>舞蹈老师/工作室</b>（供给侧）</td><td>建立专业形象、课程预告曝光</td><td>PGC 内容合作方（v1 不做入驻系统）</td></tr>
-  </table>
+  <h2><span class="no">02</span>信息架构</h2>
+<table>
+<tr><th>Tab</th><th>页面</th><th>职责</th></tr>
+<tr><td>首页</td><td>index / post-detail / search / <b>persona-test</b></td><td>6 类 PGC 内容流；编辑型长内容；搜索；<b>街舞人格测试</b>（首页浮动入口进入，见 §7）</td></tr>
+<tr><td>活动</td><td>activities / activity-detail / <b>buddy-request</b> / <b>buddy-request-success</b></td><td>活动列表（含找搭子入口 banner）；详情；<b>提交搭子需求</b></td></tr>
+<tr><td>我的</td><td>profile / history / my-activities / <b>my-buddy-requests</b> / <b>buddy-applications</b> / settings</td><td>浏览历史；关注活动；<b>我的需求与应征管理</b></td></tr>
+</table>
+<div class="note note-info">街舞人格测试为独立页（<code>pages/persona-test/persona-test</code>），不占底部 Tab，通过<b>首页浮动入口</b>进入；测试结果本地缓存，可反复查看。</div>
+<p><b>活动 Tab 顶区固定入口</b>（列表上方 banner）：</p>
+<pre>🤝 找练舞搭子 · 提交需求，审核后官方代发 →</pre>
+<p><b>首页浮动入口</b>（右下角，见 §7.5）：</p>
+<pre>[TEST] 你的街舞人格 · 10 题，看你是圈里哪一种 →   （展开态，2.4s 后自动收起）
+● 街舞人格                                        （收起态）</pre>
 </section>
 
-<!-- ============ 3 功能范围 ============ -->
+<!-- ============ 3 首页 ============ -->
 <section id="s3">
-  <h2><span class="no">03</span>功能范围</h2>
-  <table>
-    <tr><th style="width:140px">模块</th><th>功能</th><th style="width:80px">优先级</th></tr>
-    <tr><td><b>账号体系</b></td><td>可选登录（微信授权）；不登录可用全部功能；登录仅同步浏览历史</td><td><span class="chip p1">P1</span></td></tr>
-    <tr><td><b>首页内容流</b></td><td>PGC 内容混排；发现 + 城市名双 tab；内容详情页</td><td><span class="chip p0">P0</span></td></tr>
-    <tr><td><b>工具·节拍器</b></td><td>BPM 自定义、节拍变速、段落循环、预设节奏型</td><td><span class="chip p0">P0</span></td></tr>
-    <tr><td><b>工具·赛事日历</b></td><td>街舞赛事聚合列表、按月视图、赛事详情、赛事提醒（订阅消息）</td><td><span class="chip p1">P1</span></td></tr>
-    <tr><td><b>工具·舞室地图</b></td><td>城市 PGC 舞室列表 + 定位导航 + 舞室详情（PGC 评价）</td><td><span class="chip p1">P1</span></td></tr>
-    <tr><td><b>个人中心</b></td><td>浏览历史、关注的活动、我加入的挑战、设置（含通知开关）</td><td><span class="chip p0">P0</span></td></tr>
-    <tr><td><b>搜索</b></td><td>搜索 PGC 内容（标题+正文+分类）</td><td><span class="chip p1">P1</span></td></tr>
-  </table>
+  <h2><span class="no">03</span>首页</h2>
+<p>（v1.1 分类 tab、编辑型长内容规格不变，见 v1.1 文档 §3–§4。）</p>
+<p>顶栏：</p>
+<pre>🔍 发现  北京  文化  穿搭  新鲜事        [微信胶囊]</pre>
 </section>
 
-<!-- ============ 4 详细规格 ============ -->
+<!-- ============ 4 内容详情（编辑型长内容） ============ -->
 <section id="s4">
-  <h2><span class="no">04</span>详细功能规格</h2>
-
-  <h3>4.1 账号体系（可选登录）</h3>
-  <div class="story">作为<b>用户</b>，我希望不登录就能看内容和用工具，以便零门槛体验</div>
-  <div class="story">作为<b>用户</b>，我希望登录后能同步浏览历史，以便换设备后继续看</div>
-  <ul class="ac">
-    <li>未登录状态：全部功能可用（内容浏览、工具使用）</li>
-    <li>登录方式：wx.login（静默登录，不弹授权框），不强制获取用户信息</li>
-    <li>登录仅用于同步浏览历史到云端；不登录则浏览历史存本地</li>
-    <li class="no">不做用户主页、不做昵称头像展示（无社交场景，不需要身份）</li>
-    <li>边界：微信授权被拒时不阻塞任何功能</li>
-  </ul>
-
-  <h3>4.2 首页内容流（tab1）</h3>
-  <div class="story">作为<b>新手舞者</b>，我希望刷到穿搭和康复内容，以便获得入门价值</div>
-  <div class="story">作为<b>圈内用户</b>，我希望看到赛事和圈内资讯，以便有持续回访的理由</div>
-  <ul class="ac">
-    <li>帖子卡片展示：标题、封面图/视频首帧、摘要、分类色标、发布者名称、发布时间</li>
-    <li class="no"><b>无点赞/收藏/评论数展示</b>（无互动功能）</li>
-    <li>帖子详情页：标题 + 正文 + 图片（多图全屏）+ 视频（内嵌）+ 发布者信息</li>
-    <li class="no"><b>详情页无评论区、无互动按钮</b>（底部只有"分享"）</li>
-    <li>顶部双 tab：<b>发现</b>（全部内容）+ <b>城市名</b>（按发布定位筛选，如"北京"）</li>
-    <li>内容分类：穿搭 / 康复 / 文化 / 赛事 / 新鲜事 / 其他</li>
-    <li>前置内容由运营后台发布，上线前储备 ≥40 篇（6 类 × 每类 ≥6 篇）</li>
-    <li>信息流排序：时间倒序 + 置顶运营位，不做推荐算法</li>
-    <li>视频支持外链上传（微信视频号链接或云存储）</li>
-  </ul>
-
-  <h3>4.3 内容详情页（编辑型长内容格式）</h3>
-  <div class="story">作为<b>用户</b>，我希望专注阅读内容，不被社交元素干扰</div>
-  <div class="story">作为<b>编辑/作者</b>，我希望发布像知乎/公众号一样的编辑型长文，支持标题、引言、块引用、章节、图片混排</div>
-
-  <h4>页面结构</h4>
-  <pre style="font-size:11px;line-height:1.6;background:var(--bg);padding:12px;border-radius:6px;">
-分类标签（穿搭/康复/文化...）
-标题（Title）                    ← 文章主标题
-副标题（Subtitle，选填）         ← 一句话概括
-发布者 · 日期 · 阅读时长
-─────────────────────────────
-引言（Call-out）                 ← 导读/提示/摘要
-H3 章节标题
-段落正文...
-块引用（Blockquote）             ← 引用他人内容
-— 来源
-段落正文...
-图片
-─────────────────────────────
-相关推荐（3 条）
-[    分享给好友    ]             ← 底部分享栏
-  </pre>
-
-  <h4>三种核心元素的定义和视觉规范</h4>
-
-  <p><b>元素 1：标题（Title）</b></p>
-  <table>
-    <tr><th style="width:100px">属性</th><th>规范</th></tr>
-    <tr><td>语义</td><td>文章主标题，概括全文核心</td></tr>
-    <tr><td>字号</td><td>22px / 700</td></tr>
-    <tr><td>字色</td><td>#1A1A1A（Ink）</td></tr>
-    <tr><td>行高</td><td>1.3</td></tr>
-    <tr><td>副标题（可选）</td><td>13px / 400 / #8A8A8E / 下 14px</td></tr>
-  </table>
-
-  <p><b>元素 2：引言 / Call-out 提示块</b></p>
-  <table>
-    <tr><th style="width:100px">属性</th><th>规范</th></tr>
-    <tr><td>语义</td><td><b>作者对读者的导读/提示/摘要，是作者自己的话</b>（区别于块引用的"引用他人"）</td></tr>
-    <tr><td>使用场景</td><td>① 文章开头的导读摘要 ② 文中重要提示/总结 ③ 推荐书单/装备清单的引出</td></tr>
-    <tr><td>背景</td><td>#EEEDFE（浅紫底）</td></tr>
-    <tr><td>左边框</td><td>4px solid #534AB7（主色）</td></tr>
-    <tr><td>圆角</td><td>0 8px 8px 0（左直角右圆角）</td></tr>
-    <tr><td>内边距</td><td>16px 18px</td></tr>
-    <tr><td>可选图标</td><td>右上角 info icon，#534AB7，opacity 0.4</td></tr>
-    <tr><td>标题（可选）</td><td>12px / 700 / #3C3489 / 大写 / letter-spacing 0.5px，如"导读""提示""推荐"</td></tr>
-    <tr><td>正文</td><td>14px / 1.75 行高 / #3D3D3D</td></tr>
-    <tr><td>内嵌粗体</td><td>b 标签用 #1A1A1A（比正文更深）</td></tr>
-  </table>
-  <div class="note note-info" style="margin-top:8px;">
-    <b>Call-out 视觉示意</b>：左侧紫色色条 + 浅紫底 + 可选"导读"标题 + 段落正文。视觉权重高，吸引注意。
-  </div>
-
-  <p><b>元素 3：块引用 / Blockquote</b></p>
-  <table>
-    <tr><th style="width:100px">属性</th><th>规范</th></tr>
-    <tr><td>语义</td><td><b>引用他人内容</b>（书籍原文、名人语录、其他文章片段），不是作者自己的话</td></tr>
-    <tr><td>使用场景</td><td>① 引用书中原文 ② 引用舞者/老师的话 ③ 引用其他媒体内容</td></tr>
-    <tr><td>左边框</td><td>3px solid #D1D5DB（灰色，克制不抢眼）</td></tr>
-    <tr><td>背景</td><td>transparent（无背景色）</td></tr>
-    <tr><td>内边距</td><td>4px 0 4px 16px（仅左侧缩进）</td></tr>
-    <tr><td>字号</td><td>14.5px</td></tr>
-    <tr><td>字色</td><td>#4A4A5A（比正文略浅）</td></tr>
-    <tr><td>字体</td><td>italic（斜体，区分于作者正文）</td></tr>
-    <tr><td>来源标注 cite</td><td>12px / #B0B0B4 / 非斜体 / 上边框 0.5px #E5E7EB / 前缀 "— "</td></tr>
-  </table>
-  <div class="note note-info" style="margin-top:8px;">
-    <b>Blockquote 视觉示意</b>：左侧灰色竖线 + 无底色 + 斜体 + 来源标注。视觉权重低，克制不抢眼。
-  </div>
-
-  <h4>Call-out vs Blockquote 的区别</h4>
-  <table>
-    <tr><th style="width:120px">维度</th><th>Call-out（引言）</th><th>Blockquote（块引用）</th></tr>
-    <tr><td><b>语义</b></td><td>作者自己的话</td><td>引用他人的话</td></tr>
-    <tr><td><b>视觉</b></td><td>紫色系（浅紫底 + 紫色左条）</td><td>灰色系（透明底 + 灰色左线）</td></tr>
-    <tr><td><b>字体</b></td><td>常规</td><td>斜体</td></tr>
-    <tr><td><b>来源</b></td><td>无 cite</td><td>有 cite（来源标注）</td></tr>
-    <tr><td><b>用途</b></td><td>导读/提示/摘要</td><td>引文/语录/书中原文</td></tr>
-    <tr><td><b>视觉权重</b></td><td>高（吸引注意）</td><td>低（克制不抢眼）</td></tr>
-  </table>
-
-  <h4>其他正文元素</h4>
-  <table>
-    <tr><th style="width:120px">元素</th><th>规范</th></tr>
-    <tr><td>H3（一级章节）</td><td>19px / 700 / #1A1A1A / 上下间距 32/14px</td></tr>
-    <tr><td>H4（二级章节）</td><td>16px / 700 / #1A1A1A / 上下间距 24/10px</td></tr>
-    <tr><td>段落 p</td><td>15px / 1.85 行高 / #3D3D3D / 段间距 16px</td></tr>
-    <tr><td>图片 img</td><td>圆角 8px / 上下间距 18px</td></tr>
-    <tr><td>粗体 b</td><td>#1A1A1A（比正文 #3D3D3D 更深）</td></tr>
-  </table>
-
-  <h4>其他验收标准</h4>
-  <ul class="ac">
-    <li class="no"><b>无评论区</b>、<b>无互动按钮</b>（无点赞/收藏/评论）</li>
-    <li>底部分享栏：分享到微信会话/朋友圈</li>
-    <li>关联内容推荐：详情页底部 3 条（按分类匹配）</li>
-    <li><b>顶部阅读时长提示</b>：如"阅读 12 分钟"，从字数自动计算</li>
-    <li>边界：内容含外链视频时，视频在详情页内嵌播放</li>
-    <li><b>后台编辑器</b>：工具栏提供"插入 Call-out"和"插入 Blockquote"两个独立按钮，编辑可选择"引言"或"引用"类型</li>
-  </ul>
-
-      <h3>4.4 活动平台（tab2 核心）</h3>
-  <div class="story">作为<b>舞者</b>，我想看近期有哪些街舞赛事，以便决定参加哪个</div>
-  <div class="story">作为<b>进阶舞者</b>，我想看大师课和 Workshop 信息</div>
-  <div class="story">作为<b>初学者</b>，我想知道附近每周的 Jam / Cypher Night</div>
-  <ul class="ac">
-    <li><b>活动分类筛选 chips</b>：全部 / 找搭子 / 赛事 / 大师课</li>
-    <li><b>活动列表卡片</b>：顶部彩色封面区（赛事=紫、大师课=橙红、Jam=绿）+ 类型徽标 + 日期标签 + 大字标题 + 描述 + 元信息（地点/时间）+ 关注数 + "查看详情 →"</li>
-    <li><b>活动详情页</b>：彩色 hero 区（类型徽标+大标题）+ 活动信息卡（时间/地点/舞种/主办 4 行 icon+文字）+ 活动介绍 + 日程安排（时间轴列表）+ 注意事项 + 底栏"关注活动（赛事提醒）"</li>
-    <li><b>关注功能</b>：调用 wx.requestSubscribeMessage，赛前 3 天/1 天推送订阅消息提醒</li>
-    <li><b>找搭子入口</b>：活动列表顶部固定紫色 banner「找练舞搭子 · 提交需求，审核后官方代发 →」，点击进入搭子需求表单（§6.4）</li>
-    <li><b>活动数据全部由运营 PGC 维护</b>，用户不创建活动</li>
-    <li>边界：活动报名跳转外部 H5/公众号，不在站内完成</li>
-  </ul>
-
-    <h3>4.5 个人中心（tab3）</h3>
-  <div class="story">作为<b>用户</b>，我希望看到我浏览过的内容，以便回看</div>
-  <ul class="ac">
-    <li><b>浏览历史</b>：最近浏览的内容列表（本地存储，登录后同步云端），按时间倒序，最多 100 条</li>
-    <li><b>清空历史</b>：一键清空浏览历史</li>
-    <li><b>设置</b>：通知开关（赛事提醒）、关于舞岛、用户协议、隐私政策</li>
-    <li class="no"><b>不做</b>：发帖、收藏、点赞列表（无此功能）</li>
-    <li class="no"><b>不做</b>：消息中心（无社交互动，无消息来源）</li>
-    <li class="no"><b>不做</b>：草稿箱（无发帖功能）</li>
-    <li>登录入口（可选）："登录同步浏览历史"，不强制</li>
-  </ul>
-
-  <h3>4.7 个人中心·关注的活动（P1）</h3>
-  <div class="story">作为<b>用户</b>，我希望看到我关注过的活动，以便回看</div>
-  <ul class="ac">
-    <li>"我的"列表新增"关注的活动"cell，带关注数 badge</li>
-    <li>点击进入活动关注列表：按关注时间倒序</li>
-    <li>取消关注：活动卡点击取消，回到活动列表</li>
-    <li>边界：未登录状态显示"登录后可跨设备同步关注"</li>
-  </ul>
-
-  <h3>4.8 搜索（P1）</h3>
-  <div class="story">作为<b>用户</b>，我希望搜"Breaking 护腕"快速找到相关内容</div>
-  <ul class="ac">
-    <li>入口：首页顶栏 toptabs 左侧搜索 icon</li>
-    <li>搜索对象：仅 PGC 内容（无用户内容可搜）</li>
-    <li>搜索维度：关键词匹配（标题 + 正文）+ 分类标签</li>
-    <li>初始态：搜索框 + 热门搜索（运营配置 6-8 个词）</li>
-    <li>结果态：按时间倒序，复用内容流卡片样式</li>
-    <li>空结果态：引导"试试 [热门词]"</li>
-  </ul>
-
-  <h3>4.9 打卡挑战（通用能力）</h3>
-  <div class="note note-info"><b>定位</b>：把"21 天 Breaking 基础训练"这类官方打卡活动抽象成<b>通用能力</b>——官方在后台发布任意主题的打卡挑战，用户加入后每日打卡，完成后获得成就海报并分享。不依赖 UGC（用户只点按钮不产生公开内容）、不依赖支付（奖励是电子海报）。</div>
-
-  <div class="story">作为<b>新手舞者</b>，我看到"21 天 Breaking 基础训练"挑战，加入后每天跟着任务练基本功</div>
-  <div class="story">作为<b>用户</b>，我希望每天打开小程序时能看到"今日打卡"入口，点一下就完成打卡</div>
-  <div class="story">作为<b>用户</b>，我完成 21 天后能获得一张好看的成就海报，分享到朋友圈</div>
-  <div class="story">作为<b>运营</b>，我希望能在后台发布不同主题的打卡活动（Breaking/Hip-hop/Locking/康复...）</div>
-
-  <h4>数据模型</h4>
-  <table>
-    <tr><th style="width:140px">对象</th><th>字段</th></tr>
-    <tr><td><b>Challenge</b><br>（打卡活动）</td><td>id / 标题 / 副标题 / 封面图 / 描述（Call-out 格式）/ 总天数 / 开始日期 / 结束日期 / 主题色 / 每日任务模板（Day1: xxx...）/ 奖励文案 / 奖励海报模板 / 状态（招募中/进行中/已结束）/ 参与人数</td></tr>
-    <tr><td><b>UserChallenge</b><br>（用户参与）</td><td>uid / challengeId / 加入时间 / 已打卡天数 / 连续打卡天数 / 最后打卡日期 / 状态（进行中/已完成/已放弃）</td></tr>
-    <tr><td><b>CheckIn</b><br>（打卡记录）</td><td>id / uid / challengeId / 日期 / 打卡时间</td></tr>
-  </table>
-
-  <h4>功能流程</h4>
-  <pre style="font-size:11px;line-height:1.6;background:var(--bg);padding:12px;border-radius:6px;">
-官方发布挑战（PGC 后台）
-    ↓
-用户浏览挑战列表（活动 tab 内"挑战"入口）
-    ↓
-查看挑战详情（封面 + 描述 + 每日任务 + 参与人数 + "加入挑战"按钮）
-    ↓
-点击"加入挑战"→ 弹出一次性订阅消息授权（"每日打卡提醒"模板）
-    ↓
-每日打卡：
-  入口 1：首页顶部 banner"今日打卡 Day 14/21 →"
-  入口 2：我的 → "我加入的挑战" → 今日打卡按钮
-  动作：点击"今日打卡"按钮 → 记录打卡 + 进度+1 + 连续天数+1
-  反馈：打卡成功动画 + 今日任务卡片翻转展示
-    ↓
-断卡处理：断卡 1 天连续天数归零（已打卡天数不归零）；每月 1 次补签卡
-    ↓
-完成挑战（已打卡天数 = 总天数）：
-  生成成就海报（紫色主调 + 标题 + 用户名 + 天数 + 日期 + 二维码）
-  海报可保存到相册 + 分享到微信会话/朋友圈
-  </pre>
-
-  <h4>验收标准</h4>
-  <ul class="ac">
-    <li>挑战列表：活动 tab 顶部"挑战"入口，展示招募中 + 进行中的挑战卡片</li>
-    <li>挑战详情：封面 + Call-out 描述 + 每日任务预览（前 3 天）+ 参与人数 + "加入挑战"按钮</li>
-    <li>加入挑战：点击后调用 wx.requestSubscribeMessage 订阅"每日打卡提醒"模板</li>
-    <li>每日打卡入口：首页顶部 banner（仅加入后显示）+ 我的页"我加入的挑战"列表</li>
-    <li>打卡动作：点击"今日打卡"按钮 → 打卡成功动画 + 进度条更新 + 连续天数更新</li>
-    <li>进度可视化：环形进度条（已打卡/总天数）+ 连续天数火焰图标</li>
-    <li>断卡：断卡 1 天连续天数归零；每月 1 次补签卡</li>
-    <li>完成挑战：自动生成成就海报（Canvas 渲染 → 临时图片）</li>
-    <li><b>成就海报</b>：紫色渐变背景 + 挑战标题 + 用户名 + "21/21 天完成" + 日期范围 + 舞岛 logo + 小程序码</li>
-    <li>分享：海报保存到相册 + 分享到微信会话 + 分享到朋友圈（图片分享）</li>
-    <li>边界：同一用户可加入多个挑战；已结束后不可再加入；打卡需在当日 0:00-23:59 内完成</li>
-  </ul>
-
-  <h4>成就海报设计规范</h4>
-  <table>
-    <tr><th style="width:100px">元素</th><th>规范</th></tr>
-    <tr><td>尺寸</td><td>750×1334px（iPhone 截图比例，适合朋友圈）</td></tr>
-    <tr><td>背景</td><td>紫色渐变 #534AB7 → #3C3489</td></tr>
-    <tr><td>顶部</td><td>舞岛 logo（白色）+ "成就达成"白色标题</td></tr>
-    <tr><td>中部</td><td>挑战标题（白色大字 24px）+ 用户名（白色 16px）</td></tr>
-    <tr><td>进度</td><td>"21/21 天"大数字（白色 48px）+ 日期范围（白色 12px）</td></tr>
-    <tr><td>底部</td><td>舞岛 slogan"练舞人的岛"+ 小程序码（白色圆角底）</td></tr>
-    <tr><td>装饰</td><td>斜向速度线（白色 opacity 0.1）+ 火焰图标（连续打卡满 21 天时显示）</td></tr>
-  </table>
-
-  <h3>4.10 通知能力（通盘设计）</h3>
-  <div class="note note-warn"><b>约束</b>：微信小程序<b>一次性订阅消息</b>——每次用户授权只能推送<b>一条</b>消息，需用户主动点击触发，模板需在微信公众平台后台配置审核。策略：在用户有明确利益动机的时刻请求订阅，并在每次推送后引导重新订阅。</div>
-
-  <h4>四个订阅场景</h4>
-  <table>
-    <tr><th style="width:120px">场景</th><th>模板</th><th>触发时机</th><th>推送内容</th><th>推送时间</th><th>重新订阅引导</th></tr>
-    <tr><td><b>① 活动关注提醒</b></td><td>活动提醒</td><td>点击"关注活动"时</td><td>赛事名称+时间+地点+"点击查看详情"</td><td>赛前 3 天 + 赛前 1 天（两次）</td><td>推送消息内附"关注更多活动"按钮</td></tr>
-    <tr><td><b>② 打卡每日提醒</b></td><td>打卡提醒</td><td>点击"加入挑战"时</td><td>挑战名称+"今日未打卡 Day 14/21"+"去打卡"</td><td>每日 19:00（如未打卡）</td><td>每日首次打开时弹"订阅今日提醒"轻提示</td></tr>
-    <tr><td><b>③ 本周精选更新</b></td><td>内容更新</td><td>设置页主动订阅</td><td>"本周街舞圈 TOP 5 已更新"+点击查看</td><td>每周一 10:00</td><td>推送消息内附"订阅下周更新"按钮</td></tr>
-    <tr><td><b>④ 活动结果更新</b></td><td>活动结果</td><td>活动结束后自动</td><td>赛事名称+"赛果已更新"+点击查看</td><td>活动结束后 2 小时</td><td>推送消息内附"关注更多赛事"按钮</td></tr>
-  </table>
-
-  <h4>验收标准</h4>
-  <ul class="ac">
-    <li><b>活动关注</b>：关注时调用 wx.requestSubscribeMessage，订阅 2 次（赛前 3 天 + 1 天）</li>
-    <li><b>打卡提醒</b>：加入挑战时调用 wx.requestSubscribeMessage</li>
-    <li><b>打卡重订阅</b>：每日首次打开时，如已加入挑战且今日未打卡且未订阅 → 首页顶部轻提示"订阅今日打卡提醒 →"</li>
-    <li><b>本周精选</b>：设置页开关，开启时调用 wx.requestSubscribeMessage</li>
-    <li><b>活动结果</b>：活动结束后自动推送，复用活动关注时的订阅额度</li>
-    <li><b>推送内容</b>：每条含标题 + 摘要 + 跳转路径（点击直达详情页）</li>
-    <li><b>重订阅引导</b>：每条推送后记录"已消耗订阅"，下次打开相关页面时引导重新订阅</li>
-    <li><b>用户拒绝订阅</b>：不阻塞功能，只是不推送提醒</li>
-    <li><b>设置页</b>：通知开关——活动提醒 / 打卡提醒 / 每周精选，可单独开关</li>
-    <li>边界：一次性订阅额度用完后不报错，静默不推送</li>
-  </ul>
-
-  <h4>订阅消息模板配置</h4>
-  <table>
-    <tr><th>模板名称</th><th>字段</th></tr>
-    <tr><td>活动提醒</td><td>活动名称 / 提醒时间 / 活动地点 / 备注</td></tr>
-    <tr><td>打卡提醒</td><td>挑战名称 / 当前天数 / 总天数 / 备注</td></tr>
-    <tr><td>内容更新</td><td>标题 / 更新时间 / 摘要 / 备注</td></tr>
-    <tr><td>活动结果</td><td>活动名称 / 结果摘要 / 更新时间 / 备注</td></tr>
-  </table>
+  <h2><span class="no">04</span>内容详情（编辑型长内容）</h2>
+<p>（Markdown 子集、Call-out、Blockquote、媒体规格不变。）</p>
 </section>
 
-<!-- ============ 5 Non-goals ============ -->
+<!-- ============ 5 活动平台 ============ -->
 <section id="s5">
-  <h2><span class="no">05</span>Non-goals（明确不做）</h2>
-  <table>
-    <tr><th style="width:200px">不做的事</th><th>原因</th></tr>
-    <tr><td><b>UGC 发帖</b></td><td>个人主体无社交类目资质</td></tr>
-    <tr><td><b>找搭子/搭子帖</b></td><td>属于用户发布内容，需社交类目</td></tr>
-    <tr><td><b>评论/点赞/收藏</b></td><td>互动功能需社交类目</td></tr>
-    <tr><td><b>拼团支付/商城</b></td><td>无微信支付商户号</td></tr>
-    <tr><td><b>用户主页/关注</b></td><td>属于社交功能</td></tr>
-    <tr><td><b>消息中心</b></td><td>无社交互动，无消息来源</td></tr>
-    <tr><td><b>草稿箱</b></td><td>无发帖功能</td></tr>
-    <tr><td><b>推荐算法</b></td><td>v1 内容量小，时间倒序即可</td></tr>
-    <tr><td><b>直播/录播上课</b></td><td>需对应类目资质，开发成本高</td></tr>
-    <tr><td><b>工具类功能（节拍器/赛事日历/舞室地图）</b></td><td>v1 聚焦 PGC 内容 + 活动平台，工具不优先</td></tr>
-  </table>
+  <h2><span class="no">05</span>活动平台</h2>
+<h3>5.1 列表（activities）</h3>
+<p><b>分类 chips</b>：全部 / <b>找搭子</b> / 赛事 / 大师课</p>
+<table>
+<tr><th>类型</th><th>来源</th><th>用户操作</th></tr>
+<tr><td>练舞局</td><td><b>代发撮合</b>（用户需求审核后发布）</td><td>我想加入（应征）</td></tr>
+<tr><td>官方活动</td><td>运营自建</td><td>关注 + 加入（可选到场签到，见 §5.3）</td></tr>
+<tr><td>赛事/大师课/Jam</td><td>运营收录</td><td>关注活动（订阅提醒）</td></tr>
+</table>
+<p><b>练舞局卡片差异</b>：</p>
+<ul class="ac">
+<li>类型徽标「练舞局」+ 子类型（练舞/拼团/比赛/其他）</li>
+<li>meta 行展示：时间 · 地点 · <b>已应征 N 人</b>（N≥1 时显示，从众效应）</li>
+<li>角标可选「代发」浅紫标签（示意平台审核发布，非用户直发）</li>
+</ul>
+<p><b>找搭子入口</b>：活动列表顶部固定紫色 banner「找练舞搭子 · 提交需求，审核后官方代发 →」，点击进入搭子需求表单（§6.4）。</p>
+<h3>5.2 活动详情（activity-detail）</h3>
+<p><b>练舞局（代发）详情页</b>：</p>
+<pre>彩色 hero（练舞局徽标 + 标题）
+→ 信息卡（时间/地点/舞种/人数缺口）
+→ 活动介绍（运营基于用户需求编辑，PGC 文风）
+→ 注意事项（安全/联系方式规则）
+→ 底部：「我想加入」主按钮</pre>
+<p><b>不展示</b>：发起人微信号/手机号（任何公开区域均不可见）。</p>
+<p><b>其他类型</b>：沿用 v1.1（赛事/Jam 关注提醒；官方活动加入/签到）。</p>
+<h3>5.3 官方活动参与（非练舞局）</h3>
+<table>
+<tr><th>活动类型</th><th>底部操作</th></tr>
+<tr><td>官方活动（非练舞局）</td><td>关注 + 加入 → 可选到场签到</td></tr>
+<tr><td>赛事/大师课/Jam</td><td>关注活动（订阅消息）</td></tr>
+</table>
+<p>练舞局<b>不走</b>加入/打卡链路，走 §6 应征制。</p>
 </section>
 
-<!-- ============ 6 信息架构 ============ -->
+<!-- ============ 6 代发撮合（方案 B 核心） ============ -->
 <section id="s6">
-  <h2><span class="no">06</span>信息架构</h2>
-<pre>舞岛（非社区版 · v1.3）
-├── Tab1 首页
-│   ├── 顶栏：搜索 icon + 发现 / 城市名 双 tab
-│   └── PGC 内容流（6 类内容混排）
-│       └── 内容详情页（编辑型长内容：H3/H4 + 引用块 + 图片）
-├── Tab2 活动
-│   ├── 活动列表（分类筛选 chips + 找搭子入口 banner）
-│   │   └── 活动详情页（彩色 hero + 时间地点 + 日程 + 关注提醒）
-│   ├── 找搭子需求表单 → 提交成功页
-│   └── 练舞局详情（代发）→ 应征表单
-└── Tab3 我的
-    ├── 浏览历史
-    ├── 关注的活动
-    ├── 我的搭子需求（含应征列表入口）
-    ├── 提交搭子需求（快捷 cell）
-    └── 设置（通知/关于/协议）
-</pre>
-  <div class="note note-info"><b>底 bar 三 tab 变化</b>：原"工具" tab 已改为"<b>活动</b>" tab。工具类（节拍器/赛事日历/舞室地图）全部移除，活动作为唯一第二核心入口承担留存。</div>
-  <div class="note note-info"><b>底 bar 三 tab 变化</b>：原社区版是"首页/找搭子/我的" → 非社区版 v0.1 是"首页/工具/我的" → v0.2 改为"<b>首页/活动/我的</b>"。活动（官方赛事/大师课/Jam）成为第二核心入口。</div>
+  <h2><span class="no">06</span>代发撮合（方案 B 核心）</h2>
+<h3>6.1 设计原则</h3>
+<pre>用户填需求（私密，不公开展示）
+        ↓
+运营审核 + 编辑成 PGC 练舞局
+        ↓
+公开发布在活动列表
+        ↓
+他人「我想加入」应征（联系方式仅发起人可见）
+        ↓
+发起人线下联系成局 → 运营标记「已结束」</pre>
+<p><b>与真 UGC 搭子的差异</b>：</p>
+<table>
+<tr><th>维度</th><th>真 UGC（v2）</th><th>代发撮合（v1.3）</th></tr>
+<tr><td>谁发布</td><td>用户一键发布</td><td>用户提需求，运营代发</td></tr>
+<tr><td>公开内容归属</td><td>用户账号</td><td>舞岛官方账号</td></tr>
+<tr><td>审核</td><td>先审后发 / 内容安全 API</td><td>人工审核后再发布</td></tr>
+<tr><td>合规类目</td><td>社交-社区/论坛</td><td>工具-预约/报名</td></tr>
+</table>
+<h3>6.2 数据模型</h3>
+<p><b>BuddyRequest（搭子需求，用户提交，不公开展示）</b></p>
+<table>
+<tr><th>字段</th><th>说明</th></tr>
+<tr><td>id</td><td>UUID</td></tr>
+<tr><td>uid</td><td>提交者标识（wx.login openid 或端侧匿名 UID）</td></tr>
+<tr><td>subType</td><td>练舞 / 拼团 / 找队友 / 其他</td></tr>
+<tr><td>title</td><td>必填，≤30 字</td></tr>
+<tr><td>description</td><td>选填，≤500 字</td></tr>
+<tr><td>danceStyle</td><td>舞种，选填</td></tr>
+<tr><td>city</td><td>必填</td></tr>
+<tr><td>location</td><td>地点文本或 chooseLocation</td></tr>
+<tr><td>datetime</td><td>必填，日期+时间</td></tr>
+<tr><td>headcount</td><td>期望人数，选填，默认「不限」</td></tr>
+<tr><td>contactWechat</td><td>发起人微信号，必填</td></tr>
+<tr><td>contactPhone</td><td>手机号，选填</td></tr>
+<tr><td>refImages</td><td>参考图 ≤3，选填，<b>仅审核可见，发布时不展示原图</b></td></tr>
+<tr><td>status</td><td>pending / approved / rejected / published / closed</td></tr>
+<tr><td>rejectReason</td><td>驳回原因</td></tr>
+<tr><td>linkedActivityId</td><td>审核通过后关联的活动 ID</td></tr>
+<tr><td>createdAt / updatedAt</td><td>时间戳</td></tr>
+</table>
+<p><b>Application（应征，私密）</b></p>
+<table>
+<tr><th>字段</th><th>说明</th></tr>
+<tr><td>id</td><td>UUID</td></tr>
+<tr><td>activityId</td><td>关联练舞局</td></tr>
+<tr><td>requestId</td><td>关联源需求</td></tr>
+<tr><td>applicantUid</td><td>应征者</td></tr>
+<tr><td>message</td><td>一句话说明，选填，≤100 字</td></tr>
+<tr><td>contactWechat</td><td>必填</td></tr>
+<tr><td>contactPhone</td><td>选填</td></tr>
+<tr><td>createdAt</td><td>时间戳</td></tr>
+</table>
+<p><b>Activity 扩展（练舞局类型）</b></p>
+<table>
+<tr><th>字段</th><th>说明</th></tr>
+<tr><td>type</td><td><code>buddy</code>（练舞局）</td></tr>
+<tr><td>buddySubType</td><td>练舞/拼团/比赛/其他</td></tr>
+<tr><td>sourceRequestId</td><td>源需求 ID</td></tr>
+<tr><td>initiatorUid</td><td>发起人（查看应征用）</td></tr>
+<tr><td>headcount</td><td>人数缺口</td></tr>
+<tr><td>applicationCount</td><td>应征数（公开展示）</td></tr>
+<tr><td>status</td><td>recruiting / full / ended</td></tr>
+</table>
+<h3>6.3 用户故事</h3>
+<ul class="ac">
+<li>作为练舞用户，我想填表说明时间地点和舞种，让平台帮我发练舞局，而不自己公开发帖</li>
+<li>作为应征者，我想点「我想加入」留联系方式，让发起人联系我，且别人看不到我的联系方式</li>
+<li>作为发起人，我想在「我的搭子需求」里看到谁应征了，方便筛选联系</li>
+<li>作为运营，我想审核需求、编辑文案、一键发布为练舞局，并拒绝违规/广告内容</li>
+</ul>
+<h3>6.4 提交搭子需求（buddy-request）</h3>
+<p><b>入口</b>：</p>
+<ol style="margin:10px 0 16px;padding-left:22px;font-size:13px;color:var(--ink2);line-height:1.7;">
+<li>活动 Tab 顶 banner「找练舞搭子」</li>
+<li>活动列表练舞局 chip 空态：「暂无练舞局，提交你的需求 →」</li>
+<li>我的 → 「提交搭子需求」</li>
+</ol>
+<p><b>表单结构</b>（视觉主角 = 时间地点 key-block，参考原 MMVP 搭子发布页）：</p>
+<table>
+<tr><th>区块</th><th>字段</th><th>必填</th></tr>
+<tr><td>类型</td><td>练舞 / 拼团 / 找队友 / 其他</td><td><span class="chip ok">✅</span></td></tr>
+<tr><td>标题</td><td>≤30 字</td><td><span class="chip ok">✅</span></td></tr>
+<tr><td>时间地点</td><td>日期+时间 + 城市 + 地点（chooseLocation）</td><td><span class="chip ok">✅</span></td></tr>
+<tr><td>描述</td><td>≤500 字</td><td>—</td></tr>
+<tr><td>舞种</td><td>下拉或文本</td><td>—</td></tr>
+<tr><td>人数</td><td>数字或「不限」</td><td>—</td></tr>
+<tr><td>联系方式</td><td>微信号 + 可选手机号</td><td><span class="chip ok">✅</span></td></tr>
+<tr><td>参考图</td><td>≤3 张，仅审核用</td><td>—</td></tr>
+</table>
+<p><b>提交前勾选</b>：「我已阅读并同意《搭子代发须知》——需求由舞岛审核后发布，请勿填写违规内容」</p>
+<p><b>提交后</b>：跳转 buddy-request-success，展示「预计 24 小时内审核，通过后在活动列表展示」+ 「查看我的需求」。</p>
+<p><b>登录</b>：提交时触发 wx.login（需绑定 uid，否则无法查看应征）。</p>
+<p><b>边界</b>：</p>
+<ul class="ac">
+<li>同一 uid 同时 pending 的需求 ≤3 条</li>
+<li>文本过短/含广告引流关键词 → 客户端弱提示，服务端必审</li>
+<li>参考图走 upload + 服务端粗筛（建议接 msgSecCheck）</li>
+</ul>
+<h3>6.5 审核与代发（PGC 后台，见后台 PRD §5.5）</h3>
+<pre>pending 需求进入后台队列
+    ↓
+运营审：通过 / 驳回（填原因）
+    ↓
+通过 → 预填活动编辑器（标题/时间/地点/描述/类型）
+    ↓
+运营润色 → 发布为 type=buddy 活动
+    ↓
+需求 status=published，linkedActivityId 写入
+    ↓
+（可选）订阅消息通知发起人「你的练舞局已发布」</pre>
+<p><b>发布规则</b>：</p>
+<ul class="ac">
+<li>发布账号 = 舞岛官方号（非用户头像昵称直出）</li>
+<li>正文不含发起人联系方式</li>
+<li>描述中不出现「加微信 xxx」等引流（联系方式仅应征通道给发起人）</li>
+</ul>
+<h3>6.6 应征流程（我想加入）</h3>
+<p>Given 用户在练舞局详情页点击「我想加入」 When 填写一句话说明（选填）+ 微信号（必填）+ 手机号（选填） Then：</p>
+<ul class="ac">
+<li>提交成功，按钮变为「已应征」置灰</li>
+<li>发起人可在「我的搭子需求 → 该条 → 应征列表」查看</li>
+<li><b>应征者之间互不可见</b>；公开页不展示任何联系方式</li>
+<li>applicationCount +1</li>
+</ul>
+<p><b>边界</b>：</p>
+<ul class="ac">
+<li>同一用户对同一练舞局重复应征 → 提示「已应征过」</li>
+<li>活动 status=ended → 按钮置灰「已结束」</li>
+<li>发起人不能应征自己的局</li>
+</ul>
+<h3>6.7 发起人管理（my-buddy-requests / buddy-applications）</h3>
+<p><b>我的搭子需求列表</b>：</p>
+<table>
+<tr><th>状态</th><th>展示</th><th>操作</th></tr>
+<tr><td>pending</td><td>审核中</td><td>查看详情；可撤回</td></tr>
+<tr><td>rejected</td><td>已驳回 + 原因</td><td>修改重提（新 request）</td></tr>
+<tr><td>published</td><td>已发布 · 应征 N 人</td><td>查看应征列表；分享活动</td></tr>
+<tr><td>closed</td><td>已结束</td><td>只读</td></tr>
+</table>
+<p><b>应征列表页（buddy-applications）</b>：</p>
+<ul class="ac">
+<li>每条：应征时间 + 一句话 + 微信号（点击复制）+ 手机号</li>
+<li>顶部提示：「请通过线下/微信自行联系，舞岛不参与交易与担保」</li>
+</ul>
+<p><b>结束练舞局</b>：</p>
+<ul class="ac">
+<li>发起人可点「标记已结束」（或运营后台标记）</li>
+<li>结束后停止接受应征</li>
+</ul>
+<h3>6.8 合规与风险控制</h3>
+<table>
+<tr><th>风险</th><th>应对</th></tr>
+<tr><td>被认定为 UGC 社区</td><td>用户提交=私密表单；公开=PGC；提审材料强调预约/报名</td></tr>
+<tr><td>审核不及时</td><td>冷启动承诺 24h 内；pending 超 48h 自动提醒运营</td></tr>
+<tr><td>虚假/广告需求</td><td>人工审核 + 关键词过滤 + 驳回机制</td></tr>
+<tr><td>线下安全</td><td>《搭子代发须知》免责声明；不推荐未成年人单独赴约</td></tr>
+<tr><td>审核尺度变化</td><td>保留微信群作备用撮合通道，不 all in 小程序</td></tr>
+</table>
 </section>
 
-<!-- ============ 7 商业化 ============ -->
+<!-- ============ 7 街舞人格测试（冷启动偏好采集 + 分享裂变） ============ -->
 <section id="s7">
-  <h2><span class="no">07</span>商业化路径</h2>
-  <div class="note note-warn"><b>v1（非社区版）</b>：无直接商业化路径。先做流量和工具使用习惯。</div>
-  <h3>资质解决后（升级企业主体）可补齐</h3>
-  <ul class="ac">
-    <li>拼团支付（大师课拼团，平台抽佣）</li>
-    <li>商城（街舞垂类装备）</li>
-    <li>推广位售卖（赛事/舞室/品牌推广）</li>
-    <li>找搭子（结构化撮合，需确认社交类目）</li>
-    <li>评论/点赞/收藏（社交互动）</li>
-  </ul>
-  <h3>间接路径（v1 可探索）</h3>
-  <ul class="ac">
-    <li>内容赞助：舞室/品牌付费让平台发布软文（走公众号广告模式）</li>
-    <li>舞室收录费：舞室地图收录 PGC 评价，舞室付费优先展示（需标注"广告"）</li>
-  </ul>
+  <h2><span class="no">07</span>街舞人格测试（冷启动偏好采集 + 分享裂变）</h2>
+<h3>7.1 目标与定位</h3>
+<table>
+<tr><th>目标</th><th>说明</th></tr>
+<tr><td>偏好采集</td><td>冷启动期平台无用户行为数据，用 MBTI 式<b>自评</b>主动补齐用户的音乐/场景/角色偏好</td></tr>
+<tr><td>分享裂变</td><td>结果生成<b>街舞地刊风海报</b>，用户保存后自发传播到微信/朋友圈，带二维码回流</td></tr>
+<tr><td>内容/活动导流</td><td>结果页「岛上推荐入口」按人格与场景，引导去成片课/练舞局/赛事/找搭子</td></tr>
+</table>
+<p><b>定位边界</b>：不测舞种、不测水平、不分学生/老师；测的是「<b>你为什么被街舞吸引、以什么方式待在圈里</b>」。学生、老师、任何爱好者都适用。</p>
+<h3>7.2 人格图谱与固定文案</h3>
+<p>结果为 <b>17 选 1</b> 主人格，附 1 个副人格。人格按<b>动机</b>切分：每个人格必须能回答「只有这种人会做的那件事是什么」，否则不新增。</p>
+<p>下表为<b>随主人格固定出现</b>的文案（headline / voice / superpower / shadow / 默认 traits / need 兜底）；结果页其余段落由作答 echo 动态拼接，见 §7.4。</p>
+<table>
+<tr><th>编号</th><th>key</th><th>中文名</th><th>英文名</th><th>核心</th><th>一句话区分</th></tr>
+<tr><td>NO. 01</td><td>storyteller</td><td>光影叙事者</td><td>CHOREO STORYTELLER</td><td>表达</td><td>有些话说不出口，就让一个停顿替你说。</td></tr>
+<tr><td>NO. 02</td><td>wildfire</td><td>野火上场者</td><td>WILDFIRE FREESTYLER</td><td>爆发</td><td>圈刚空出来，你的身体已经先点了头。</td></tr>
+<tr><td>NO. 03</td><td>tactician</td><td>锋芒执局者</td><td>BATTLE TACTICIAN</td><td>对抗</td><td>你上场，从来不是去碰运气。</td></tr>
+<tr><td>NO. 04</td><td>resonance</td><td>共振递火者</td><td>RESONANCE IGNITER</td><td>连接</td><td>一个人练得再顺，也换不来被接住的那一下。</td></tr>
+<tr><td>NO. 05</td><td>nomad</td><td>夜色游牧者</td><td>NIGHT PARTY NOMAD</td><td>自由</td><td>灯一暗，陌生的房间也会变成你的。</td></tr>
+<tr><td>NO. 06</td><td>lone</td><td>月下独行者</td><td>SOLO ORBIT DANCER</td><td>独处</td><td>耳机一戴，世界就刚好够用了。</td></tr>
+<tr><td>NO. 07</td><td>groove</td><td>律动信徒</td><td>GROOVE BELIEVER</td><td>音乐</td><td>难不难先放一边，groove 对了才算数。</td></tr>
+<tr><td>NO. 08</td><td>stylekeeper</td><td>风格藏家</td><td>TEXTURE COLLECTOR</td><td>风格</td><td>别人一眼滑过去的东西，你会留下来。</td></tr>
+<tr><td>NO. 09</td><td>wanderer</td><td>舞房游学生</td><td>CLASSROOM WANDERER</td><td>探索</td><td>你去上课，是去偷一点还没长在自己身上的东西。</td></tr>
+<tr><td>NO. 10</td><td>watcher</td><td>静默观舞者</td><td>SILENT OBSERVER</td><td>观察</td><td>你不一定站在圈中间，但你看得比谁都认真。</td></tr>
+<tr><td>NO. 11</td><td>crewsoul</td><td>齐舞团魂者</td><td>CREW SOUL</td><td>同频</td><td>十个人跳成一个人，那一下比什么都上头。</td></tr>
+<tr><td>NO. 12</td><td>digger</td><td>挖歌人</td><td>CRATE DIGGER</td><td>挖掘</td><td>舞还没跳，歌单已经比别人厚了。</td></tr>
+<tr><td>NO. 13</td><td>rewinder</td><td>逐帧自审者</td><td>FRAME BY FRAME</td><td>苛求</td><td>那条视频你看了三十遍，全是在看自己哪里不对。</td></tr>
+<tr><td>NO. 14</td><td>edgewalker</td><td>圈外颤抖者</td><td>EDGE WALKER</td><td>蓄势</td><td>你的脚已经在动了，只是人还没迈进去。</td></tr>
+<tr><td>NO. 15</td><td>patcher</td><td>护膝修行者</td><td>TAPED WARRIOR</td><td>韧性</td><td>你包里的护具，比换洗的衣服还多。</td></tr>
+<tr><td>NO. 16</td><td>midnight</td><td>厨房即兴犯</td><td>KITCHEN IMPROVISER</td><td>失控</td><td>等水开的那三分钟，你已经跳完一段了。</td></tr>
+<tr><td>NO. 17</td><td>hoarder</td><td>囤课仓鼠</td><td>CLASS HOARDER</td><td>收藏</td><td>课报了六节，练了两节，但快乐是真的。</td></tr>
+</table>
+<h4>NO.01 光影叙事者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>有些话说不出口，就让一个停顿替你说。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你盯的从来不是动作堆得满不满，而是这一拍为什么必须出现在这里。别人跳完一首歌，你跳完的是一句还没说出口的话。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你能把情绪翻译成身体。一个转身、一次垂眼，观众讲不出为什么，但会安静下来。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你太想「讲清楚」，有时候会忘了先跳爽。作品没成形之前，你比谁都容易怀疑自己。</td></tr>
+<tr><td>默认 traits</td><td>编舞 / 成片 / 舞台 / 表达</td></tr>
+<tr><td>need 兜底</td><td>成片课、作品打磨、舞台向课程，会比纯炸场更对你的胃口。</td></tr>
+</table>
+<h4>NO.02 野火上场者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>圈刚空出来，你的身体已经先点了头。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你享受没有标准答案的那一秒。不一定要赢，但你很少愿意只站在外面看。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你有一种练不出来的东西——上场不需要理由。场子冷的时候，第一个下去的往往是你。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你的下限全靠状态。状态差的那天，你比谁都清楚自己在硬撑。</td></tr>
+<tr><td>默认 traits</td><td>Freestyle / 爆发 / 即兴 / 上场欲</td></tr>
+<tr><td>need 兜底</td><td>即兴局、Battle 体验、Freestyle 练习，适合找敢一起进圈的人。</td></tr>
+</table>
+<h4>NO.03 锋芒执局者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>你上场，从来不是去碰运气。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>收和放对你来说都是选择。真正上瘾的，是下一轮你已经知道可以怎么拆。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你能在三十秒里读完一个人：他的习惯、他的空档、他怕什么。然后你把它用出来。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你太会算，偶尔会忘记跳舞本来可以不讲道理。赢了却不爽的场，你也遇过。</td></tr>
+<tr><td>默认 traits</td><td>Battle / 策略 / 复盘 / 胜负脑</td></tr>
+<tr><td>need 兜底</td><td>赛事、对抗训练、一轮一轮的复盘，比漫无目的的派对更喂得饱你。</td></tr>
+</table>
+<h4>NO.04 共振递火者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>一个人练得再顺，也换不来被接住的那一下。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你要的不是陪练，是有人接住你的东西，你再把火递回去。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你在的场子不会冷。你有本事把一个尴尬的圈，跳成一群人的夜晚。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你太依赖「有人在」。没人接的时候，你的火灭得比想象中快。</td></tr>
+<tr><td>默认 traits</td><td>一起练舞 / 接歌 / 熟人局 / 互相激发</td></tr>
+<tr><td>need 兜底</td><td>熟人练舞局、小型 Cypher、找搭子，会比一个人死磕更让你亮起来。</td></tr>
+</table>
+<h4>NO.05 夜色游牧者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>灯一暗，陌生的房间也会变成你的。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你追的不是热闹本身，是人和音乐撞在一起之后，突然可以自由的那一阵。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你能在任何陌生场子里迅速找到自己的位置，五分钟以后已经在跟人对上眼神。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你怕重复。同一间房、同一批人、同一套流程，你会先于所有人厌倦。</td></tr>
+<tr><td>默认 traits</td><td>Party / Club / 社交舞感 / 现场</td></tr>
+<tr><td>need 兜底</td><td>派对、夜场、House / Waacking / Afro 这类把房间推起来的局。</td></tr>
+</table>
+<h4>NO.06 月下独行者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>耳机一戴，世界就刚好够用了。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你不是不合群，是有些东西必须一个人消化完，才会真正变成你的。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你有极高的自我完成度。没人看、没人夸，你也能把一件事练到底。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你太会自己待着，久到有时候忘了跳舞也可以是件热闹的事。</td></tr>
+<tr><td>默认 traits</td><td>独练 / 耳机 / 深夜 / 自我消化</td></tr>
+<tr><td>need 兜底</td><td>安静练舞时段、基础训练、康复内容；搭子要能同行，但不必一直说话。</td></tr>
+</table>
+<h4>NO.07 律动信徒</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>难不难先放一边，groove 对了才算数。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>别人看动作，你听音乐。一个简单的 step，只要身体进了歌里，你就会忍不住点头。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你的身体自带节拍器。哪怕只是走路，你的重心也在歌里。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你对炫技有点洁癖，会下意识看不上那些很难但不好听的东西。</td></tr>
+<tr><td>默认 traits</td><td>Groove / Foundation / Old School / 音乐性</td></tr>
+<tr><td>need 兜底</td><td>文化内容、Foundation、音乐理解课，会比只追难度更对症。</td></tr>
+</table>
+<h4>NO.08 风格藏家</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>别人一眼滑过去的东西，你会留下来。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>重量、肩膀、眼神的角度——你收藏细节，像在收藏以后会变成自己的那点味道。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你的眼睛比大多数人细。你能说出一支舞「好在哪」，而不只是「好」。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>收藏得太多，有时会不知道哪个才是自己。你的味道正在长，但你比谁都急。</td></tr>
+<tr><td>默认 traits</td><td>质感 / 线条 / 审美 / Texture</td></tr>
+<tr><td>need 兜底</td><td>风格向课程、穿搭、成片复盘，适合找能互相看动作质感的人。</td></tr>
+</table>
+<h4>NO.09 舞房游学生</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>你去上课，是去偷一点还没长在自己身上的东西。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>这个老师的律动很特别就去，那个老师的脚法很干净也去。心动过的东西，你相信最后都会留下。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你没有门派包袱。别人还在纠结「我到底是跳什么的」，你已经从三个舞种里各拿走了一块。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>走得太杂，偶尔会心虚：什么都会一点，什么都不算深。</td></tr>
+<tr><td>默认 traits</td><td>上课 / Workshop / 跨舞种 / 探索</td></tr>
+<tr><td>need 兜底</td><td>舞室测评、大师课、体验课、拼团——你需要不断换教室，带走新的一块。</td></tr>
+</table>
+<h4>NO.10 静默观舞者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>你不一定站在圈中间，但你看得比谁都认真。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你看的不是热闹和输赢，是这个动作从哪来、为什么会长成这样。看，也是一种靠近。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你是圈里少数说得清「为什么」的人。很多人跳得比你久，但讲不过你。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你把「看懂」当成了参与。有些东西不下场，就永远不会真的懂。</td></tr>
+<tr><td>默认 traits</td><td>观赛 / 文化 / 审美 / 观察</td></tr>
+<tr><td>need 兜底</td><td>赛事解说、文化长文、观赛活动。你可以先看懂一场，再决定什么时候上场。</td></tr>
+</table>
+<h4>NO.11 齐舞团魂者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>十个人跳成一个人，那一下比什么都上头。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你享受的不是自己发光，是排练到某一遍，所有人的呼吸终于对齐。整齐这件事，对你来说是浪漫的。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你能把一群人的节奏拧成一股。别人排练是完成任务，你排练是在造一个共同体。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>队一散，你会比谁都难受。你的成就感有很大一部分挂在别人身上。</td></tr>
+<tr><td>默认 traits</td><td>齐舞 / 排练 / 团队 / 同步</td></tr>
+<tr><td>need 兜底</td><td>齐舞作品、团队排练、团体赛；比起一个人的即兴，你更需要一支愿意一起磨的队。</td></tr>
+</table>
+<h4>NO.12 挖歌人</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>舞还没跳，歌单已经比别人厚了。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你收歌比收动作还认真。一首没人用过的歌被你翻出来的那一刻，比跳好一段还爽。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你知道音乐从哪来。别人跟着歌跳，你能讲出这首歌为什么会长成这样。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>歌越存越多，练的时间越来越少。你的收藏夹，比你的身体诚实。</td></tr>
+<tr><td>默认 traits</td><td>挖歌 / 歌单 / Old School / 考据</td></tr>
+<tr><td>need 兜底</td><td>音乐文化内容、Old School 专题、选曲向活动；也适合找愿意跟你换歌单的人。</td></tr>
+</table>
+<h4>NO.13 逐帧自审者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>那条视频你看了三十遍，全是在看自己哪里不对。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>别人拍完就发，你拍完先倒回去。0.5 倍速、逐帧、反复——你在找那个只有自己看得见的瑕疵。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你的进步是可验证的。你能准确说出这个月比上个月好在哪，因为你手里有证据。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>镜子和回放会骗你。它们只会放大问题，不会告诉你你已经很好了。</td></tr>
+<tr><td>默认 traits</td><td>回放 / 镜子 / 细节 / 自我修正</td></tr>
+<tr><td>need 兜底</td><td>成片复盘、动作拆解课、有录像反馈的训练；偶尔也需要有人替你按下暂停键。</td></tr>
+</table>
+<h4>NO.14 圈外颤抖者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>你的脚已经在动了，只是人还没迈进去。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>圈围起来的时候，你的心跳先上场了。你不是不想跳，你只是在等一个「现在可以了」的瞬间。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你有很多老手已经弄丢的东西——真的在乎。你还会紧张，说明这件事对你还很重要。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你在等的那个「准备好了」，其实永远不会先到。它只会在你下场之后，才追上你。</td></tr>
+<tr><td>默认 traits</td><td>蓄势 / 圈外 / 心跳 / 还没上</td></tr>
+<tr><td>need 兜底</td><td>低压力的新人局、小圈子练舞、体验课。你缺的从来不是能力，是第一次。</td></tr>
+</table>
+<h4>NO.15 护膝修行者</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>你包里的护具，比换洗的衣服还多。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你身上有几处旧伤，天气一变它们就会提醒你。可音乐一响，你还是会站起来。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你比谁都懂自己的身体。你知道今天能到几分，也知道什么时候必须停。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你嘴上说悠着点，做起来常常还是过头。真正难的不是练，是承认今天不行。</td></tr>
+<tr><td>默认 traits</td><td>旧伤 / 康复 / 热身 / 还在跳</td></tr>
+<tr><td>need 兜底</td><td>康复与体能内容、低强度练舞时段、热身与保护知识；搭子最好节奏能跟你对上。</td></tr>
+</table>
+<h4>NO.16 厨房即兴犯</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>等水开的那三分钟，你已经跳完一段了。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>你不需要舞房。地铁口、便利店、洗手间的镜子前——只要那一段响起来，身体先于脑子做了决定。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你和音乐之间几乎没有延迟。别人要热身十分钟才进状态，你只需要一句副歌。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你随时能跳，也随时会停。你的问题从来不是没热情，是很少坐下来把一件事练完。</td></tr>
+<tr><td>默认 traits</td><td>随时随地 / 本能 / 失控 / 副歌就走</td></tr>
+<tr><td>need 兜底</td><td>碎片化练习内容、短课、Freestyle；你需要的不是激情，是一点点结构。</td></tr>
+</table>
+<h4>NO.17 囤课仓鼠</h4>
+<table>
+<tr><th>字段</th><th>文案</th></tr>
+<tr><td>headline（海报金句）</td><td>课报了六节，练了两节，但快乐是真的。</td></tr>
+<tr><td>voice（解读第 1 段）</td><td>看到好老师的课，你的手比脑子快。报名那一刻的踏实感，有时候比上课本身还香。</td></tr>
+<tr><td>superpower（你的天赋）</td><td>你永远在场。这个圈子里的新老师、新课程、新工作坊，你比任何人都先知道。</td></tr>
+<tr><td>shadow（你的暗面）</td><td>你囤的是「可能性」，不是能力。真正让人变强的，是回去练的那几个小时。</td></tr>
+<tr><td>默认 traits</td><td>报课 / 收藏 / Workshop / 手比脑快</td></tr>
+<tr><td>need 兜底</td><td>拼团、体验课、系列课；比起再报一节，你更需要把上过的那节练透。</td></tr>
+</table>
+<h3>7.3 题目与计分规则</h3>
+<p><b>10 道场景题</b>，每题 6–8 个选项（选项数按人格覆盖需要给，不强行凑齐 4 个）。刻意用场景题而非直问（「你喜欢编舞吗」会让人按身份作答）。</p>
+<p>每个选项携带：<code>weights</code>（人格分）/ <code>music</code>（仅 Q1）/ <code>body</code> / <code>scenes</code> / <code>roles</code> / <code>echo</code>（写入结果解读）。</p>
+<p><b>总分算法</b>：</p>
+<ol style="margin:10px 0 16px;padding-left:22px;font-size:13px;color:var(--ink2);line-height:1.7;">
+<li>人格分：10 题 <code>weights</code> 累加。主人格 = 第 1 名；副人格 = 第 2 名。</li>
+<li>同分：按对象 key 字符串排序后取先者（无专门平局处理）。</li>
+<li>全空兜底：主 <code>resonance</code>，副 <code>groove</code>。</li>
+<li>音乐 DNA：只累计 <b>Q1</b> 的 <code>music</code>，取 Top（实际即该选项的 1–2 个标签）。</li>
+<li>身体语言 / 常在战场 / 角色：各题对应标签每命中 +1，分别取 Top2 / Top3 / Top2。</li>
+</ol>
+<p><b>题目定位</b>：题目携带 <code>kind</code> 标记（<code>music</code> / <code>fear</code> / <code>keep</code>），结果文案按 <code>kind</code> 取答案而非按下标，增删题目不会让文案错位。</p>
+<p><b>权重平衡自检</b>（每个人格的理论最高分，用于确认没有人格不可达）：</p>
+<table>
+<tr><th>人格</th><th>理论最高分</th></tr>
+<tr><td>共振递火者</td><td>17</td></tr>
+<tr><td>律动信徒</td><td>14</td></tr>
+<tr><td>齐舞团魂者</td><td>14</td></tr>
+<tr><td>野火上场者</td><td>13</td></tr>
+<tr><td>风格藏家</td><td>13</td></tr>
+<tr><td>挖歌人</td><td>13</td></tr>
+<tr><td>光影叙事者</td><td>12</td></tr>
+<tr><td>夜色游牧者</td><td>12</td></tr>
+<tr><td>月下独行者</td><td>12</td></tr>
+<tr><td>舞房游学生</td><td>12</td></tr>
+<tr><td>锋芒执局者</td><td>11</td></tr>
+<tr><td>逐帧自审者</td><td>11</td></tr>
+<tr><td>圈外颤抖者</td><td>11</td></tr>
+<tr><td>厨房即兴犯</td><td>11</td></tr>
+<tr><td>静默观舞者</td><td>10</td></tr>
+<tr><td>护膝修行者</td><td>10</td></tr>
+<tr><td>囤课仓鼠</td><td>9</td></tr>
+</table>
+<h4>Q1 最近耳机里循环最多的，是哪一挂？</h4>
+<div class="note note-info">本题是<b>唯一</b>写入音乐 DNA 的题。</div>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>音乐 DNA</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>Funk / Boom bap，鼓点一响身体先醒</td><td>groove +2，wildfire +1</td><td>Funk、Boom bap</td><td>Groove</td><td>即兴局</td><td>Player</td><td>音乐上你认 Funk、Boom bap——鼓点一起来，你先问身体醒了没有。</td></tr>
+<tr><td>B</td><td>R&amp;B / Soul，旋律先开口，情绪跟着走</td><td>storyteller +2，stylekeeper +1</td><td>R&amp;B、Soul</td><td>Line</td><td>成片</td><td>Creator</td><td>音乐上你认 R&amp;B、Soul——旋律先开口，你会把一首歌听成一段故事。</td></tr>
+<tr><td>C</td><td>House / Afro，bass 一上来房间就被推开</td><td>nomad +2，resonance +1</td><td>House、Afro</td><td>Flow</td><td>Party</td><td>Connector</td><td>音乐上你认 House、Afro——你先感觉房间被 bass 推开了没有。</td></tr>
+<tr><td>D</td><td>Breaks / Battle Beat，专挑能点着场子的那截</td><td>wildfire +1，tactician +2</td><td>Breaks、Battle Beat</td><td>Power</td><td>Battle</td><td>Player</td><td>音乐上你认 Breaks、Battle Beat——你要的是能把场子点燃的那一截。</td></tr>
+<tr><td>E</td><td>K-pop / 编舞向流行，一听就想到走位</td><td>crewsoul +2，storyteller +1</td><td>K-pop、Pop</td><td>Line</td><td>齐舞</td><td>Creator</td><td>音乐上你认编舞向的流行——一听前奏，你脑子里已经在排队形了。</td></tr>
+<tr><td>F</td><td>没人用过的老歌，从各种角落翻出来的</td><td>digger +3</td><td>Rare Groove、Old School</td><td>Groove</td><td>挖歌</td><td>Digger</td><td>音乐上你走的是冷门路线——别人挑歌，你是在挖歌。</td></tr>
+</table>
+<h4>Q2 今晚突然多出两小时，你会拿去干嘛？</h4>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>一个人租房，把卡住的那段磨顺</td><td>lone +2，groove +1</td><td>Control</td><td>独练</td><td>Student</td><td>多出两小时，你更想一个人把卡住的动作磨顺——不是躲起来，是要把东西真的练进身体。</td></tr>
+<tr><td>B</td><td>喊两三个朋友，放歌轮流跳</td><td>resonance +2</td><td>Freestyle</td><td>朋友练舞</td><td>Connector</td><td>多出两小时，你会喊上两三个朋友轮流跳。对你来说，练舞局本身就是答案。</td></tr>
+<tr><td>C</td><td>去即兴局蹲一晚，看能碰上谁</td><td>wildfire +2，watcher +2</td><td>Freestyle</td><td>即兴局</td><td>Player</td><td>多出两小时，你想去即兴局蹲一晚。不一定今晚就炸，但你想碰上有意思的人。</td></tr>
+<tr><td>D</td><td>报一节课，让老师系统带一遍</td><td>wanderer +2，groove +1</td><td>Foundation</td><td>课堂</td><td>Student</td><td>多出两小时，你更想上一节课，让老师把东西系统带过一遍。</td></tr>
+<tr><td>E</td><td>把上次那条录像倒回去，一帧一帧看</td><td>rewinder +3</td><td>Control</td><td>回放</td><td>Creator</td><td>多出两小时，你会把上次的录像倒回去看——别人练手感，你练的是眼睛。</td></tr>
+<tr><td>F</td><td>躺着刷视频存歌，练舞明天再说</td><td>digger +2，hoarder +2</td><td>Groove</td><td>挖歌</td><td>Digger</td><td>多出两小时，你大概率躺着刷视频存歌。收藏夹又厚了一点，这也算某种练习。</td></tr>
+<tr><td>G</td><td>在客厅放歌自己跳，跳到邻居敲墙</td><td>midnight +4</td><td>Freestyle</td><td>随时随地</td><td>Player</td><td>多出两小时，你会直接在客厅开跳。舞房对你来说，从来不是必需品。</td></tr>
+</table>
+<h4>Q3 你偷偷幻想过的高光时刻是哪个？</h4>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>Battle 里一轮把场子点燃</td><td>wildfire +2，tactician +1</td><td>Power</td><td>Battle</td><td>Player</td><td>你幻想过的高光，是 Battle 里一轮把场子点燃。</td></tr>
+<tr><td>B</td><td>成片里一个眼神，刚好压在拍上</td><td>storyteller +2，stylekeeper +1</td><td>Texture</td><td>成片</td><td>Creator</td><td>你要的高光很安静：成片里一个眼神，刚好压在拍上。</td></tr>
+<tr><td>C</td><td>派对上所有人掉进同一个 groove</td><td>nomad +3，resonance +1</td><td>Groove</td><td>Party</td><td>Connector</td><td>你觉得最动人的，是派对上所有人一起掉进同一个 groove。</td></tr>
+<tr><td>D</td><td>一个人练到某个东西突然通了</td><td>lone +2，groove +1</td><td>Control</td><td>独练</td><td>Student</td><td>你真正会记得的，是一个人练到某个东西突然通了的那个夜里。</td></tr>
+<tr><td>E</td><td>一队人整齐到像一个人</td><td>crewsoul +3</td><td>Sync</td><td>齐舞</td><td>Crew</td><td>你幻想的高光里有很多人：一队人整齐到像一个人。</td></tr>
+<tr><td>F</td><td>终于敢站进圈里，跳完一整轮</td><td>edgewalker +3</td><td>Freestyle</td><td>即兴局</td><td>Student</td><td>你想要的高光，别人可能觉得很小：终于敢站进圈里，跳完一整轮。</td></tr>
+<tr><td>G</td><td>在台下把一场好比赛看透，比自己跳还满足</td><td>watcher +3</td><td>Observe</td><td>观赛</td><td>Observer</td><td>你的高光时刻在台下：把一场好比赛看透，比自己跳完还满足。</td></tr>
+</table>
+<h4>Q4 朋友甩来一句「晚上来练不」，你第一反应是？</h4>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>谁来？几点？在哪儿？我看下鞋</td><td>resonance +3</td><td>Freestyle</td><td>朋友练舞</td><td>Connector</td><td>朋友一喊「来练不」，你已经在问谁来、几点、在哪儿——鞋都准备好了。</td></tr>
+<tr><td>B</td><td>今天想自己消化，上次那段还没顺</td><td>lone +2，groove +1</td><td>Control</td><td>独练</td><td>Student</td><td>朋友喊你的时候，你更想先把自己卡住的那段消化完。</td></tr>
+<tr><td>C</td><td>有人拍吗？我想把这段录出来</td><td>storyteller +2，stylekeeper +1</td><td>Line</td><td>成片</td><td>Creator</td><td>你答应之前会先问一句：有人拍吗？你想把今晚变成一段能留下的东西。</td></tr>
+<tr><td>D</td><td>练什么？有老师或者主题吗？</td><td>wanderer +2，tactician +1</td><td>Foundation</td><td>课堂</td><td>Teacher</td><td>你会先问练什么、有没有老师或主题。没结构的局，对你来说有点空。</td></tr>
+<tr><td>E</td><td>想去，但怕跟不上，先问问都有谁</td><td>edgewalker +3</td><td>Control</td><td>即兴局</td><td>Student</td><td>你想去，但会先问都有谁。不是不想跳，是怕自己跟不上。</td></tr>
+<tr><td>F</td><td>膝盖今天说了不算，我去了也只能看</td><td>patcher +3</td><td>Recovery</td><td>观赛</td><td>Observer</td><td>你答应之前先问的是自己的身体——今天它说了算。</td></tr>
+<tr><td>G</td><td>先看看这周还有哪节课没上完</td><td>hoarder +3</td><td>Foundation</td><td>课堂</td><td>Student</td><td>你得先翻翻这周还有哪节课没上完——你的日程比舞步还满。</td></tr>
+<tr><td>H</td><td>练舞可以，但结束之后得有局</td><td>nomad +3</td><td>Flow</td><td>Party</td><td>Connector</td><td>你答应得很快，但真正让你来的是练完之后那一场——夜还长着。</td></tr>
+</table>
+<h4>Q5 圈围起来那一刻，你脑子里在想什么？</h4>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>这轮下来，目光得在我身上</td><td>wildfire +2，tactician +1</td><td>Power</td><td>Battle</td><td>Player</td><td>圈一围起来，你想的是这轮之后目光得在你身上。</td></tr>
+<tr><td>B</td><td>谁能接住我，我再接回去</td><td>resonance +2</td><td>Freestyle</td><td>Cypher</td><td>Connector</td><td>你要的不是独舞，是有人接住你，你再接回去。</td></tr>
+<tr><td>C</td><td>那个高手怎么做到的，我要拆开看</td><td>watcher +3，wanderer +1</td><td>Observe</td><td>观赛</td><td>Observer</td><td>你站在圈边也能兴奋：看到高手炸场，你想的是把它拆开看。</td></tr>
+<tr><td>D</td><td>这个瞬间得拍下来</td><td>stylekeeper +2，rewinder +1</td><td>Texture</td><td>成片</td><td>Creator</td><td>你下意识会把炸的那个瞬间拍下来——那是你收藏风格的方式。</td></tr>
+<tr><td>E</td><td>这首歌我有，我知道它什么时候掉</td><td>digger +3</td><td>Groove</td><td>挖歌</td><td>Digger</td><td>别人听现场，你听的是歌本身——这首你有，你知道它什么时候会掉。</td></tr>
+<tr><td>F</td><td>心跳很快，脚在动，人还在圈外</td><td>edgewalker +3</td><td>Control</td><td>即兴局</td><td>Student</td><td>圈围起来那一刻，你的心跳先上场了，人还站在圈外。</td></tr>
+</table>
+<h4>Q6 上课的时候，你大概是这幅样子</h4>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>站前排抠细节，越拆越兴奋</td><td>wanderer +2，groove +1</td><td>Foundation</td><td>课堂</td><td>Student</td><td>上课你站前排，拆得越细越兴奋。</td></tr>
+<tr><td>B</td><td>站后排也行，先在脑子里过一遍</td><td>lone +2，tactician +1</td><td>Control</td><td>独练</td><td>Student</td><td>你宁可先站后排，让动作在脑子里过一遍，再交给身体。</td></tr>
+<tr><td>C</td><td>下课追着老师问：这个到底怎么练</td><td>wanderer +3，stylekeeper +1</td><td>Texture</td><td>课堂</td><td>Student</td><td>一下课你就会追问：这个到底怎么练？你要的是能带走的方法。</td></tr>
+<tr><td>D</td><td>看别人卡住，会顺手补两句</td><td>groove +1，stylekeeper +1，wanderer +1</td><td>Foundation</td><td>课堂</td><td>Teacher</td><td>你会看见别人卡住，顺手补两句。教和学，在你这儿经常叠在一起。</td></tr>
+<tr><td>E</td><td>一边跳一边盯镜子里的自己</td><td>rewinder +3</td><td>Control</td><td>回放</td><td>Creator</td><td>你一边跳一边盯着镜子里的自己，找那个只有你看得见的地方。</td></tr>
+<tr><td>F</td><td>这是这个月第四节课，但好像没什么长进</td><td>hoarder +4</td><td>Foundation</td><td>课堂</td><td>Student</td><td>这已经是这个月第四节课了——报名的手，一直比练舞的腿快。</td></tr>
+</table>
+<h4>Q7 看别人跳，哪一下会让你「卧槽」？</h4>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>一招出来，全场哇</td><td>wildfire +2，tactician +1</td><td>Power</td><td>Battle</td><td>Player</td><td>最让你「卧槽」的，是一招出来全场哇的那种。</td></tr>
+<tr><td>B</td><td>线条、质感、表情刚刚好</td><td>stylekeeper +2，storyteller +1</td><td>Line</td><td>舞台</td><td>Creator</td><td>线条、质感、表情刚刚好，比难度更能打中你。</td></tr>
+<tr><td>C</td><td>动作没几个，但人整个在歌里</td><td>groove +2，nomad +1</td><td>Groove</td><td>即兴局</td><td>Player</td><td>动作没几个也没关系，你看的是人有没有在歌里。</td></tr>
+<tr><td>D</td><td>大家一起跳，场子突然就活了</td><td>resonance +2，nomad +1</td><td>Flow</td><td>朋友练舞</td><td>Connector</td><td>大家一起跳、场子突然活了，比个人高光更让你动容。</td></tr>
+<tr><td>E</td><td>十个人齐到像一个人</td><td>crewsoul +3</td><td>Sync</td><td>齐舞</td><td>Crew</td><td>十个人齐到像一个人——那种整齐，对你来说是浪漫。</td></tr>
+<tr><td>F</td><td>他放的这首歌，我找了半年</td><td>digger +3</td><td>Groove</td><td>挖歌</td><td>Digger</td><td>让你「卧槽」的常常不是动作，是他放的那首你找了半年的歌。</td></tr>
+<tr><td>G</td><td>有人在等车的时候突然自己动起来</td><td>midnight +3</td><td>Freestyle</td><td>随时随地</td><td>Player</td><td>你会被那种忍不住的瞬间击中——等车的人突然自己动起来。</td></tr>
+</table>
+<h4>Q8 说白了，你跳舞的时候在跟音乐干嘛？</h4>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>我想赢过它，把这轮拿下来</td><td>tactician +2，wildfire +1</td><td>Power</td><td>Battle</td><td>Player</td><td>你和音乐的关系像一场对局：你想赢过这一轮。</td></tr>
+<tr><td>B</td><td>我想替它把话讲出来</td><td>storyteller +2，stylekeeper +1</td><td>Line</td><td>成片</td><td>Creator</td><td>你想替音乐把话讲出来，它是你的台词。</td></tr>
+<tr><td>C</td><td>我想住进去，让它带着我走</td><td>groove +2，lone +1</td><td>Groove</td><td>独练</td><td>Student</td><td>你更想住进音乐里，让它带着你走。</td></tr>
+<tr><td>D</td><td>我想把旁边的人也拽进来</td><td>nomad +2，resonance +1</td><td>Flow</td><td>Party</td><td>Crew</td><td>你想把旁边的人也拽进歌里，让整间房一起动。</td></tr>
+<tr><td>E</td><td>我想先拆开，看它是怎么长的</td><td>digger +2，watcher +2</td><td>Observe</td><td>挖歌</td><td>Digger</td><td>你会先把音乐拆开，看它到底是怎么长成这样的。</td></tr>
+<tr><td>F</td><td>我压根没想，人已经在动了</td><td>midnight +4</td><td>Freestyle</td><td>随时随地</td><td>Player</td><td>你根本没在想——副歌一来，人已经在动了。</td></tr>
+</table>
+<h4>Q9 别人怎么说你，你会偷偷难受很久？</h4>
+<div class="note note-info">本题为「怕」端，与 Q10 组成结尾因果句。</div>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>「你没什么音乐性」</td><td>groove +2，lone +1</td><td>Groove</td><td>课堂</td><td>Player</td><td>你最怕被说没音乐性。</td></tr>
+<tr><td>B</td><td>「你跳得没味儿」</td><td>stylekeeper +2，storyteller +1</td><td>Texture</td><td>舞台</td><td>Creator</td><td>你最怕被说跳得没味儿。</td></tr>
+<tr><td>C</td><td>「你就是不敢上」</td><td>edgewalker +2，wildfire +1</td><td>Power</td><td>Battle</td><td>Player</td><td>你最怕被说就是不敢上。</td></tr>
+<tr><td>D</td><td>「你接不住别人，也带不起气氛」</td><td>resonance +2，nomad +1</td><td>Freestyle</td><td>Cypher</td><td>Connector</td><td>你最怕自己接不住别人，也带不起气氛。</td></tr>
+<tr><td>E</td><td>「你老拖队伍后腿」</td><td>crewsoul +3</td><td>Sync</td><td>齐舞</td><td>Crew</td><td>你最怕拖队伍的后腿。</td></tr>
+<tr><td>F</td><td>「你是不是跳不动了」</td><td>patcher +3</td><td>Recovery</td><td>独练</td><td>Observer</td><td>你最怕听到那句「你是不是跳不动了」。</td></tr>
+</table>
+<h4>Q10 最后，只能留下一样东西。</h4>
+<div class="note note-info">本题为「留」端，权重最重，用于拉开难分的局。</div>
+<table>
+<tr><th>选项</th><th>题面</th><th>人格分</th><th>身体</th><th>战场</th><th>角色</th><th>结果 echo</th></tr>
+<tr><td>A</td><td>一首能循环到天亮的歌</td><td>lone +2，groove +2</td><td>Groove</td><td>独练</td><td>Student</td><td>到最后你愿意留下的，是一首能循环到天亮的歌。</td></tr>
+<tr><td>B</td><td>一个有人接你的练舞圈</td><td>resonance +3</td><td>Freestyle</td><td>朋友练舞</td><td>Connector</td><td>到最后你愿意留下的，是一个有人接你的练舞圈。</td></tr>
+<tr><td>C</td><td>一个让你上场的机会</td><td>wildfire +2，tactician +2</td><td>Power</td><td>Battle</td><td>Player</td><td>到最后你愿意留下的，是一个能让你上场的机会。</td></tr>
+<tr><td>D</td><td>一段终于被拍出来的作品</td><td>storyteller +2，stylekeeper +2</td><td>Line</td><td>成片</td><td>Creator</td><td>到最后你愿意留下的，是一段终于被拍出来的作品。</td></tr>
+<tr><td>E</td><td>一支永远不散的队</td><td>crewsoul +3</td><td>Sync</td><td>齐舞</td><td>Crew</td><td>到最后你愿意留下的，是一支永远不散的队。</td></tr>
+<tr><td>F</td><td>一副不会再疼的膝盖</td><td>patcher +4</td><td>Recovery</td><td>独练</td><td>Observer</td><td>到最后你愿意留下的，是一副不会再疼的膝盖。</td></tr>
+<tr><td>G</td><td>一张能上遍所有老师课的通票</td><td>wanderer +4</td><td>Foundation</td><td>课堂</td><td>Student</td><td>到最后你愿意留下的，是一张能上遍所有老师课的通票。</td></tr>
+<tr><td>H</td><td>一面永远不骗你的镜子</td><td>rewinder +4</td><td>Control</td><td>回放</td><td>Creator</td><td>到最后你愿意留下的，是一面永远不骗你的镜子。</td></tr>
+</table>
+<h3>7.4 结果页完整文案结构</h3>
+<p>结果页不是套死一段人格简介，而是 <b>固定块 + 作答拼接块</b>：</p>
+<table>
+<tr><th>区块</th><th>来源</th><th>是否随作答变化</th></tr>
+<tr><td>票根编号 / 中英文名 / 核心特质</td><td>主人格表</td><td>否（随主人格）</td></tr>
+<tr><td>headline 金句</td><td>主人格 <code>headline</code></td><td>否</td></tr>
+<tr><td>解读第 1 段</td><td>主人格 <code>voice</code></td><td>否</td></tr>
+<tr><td>解读第 2 段</td><td><b>Q1 / Q2 / Q3 命中选项的 echo 连写</b></td><td>是</td></tr>
+<tr><td>解读第 3 段</td><td><b><code>kind=fear</code> echo + <code>kind=keep</code> echo</b></td><td>是</td></tr>
+<tr><td>解读末段</td><td>副人格名 + Q1 音乐标签 + Top 战场</td><td>是</td></tr>
+<tr><td>你的天赋</td><td>主人格 <code>superpower</code></td><td>否</td></tr>
+<tr><td>你的暗面</td><td>主人格 <code>shadow</code></td><td>否</td></tr>
+<tr><td>标签 chips</td><td><code>核心 + Top2 战场 + Top1 身体 + 默认 traits</code>，去重取 4</td><td>部分</td></tr>
+<tr><td>4 格 DNA</td><td>音乐 / 身体 / 战场 / 副人格名</td><td>是</td></tr>
+<tr><td>岛上推荐</td><td><code>按你选过的场景，更适合先去：{映射}。</code> + 主人格 <code>need</code></td><td>部分</td></tr>
+</table>
+<div class="note note-info">「天赋 + 暗面」是分享率最高的两块：天赋给人转发的理由，暗面给人「被说中了」的刺痛感。两者都随主人格固定，保证同一人格的文案在传播中可被辨认。</div>
+<p><b>「怕什么 → 留什么」连接规则</b>（语义对齐才用「所以」，否则并列、不硬圆）：</p>
+<table>
+<tr><th>怕（Q9）</th><th>留（Q10）</th><th>是否对齐</th></tr>
+<tr><td>A 「你没什么音乐性」</td><td>A 一首能循环到天亮的歌</td><td>是</td></tr>
+<tr><td>B 「你跳得没味儿」</td><td>D 一段终于被拍出来的作品</td><td>是</td></tr>
+<tr><td>C 「你就是不敢上」</td><td>C 一个让你上场的机会</td><td>是</td></tr>
+<tr><td>D 「你接不住别人，也带不起气氛」</td><td>B 一个有人接你的练舞圈</td><td>是</td></tr>
+<tr><td>E 「你老拖队伍后腿」</td><td>E 一支永远不散的队</td><td>是</td></tr>
+<tr><td>F 「你是不是跳不动了」</td><td>F 一副不会再疼的膝盖</td><td>是</td></tr>
+<tr><td>其余组合</td><td>—</td><td>否 → 两句直接相连</td></tr>
+</table>
+<p>对齐时输出：<code>{怕 echo}</code> + 「所以到最后，」+ <code>{留 echo}</code>（留句首自动改写为「你要留下的就是」）。</p>
+<p><b>场景 → 推荐映射</b>（去重后拼接在 need 前）：</p>
+<table>
+<tr><th>scenes</th><th>推荐短句</th></tr>
+<tr><td>成片</td><td>成片和作品打磨</td></tr>
+<tr><td>朋友练舞</td><td>熟人练舞局和找搭子</td></tr>
+<tr><td>即兴局</td><td>即兴局和 Freestyle</td></tr>
+<tr><td>Battle</td><td>赛事与对抗训练</td></tr>
+<tr><td>Party</td><td>派对和现场</td></tr>
+<tr><td>独练</td><td>安静练舞时段</td></tr>
+<tr><td>课堂</td><td>大师课和系统课</td></tr>
+<tr><td>Cypher</td><td>小型 Cypher</td></tr>
+<tr><td>观赛</td><td>观赛和文化内容</td></tr>
+<tr><td>舞台</td><td>舞台向课程</td></tr>
+<tr><td>齐舞</td><td>齐舞作品和团队排练</td></tr>
+<tr><td>挖歌</td><td>音乐文化内容和选曲专题</td></tr>
+<tr><td>回放</td><td>成片复盘和动作拆解</td></tr>
+<tr><td>随时随地</td><td>碎片化练习和短课</td></tr>
+</table>
+<p><b>末段模板</b>：<code>副线是「{副人格中文名}」。这不是猜的：第一题你选的就是 {音乐标签用顿号连接}。你更常出现在{战场用顿号连接}。</code></p>
+<h3>7.5 首页浮动入口</h3>
+<table>
+<tr><th>状态</th><th>文案</th><th>行为</th></tr>
+<tr><td>展开态</td><td><code>[TEST] 你的街舞人格 / 10 题，看你是圈里哪一种 →</code></td><td>首次进首页展示约 <b>2.4s</b> 后自动收起</td></tr>
+<tr><td>收起态</td><td><code>● 街舞人格</code></td><td>常驻右下角，宽度收窄</td></tr>
+<tr><td>关闭</td><td>卡片右上角小 <code>×</code></td><td>手动关闭，<b>本次使用期间不再出现</b>（<code>_personaFabIntroDone</code> + <code>personaFabVisible</code>）</td></tr>
+</table>
+<ul class="ac">
+<li>展开/收起为<b>宽度+透明度缓动</b>（约 0.5s），非显隐硬切，避免突兀。</li>
+<li>仅<b>首次进首页</b>自动展开一次；从其他 Tab 返回保持收起态，不重复弹开。</li>
+</ul>
+<h3>7.6 结果分享（海报）</h3>
+<ul class="ac">
+<li>结果页仅保留一个分享入口「★ 分享我的街舞人格」，点击打开<b>海报预览弹窗</b>。</li>
+<li>海报为 Canvas 绘制的 <b>750×1500（导出 2 倍）街舞地刊/黑胶封面风</b>：票根顶条 + 人格编号 + 人格大标题/英文名/金句 + 解读文案 + <b>天赋 / 暗面双栏</b> + 特质标签 + 4 格 DNA 矩阵（音乐/身体/战场/副人格）+ 推荐入口 + <b>带 DI Logo 的潮流二维码与扫码引导</b>。</li>
+<li>弹窗操作：<b>保存海报到相册</b>（自发传播到微信/朋友圈）。已<b>移除</b>「二维码海报」独立入口、「生成/保存」按钮、微信转发小程序卡片与右上角转发（<code>hideShareMenu</code>）。</li>
+<li>结果 <code>wx.setStorageSync('wudao_persona_result')</code> 本地缓存；测完/进入结果页后台预绘海报；「重新测试」清缓存重来。</li>
+</ul>
+<h3>7.7 数据落地（冷启动价值）</h3>
+<table>
+<tr><th>采集项</th><th>来源</th><th>后续用途</th></tr>
+<tr><td>主/副人格</td><td>weights 累加</td><td>用户分层、内容/活动推荐冷启动</td></tr>
+<tr><td>音乐 DNA</td><td>Q1 自报</td><td>歌单/文化内容推荐</td></tr>
+<tr><td>常在战场 scenes</td><td>场景题累计</td><td>导流练舞局/赛事/成片课/找搭子</td></tr>
+<tr><td>角色 roles</td><td>选项累计</td><td>区分 Player/Creator/Connector/Student/Teacher</td></tr>
+</table>
+<div class="note note-info">当前为端侧本地缓存；具备公司主体与后端后，可上报为用户画像标签，接入 §6 代发撮合与活动推荐。</div>
 </section>
 
-<!-- ============ 8 指标 ============ -->
+<!-- ============ 8 全站分享卡片策略 ============ -->
 <section id="s8">
-  <h2><span class="no">08</span>成功指标</h2>
-  <table>
-    <tr><th style="width:120px">指标类型</th><th>指标</th><th style="width:200px">目标</th></tr>
-    <tr><td>内容消费</td><td>周活跃用户数（UV）</td><td>冷启动期 ≥500</td></tr>
-    <tr><td>内容深度</td><td>人均内容浏览数/次</td><td>≥3 篇</td></tr>
-    <tr><td>长内容阅读</td><td>编辑型长文平均阅读完成率</td><td>≥40%（章节标题锚点促跳读）</td></tr>
-    <tr><td>活动关注</td><td>活动详情页关注转化率</td><td>≥15%</td></tr>
-    <tr><td>活动提醒</td><td>订阅消息用户数</td><td>≥200</td></tr>
-    <tr><td>留存</td><td>次周留存率</td><td>≥25%（内容+活动型产品基准）</td></tr>
-    <tr><td>内容更新</td><td>周均 PGC 新增篇数</td><td>≥5 篇</td></tr>
-  </table>
+  <h2><span class="no">08</span>全站分享卡片策略</h2>
+<p>各入口分享文案/图片差异化（<code>utils/default-covers.js</code>）：</p>
+<table>
+<tr><th>场景</th><th>标题策略</th><th>图片</th></tr>
+<tr><td>首页 / 我的</td><td>3 选 1 随机品牌+场景金句（如「街舞人的地下基地…」）</td><td>官方封面</td></tr>
+<tr><td>帖子详情</td><td>按分类加吸睛前缀+钩子（【街舞文化】…📜建议收藏 / 【赛事情报】…🏆 等）</td><td>优先文章首图，回退分类专属封面</td></tr>
+<tr><td>活动/练舞局</td><td>按类型加同城场景标签（🤝[同城找队友] / ⚡[同城练舞搭子] / 🏆[同城赛事] 等）</td><td>类型分色封面</td></tr>
+<tr><td>人格测试结果</td><td>带人格名+金句（「我是『光影叙事者』：…」）</td><td>人格海报（见 §7.6）</td></tr>
+</table>
 </section>
 
-<!-- ============ 9 开放问题 ============ -->
+<!-- ============ 9 搜索 ============ -->
 <section id="s9">
-  <h2><span class="no">09</span>开放问题</h2>
-  <table>
-    <tr><th>问题</th><th style="width:120px">归属</th><th style="width:120px">状态</th></tr>
-    <tr><td>个人主体小程序能申请哪些类目？</td><td>产品 + 法务</td><td><span class="chip p1">待确认</span></td></tr>
-    <tr><td>节拍器后台播放是否需要额外资质？</td><td>工程</td><td><span class="chip p1">待确认</span></td></tr>
-    <tr><td>订阅消息（赛事提醒）的配额和审核要求？</td><td>产品 + 工程</td><td><span class="chip p1">待确认</span></td></tr>
-    <tr><td>PGC 内容是否需要内容安全审核？</td><td>产品 + 法务</td><td><span class="chip p1">待确认</span></td></tr>
-    <tr><td>是否注册个体工商户升级企业主体？</td><td>创始人决策</td><td><span class="chip p0">战略决策</span></td></tr>
-  </table>
+  <h2><span class="no">09</span>搜索</h2>
+<p>入口：首页 + 活动页。对象：<b>PGC 内容 + 活动（含练舞局）</b>。练舞局结果带「练舞局」徽标。匹配：标题/正文/描述/标签/城市。</p>
 </section>
 
-<!-- ============ 10 时间线 ============ -->
+<!-- ============ 10 通知能力 ============ -->
 <section id="s10">
-  <h2><span class="no">10</span>时间线建议</h2>
-  <h3>阶段一 · v1 MVP（建议 4-5 周）</h3>
-  <p>账号体系（可选登录）→ 首页内容流 → 内容详情页 → 节拍器 → 个人中心</p>
-  <p class="sub">顺序：内容流是冷启动地基，节拍器是留存工具，同步开发</p>
-
-  <h3>阶段二 · v1.1（v1 上线后 3-4 周）</h3>
-  <p>赛事日历、舞室地图、搜索补齐</p>
-
-  <h3>阶段三 · 资质解决后</h3>
-  <p>拿到企业主体 → 补齐支付 → 拼团/商城上线</p>
-  <p>确认社交类目 → 补齐找搭子/评论/点赞</p>
+  <h2><span class="no">10</span>通知能力</h2>
+<p>（移除打卡提醒，保留 3 场景。）</p>
+<table>
+<tr><th>场景</th><th>模板</th><th>触发时机</th></tr>
+<tr><td>活动关注提醒</td><td>活动提醒</td><td>关注赛事/Jam/大师课时</td></tr>
+<tr><td><b>练舞局发布通知</b></td><td>活动提醒</td><td>用户需求审核通过发布时（发起人）</td></tr>
+<tr><td><b>新应征提醒</b></td><td>活动提醒</td><td>有人应征时（发起人，需订阅授权）</td></tr>
+<tr><td>本周精选</td><td>内容更新</td><td>设置页主动订阅</td></tr>
+<tr><td>活动结果</td><td>活动结果</td><td>关注赛事结束后</td></tr>
+</table>
+<p>设置页通知开关：活动提醒 / 练舞局通知 / 每周精选。</p>
 </section>
+
+<!-- ============ 11 个人中心 ============ -->
+<section id="s11">
+  <h2><span class="no">11</span>个人中心</h2>
+<ul class="ac">
+<li>欢迎卡 + wx.login（提交需求/应征时必须；浏览可游客）</li>
+<li>浏览历史（本地 ≤100）</li>
+<li>关注的活动</li>
+<li><b>我的搭子需求</b>（含应征入口）</li>
+<li><b>提交搭子需求</b>（快捷 cell）</li>
+<li>设置：城市、通知开关、协议、《搭子代发须知》、版本</li>
+</ul>
+</section>
+
+<!-- ============ 12 非功能边界 ============ -->
+<section id="s12">
+  <h2><span class="no">12</span>非功能边界</h2>
+<table>
+<tr><th>项</th><th>约束</th></tr>
+<tr><td>内容安全</td><td>PGC 可信源；需求/应征文本建议 msgSecCheck；参考图 mediaCheck</td></tr>
+<tr><td>隐私</td><td>联系方式仅发起人↔应征者单向可见，不出现在公开 API</td></tr>
+<tr><td>存储</td><td>服务端 JSON；buddyRequests / applications 独立集合</td></tr>
+<tr><td>运营 SLA</td><td>工作日需求审核 ≤24h；冷启动期运营 1 人可支撑 ≤5 条/天</td></tr>
+</table>
+</section>
+
+<!-- ============ 13 成功指标 ============ -->
+<section id="s13">
+  <h2><span class="no">13</span>成功指标</h2>
+<h3>13.1 内容与活动（不变）</h3>
+<table>
+<tr><th>指标</th><th>目标</th></tr>
+<tr><td>次周留存</td><td>≥20%</td></tr>
+<tr><td>人均内容 PV</td><td>≥3</td></tr>
+<tr><td>阅读完成率</td><td>≥40%</td></tr>
+<tr><td>活动关注转化率</td><td>≥15%</td></tr>
+</table>
+<h3>13.2 代发撮合（新增）</h3>
+<table>
+<tr><th>指标</th><th>目标</th><th>口径</th></tr>
+<tr><td>需求提交量</td><td>上线 4 周累计 ≥30 条</td><td>有效 pending+published</td></tr>
+<tr><td>审核通过率</td><td>≥70%</td><td>approved / submitted</td></tr>
+<tr><td>代发时效</td><td>中位 ≤24h</td><td>submitted → published</td></tr>
+<tr><td>练舞局应征率</td><td>≥30%</td><td>有 ≥1 应征的局 / 已发布局</td></tr>
+<tr><td>应征完成率</td><td>≥60%</td><td>点击「我想加入」→ 提交成功</td></tr>
+<tr><td><b>成局率</b></td><td>≥25%</td><td>运营/发起人确认「已结束且成局」/ 已发布局</td></tr>
+<tr><td>发起复购</td><td>≥20%</td><td>成局发起人 30 天内再次提交需求</td></tr>
+</table>
+<h3>13.3 验证结论（4 周后）</h3>
+<table>
+<tr><th>结果</th><th>决策</th></tr>
+<tr><td>三项（内容留存 + 活动关注 + 代发成局率）达标</td><td>注册<b>公司</b> + ICP 备案，启动 v2 真搭子</td></tr>
+<tr><td>内容/活动行、代发不行</td><td>代发运营过重或需求假 → 收缩为纯资讯，搭子放微信群</td></tr>
+<tr><td>代发行、内容弱</td><td>加强 PGC，代发作差异化留存</td></tr>
+</table>
+</section>
+
+<!-- ============ 14 版本记录 ============ -->
+<section id="s14">
+  <h2><span class="no">14</span>版本记录</h2>
+<ul class="ac">
+<li>v0.2（2026-08-21）：非社区版首版</li>
+<li>v1.0–v1.1（2026-08-24）：PGC 后台、分类 tab、活动加入/打卡、长内容增强</li>
+<li>v1.2（2026-08-24）：打卡挑战 + 4 场景通知（<b>v1.3 移除打卡</b>）</li>
+<li><b>v1.3（2026-08-24）</b>：<b>代发撮合</b>（方案 B）；移除打卡挑战；修正资质路径（公司+ICP）；新增练舞局类型与应征制；成功指标加入撮合验证</li>
+<li><b>v1.5（2026-08-31）</b>：人格扩容至 17 种并新增天赋/暗面文案块；每题选项放开至 6–8 个；题面口语化改写；题目引入 <code>kind</code> 标记使结果文案不依赖题目下标；海报画布 750×1500；新增 <code>scripts/gen-persona-prd.js</code>，§7.2–§7.4 由题库源文件自动生成，文档与代码不再走散</li>
+<li><b>v1.4（2026-08-31）</b>：新增<b>街舞人格测试</b>（§7，自评偏好采集 + 海报分享裂变，含题目/计分/文案生成策略与首页浮动入口）；新增<b>全站分享卡片策略</b>（§8）；信息架构补充 persona-test 页；§7.2–7.4 补齐 10 题原文、选项权重与十种人格固定文案</li>
+</ul>
+</section>
+
 
 <footer>
-  舞岛 MMVP PRD · v0.1 非社区版 · 2026-08-20 · 建议评审后先确认第 9 章开放问题，再进入详细交互设计阶段
+  舞岛 MMVP PRD · 非社区版 v1.4 · 由 Markdown 同步生成 · 2026-08-31
 </footer>
 
 </div>
