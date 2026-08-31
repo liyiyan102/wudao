@@ -15,19 +15,25 @@ const CITY_KEY = 'wudao_city'
 const HISTORY_KEY = 'wudao_history'
 const HISTORY_MAX = 100
 const FOLLOWED_KEY = 'wudao_followed'
+let dbCache = null
 
 /* ================= 底层 ================= */
 
 function load() {
+  if (dbCache) return dbCache
   let db = wx.getStorageSync(DB_KEY)
   if (!db || !db.posts || !db.activities) {
     db = data.seed()
     wx.setStorageSync(DB_KEY, db)
   }
+  dbCache = db
   return db
 }
 
-function save(db) { wx.setStorageSync(DB_KEY, db) }
+function save(db) {
+  dbCache = db
+  wx.setStorageSync(DB_KEY, db)
+}
 
 function publisherOf(id) {
   const db = load()
@@ -156,7 +162,15 @@ function rankLocalFeed(list, city, scope) {
       return { p, score: 0.30 * loc + 0.40 * fresh + 0.30 * h + pin }
     })
     scored.sort((a, b) => (b.score - a.score) || ((b.p.createdAt || 0) - (a.p.createdAt || 0)))
-    return mixByCat(scored)
+    if (!pinBonus) return mixByCat(scored)
+    const pinned = scored
+      .filter(x => x.p && x.p.pinned)
+      .sort((a, b) => {
+        const sa = typeof a.p.sort === 'number' ? a.p.sort : Number.MAX_SAFE_INTEGER
+        const sb = typeof b.p.sort === 'number' ? b.p.sort : Number.MAX_SAFE_INTEGER
+        return (sa - sb) || ((b.p.createdAt || 0) - (a.p.createdAt || 0))
+      })
+    return pinned.concat(mixByCat(scored.filter(x => !x.p || !x.p.pinned)))
   }
   if (scope === 'city' && city) {
     const local = list.filter(p => sameCity(p.city, city))

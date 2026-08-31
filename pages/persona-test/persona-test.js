@@ -226,26 +226,31 @@ Page({
     progress: 10,
     result: null,
     showPosterModal: false,
-    posterImgPath: ''
+    posterImgPath: '',
+    posterGenerating: false
   },
 
   onLoad() {
-    var cached = wx.getStorageSync('wudao_persona_result')
-    if (cached && cached.persona && PERSONAS[cached.persona.key]) {
-      cached.musicText = cached.musicText || (cached.musicDNA || []).join(' / ')
-      cached.bodyText = cached.bodyText || (cached.bodyDNA || []).join(' / ')
-      cached.sceneText = cached.sceneText || (cached.scenes || []).join(' / ')
-      cached.roleText = cached.roleText || (cached.roles || []).join(' / ')
-      if (!cached.reading || !cached.reading.length) {
-        cached.reading = PERSONAS[cached.persona.key].voice
-          ? [PERSONAS[cached.persona.key].voice]
-          : (cached.persona.intro || [])
+    // 结果缓存很小但仍改为异步读取，避免进入页面时阻塞首屏
+    wx.getStorage({
+      key: 'wudao_persona_result',
+      success: (res) => {
+        var cached = res.data
+        if (!cached || !cached.persona || !PERSONAS[cached.persona.key]) return
+        cached.musicText = cached.musicText || (cached.musicDNA || []).join(' / ')
+        cached.bodyText = cached.bodyText || (cached.bodyDNA || []).join(' / ')
+        cached.sceneText = cached.sceneText || (cached.scenes || []).join(' / ')
+        cached.roleText = cached.roleText || (cached.roles || []).join(' / ')
+        if (!cached.reading || !cached.reading.length) {
+          cached.reading = PERSONAS[cached.persona.key].voice
+            ? [PERSONAS[cached.persona.key].voice]
+            : (cached.persona.intro || [])
+        }
+        if (!cached.needText) cached.needText = cached.persona.need
+        cached.persona = Object.assign({}, PERSONAS[cached.persona.key], { key: cached.persona.key })
+        this.setData({ result: cached, phase: 'result' })
       }
-      if (!cached.needText) cached.needText = cached.persona.need
-      cached.persona = Object.assign({}, PERSONAS[cached.persona.key], { key: cached.persona.key })
-      this.setData({ result: cached, phase: 'result' })
-      this.generatePoster()
-    }
+    })
   },
 
   onShow() {
@@ -342,9 +347,12 @@ Page({
     result.needText = buildNeed(persona, result.scenes)
     result.persona.traits = uniqueList([persona.core].concat(result.scenes.slice(0, 2)).concat(result.bodyDNA.slice(0, 1)).concat(persona.traits)).slice(0, 4)
 
-    wx.setStorageSync('wudao_persona_result', result)
+    // 不阻塞结果页首屏；结果展示完成后再写入缓存
+    wx.setStorage({
+      key: 'wudao_persona_result',
+      data: result
+    })
     this.setData({ result: result, phase: 'result', posterImgPath: '' })
-    this.generatePoster()
   },
 
   retake() {
@@ -358,6 +366,7 @@ Page({
       progress: 10,
       result: null,
       posterImgPath: '',
+      posterGenerating: false,
       showPosterModal: false
     })
   },
@@ -389,7 +398,8 @@ Page({
   generatePoster() {
     var that = this
     var result = this.data.result
-    if (!result || !result.persona) return
+    if (!result || !result.persona || this.data.posterGenerating) return
+    this.setData({ posterGenerating: true })
 
     var ctx = wx.createCanvasContext('posterCanvas', this)
     var p = result.persona
@@ -568,9 +578,10 @@ Page({
           destWidth: 1500,
           destHeight: 2560,
           success: function (res) {
-            that.setData({ posterImgPath: res.tempFilePath })
+            that.setData({ posterImgPath: res.tempFilePath, posterGenerating: false })
           },
           fail: function (err) {
+            that.setData({ posterGenerating: false })
             wx.showToast({ title: '海报生成失败', icon: 'none' })
           }
         }, that)

@@ -11,7 +11,7 @@ const W_FRESH = 0.40
 const W_HEAT = 0.30
 /** 时效半衰期（天）：约 7 天后新鲜度减半 */
 const FRESH_HALF_LIFE_DAYS = 7
-/** 发现流：置顶只加分，不独占头部；同类尽量不连排 */
+/** 发现流：置顶优先；非置顶内容再做推荐与分类打散 */
 const PIN_BONUS = 0.18
 
 function heatRaw(p) {
@@ -150,9 +150,20 @@ function mixByCat(scored) {
   return out.map(x => x.p)
 }
 
+/** 置顶内容必须先于推荐流；置顶内部沿用后台拖拽顺序 */
+function pinnedFirst(list) {
+  const pinned = (list || []).filter(p => p && p.pinned).sort((a, b) => {
+    const sa = typeof a.sort === 'number' ? a.sort : Number.MAX_SAFE_INTEGER
+    const sb = typeof b.sort === 'number' ? b.sort : Number.MAX_SAFE_INTEGER
+    return (sa - sb) || ((b.createdAt || 0) - (a.createdAt || 0))
+  })
+  const rest = (list || []).filter(p => !p || !p.pinned)
+  return pinned.concat(rest)
+}
+
 /**
  * 信息流排序
- * - 发现 tab：置顶只加分，不独占头部
+ * - 发现 tab：置顶内容固定在推荐流之前
  * - 城市 / 分类 tab：无置顶逻辑
  */
 function sortFeed(list, opts) {
@@ -174,7 +185,9 @@ function sortFeed(list, opts) {
       .concat(sortByRecommend(nation, city, now), sortByRecommend(other, city, now))
   }
   if (scope === 'discover' || !scope) {
-    return mixByCat(scorePosts(list || [], city, now, true))
+    const scored = scorePosts(list || [], city, now, true)
+    return pinnedFirst(scored.filter(x => x.p && x.p.pinned).map(x => x.p))
+      .concat(mixByCat(scored.filter(x => !x.p || !x.p.pinned)))
   }
   return sortByRecommend(list || [], city, now)
 }

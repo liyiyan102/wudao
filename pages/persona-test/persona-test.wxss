@@ -33,7 +33,8 @@ page {
 .glow-light {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80rpx);
+  /* 大面积 blur 会让低端机进入页面时产生额外离屏合成 */
+  filter: blur(36rpx);
   opacity: 0.15;
 }
 
@@ -69,7 +70,7 @@ page {
   border: 1rpx solid #2B2B36;
   border-radius: 28rpx;
   padding: 36rpx 30rpx;
-  box-shadow: 0 24rpx 60rpx rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12rpx 28rpx rgba(0, 0, 0, 0.42);
   margin-top: 20rpx;
 }
 
@@ -380,7 +381,7 @@ page {
   border: 1rpx solid #2C2C3A;
   border-radius: 28rpx;
   padding: 36rpx 28rpx 32rpx;
-  box-shadow: 0 30rpx 80rpx rgba(0, 0, 0, 0.7);
+  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.48);
   position: relative;
   overflow: hidden;
 }
@@ -728,7 +729,7 @@ button.modal-act-btn::after {
   inset: 0;
   z-index: 999;
   background: rgba(0, 0, 0, 0.88);
-  backdrop-filter: blur(12px);
+  /* 弹窗打开时再显示，避免首屏持续做全屏毛玻璃合成 */
   display: flex;
   align-items: center;
   justify-content: center;
