@@ -14,6 +14,7 @@
     "pages/city-pick/city-pick",
     "pages/login/login",
     "pages/agreement/agreement",
+    "pages/privacy/privacy",
     "pages/buddy-request/buddy-request",
     "pages/buddy-request-success/buddy-request-success",
     "pages/buddy-apply/buddy-apply",

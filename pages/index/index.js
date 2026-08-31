@@ -214,7 +214,7 @@ Page({
     this.setData({ personaFabExpanded: true })
     this.personaFabTimer = setTimeout(function () {
       that.setData({ personaFabExpanded: false })
-    }, 2400)
+    }, 3000)
   },
 
   clearPersonaFabTimer() {

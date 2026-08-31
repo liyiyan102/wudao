@@ -35,7 +35,7 @@ Page({
   },
 
   goPrivacy() {
-    wx.showToast({ title: '隐私政策即将上线', icon: 'none' })
+    wx.navigateTo({ url: '/pages/privacy/privacy' })
   },
 
   onLogout() {

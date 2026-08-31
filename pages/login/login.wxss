@@ -70,8 +70,38 @@
   color: var(--ink);
 }
 
-.submit {
+.agree {
   margin-top: 48rpx;
+  padding: 8rpx;
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+}
+.cb {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #d7d3ef;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+.cb.on {
+  background: var(--brand);
+  border-color: var(--brand);
+}
+.cb .ic { font-size: 24rpx; }
+.agree-txt {
+  font-size: 23rpx;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.submit {
+  margin-top: 24rpx;
   margin-left: 0;
   margin-right: 0;
   width: 100%;
@@ -94,10 +124,4 @@
 .submit::after { border: none; }
 .submit[disabled] { opacity: 0.55; }
 
-.hint {
-  margin-top: 28rpx;
-  text-align: center;
-  font-size: 22rpx;
-  color: var(--muted2);
-}
 .link { color: var(--brand); }

@@ -27,8 +27,12 @@
     />
   </view>
 
-  <button class="submit" bindtap="onSubmit" loading="{{saving}}" disabled="{{saving}}">登录</button>
-  <view class="hint">登录即表示同意
-    <text class="link" bindtap="goAgreement">《用户协议》</text>
+  <view class="agree" bindtap="toggleAgree">
+    <view class="cb {{agreed ? 'on' : ''}}">
+      <view class="ic ic-check-circle-white" wx:if="{{agreed}}"></view>
+    </view>
+    <view class="agree-txt">我已阅读并同意<text class="link" catchtap="goAgreement">《用户协议》</text>和<text class="link" catchtap="goPrivacy">《隐私政策》</text></view>
   </view>
+
+  <button class="submit" bindtap="onSubmit" loading="{{saving}}" disabled="{{saving}}">登录</button>
 </view>
