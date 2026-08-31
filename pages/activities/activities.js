@@ -1,5 +1,5 @@
 const { isActivityExpired } = require('../../utils/util')
-const { withDefaultCover, DEFAULT_COVERS } = require('../../utils/default-covers')
+const { withDefaultCover, BRAND_SHARE_COVER } = require('../../utils/default-covers')
 const { ACTIVITY_FILTERS } = require('../../utils/data')
 
 Page({
