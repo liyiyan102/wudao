@@ -4,6 +4,31 @@ const QUESTIONS = DATA.QUESTIONS
 const FEAR_KEEP_PAIRS = DATA.FEAR_KEEP_PAIRS
 const SCENE_RECOMMEND = DATA.SCENE_RECOMMEND
 
+/**
+ * 副人格差异化句：同一主人格下，副线不同会导致结果“读法”不同。
+ * 这里刻意写成“偏向/习惯”，避免和主人格 voice 重复抢戏。
+ */
+const SUB_FLAVOR = {
+  storyteller: '你会下意识把一段舞当成一句话去写：停顿、重音、眼神都算标点。',
+  wildfire: '你更靠“上场”找状态：先跳起来，答案会在身体里自己出现。',
+  tactician: '你总会多想半拍：怎么拆、怎么压、怎么在下一轮把优势做出来。',
+  resonance: '你对“接住/接回去”特别敏感：你想要的是来回，而不是独舞。',
+  nomad: '你更像在追一间房的气味：音乐、灯、陌生人，凑齐才算今晚开始。',
+  lone: '你需要独处把东西练进身体：热闹能点燃你，但真正的进步在安静里发生。',
+  groove: '你最在乎的是 groove：动作再简单，只要进歌里，你就会发光。',
+  stylekeeper: '你对质感有洁癖：角度、重量、线条，一点点差都能看出来。',
+  wanderer: '你像采样一样上课：把喜欢的片段带走，拼成自己下一段路。',
+  watcher: '你更像“看懂再下场”：观察别人怎么做，再找到自己的切口。',
+  crewsoul: '你会天然在意同频：整齐、对拍、呼吸一致，会让你很上头。',
+  digger: '你会先从歌里找答案：选曲、质地、年代感，会影响你怎么跳。',
+  rewinder: '你会反复回放：你相信“看见问题”比“瞎练”更快。',
+  edgewalker: '你总在边缘蓄势：不是不想进圈，是在找一个刚刚好的时机。',
+  patcher: '你更懂得“收着跳”：热身、保护、节奏控制，是你能一直跳下去的底牌。',
+  midnight: '你更像本能派：副歌一来身体先动，练舞是你生活里的反射。',
+  hoarder: '你会囤可能性：课、素材、老师，你都想先收进篮子再慢慢消化。',
+  socialweaver: '你会先把人连起来：招呼、眼神、氛围，你比动作更快把场子热起来。'
+}
+
 function addScores(target, keys, points) {
   ;(keys || []).forEach(function (key) {
     target[key] = (target[key] || 0) + (points || 1)
@@ -49,6 +74,15 @@ function buildReading(persona, subPersona, picks, music, scenes) {
     if (picks[i] && picks[i].echo) body.push(picks[i].echo)
   }
   if (body.length) lines.push(body.join(''))
+
+  // 副人格差异化：同主人格下也能读出不同“偏向”
+  if (subPersona && subPersona.key) {
+    var subLine = SUB_FLAVOR[subPersona.key]
+    if (subLine) lines.push('副线更偏「' + subPersona.name + '」：' + subLine)
+  } else if (subPersona && subPersona.name) {
+    // 兜底：只展示名字（不写 flavor，避免错配）
+    lines.push('副线更偏「' + subPersona.name + '」。')
+  }
 
   var fear = pickByKind(picks, 'fear')
   var keep = pickByKind(picks, 'keep')
@@ -248,6 +282,9 @@ Page({
         }
         if (!cached.needText) cached.needText = cached.persona.need
         cached.persona = Object.assign({}, PERSONAS[cached.persona.key], { key: cached.persona.key })
+        if (cached.subPersonaKey && PERSONAS[cached.subPersonaKey]) {
+          cached.subPersonaName = PERSONAS[cached.subPersonaKey].name
+        }
         this.setData({ result: cached, phase: 'result' })
       }
     })
@@ -329,9 +366,10 @@ Page({
     var topPersonaKey = topKeys(personaScores, 1)[0] || 'resonance'
     var subPersonaKey = topKeys(personaScores, 2)[1] || 'groove'
     var persona = Object.assign({ key: topPersonaKey }, PERSONAS[topPersonaKey])
-    var subPersona = PERSONAS[subPersonaKey]
+    var subPersona = Object.assign({ key: subPersonaKey }, PERSONAS[subPersonaKey] || PERSONAS.groove)
     var result = {
       persona: persona,
+      subPersonaKey: subPersonaKey,
       subPersonaName: subPersona ? subPersona.name : '律动信徒',
       musicDNA: topKeys(musicScores, 3),
       bodyDNA: topKeys(bodyScores, 2),
